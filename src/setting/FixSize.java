@@ -1,4 +1,4 @@
-package Panel;
+package setting;
 
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
@@ -6,6 +6,7 @@ import java.awt.*;
 
 public class FixSize extends JFrame {
     private JPanel FixSizePanel;
+
 
     public FixSize() {
         //JFrame setting

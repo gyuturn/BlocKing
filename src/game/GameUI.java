@@ -1,6 +1,7 @@
 package game;
 import setting.FixSize;
 import setting.MainSetting;
+import setting.ScreenSize;
 
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
@@ -12,11 +13,11 @@ public class GameUI extends JFrame {
 
     private JPanel mainPanel;
 
-    public GameUI(){
+    public GameUI(ScreenSize screenSize){
         //JFrame setting
         super("software-tetris");//제목
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);// 메모리까지 종료
-        this.setSize(400, 500);
+        this.setSize(screenSize.getWidth(), screenSize.getHeight());
         this.setVisible(true);
 
         //board display setting
@@ -30,12 +31,12 @@ public class GameUI extends JFrame {
         mainPanel.setBorder(border);
 
         this.getContentPane().add(mainPanel,BorderLayout.CENTER);
-        setBtn();
+        setBtn(screenSize);
 
 
     }
 
-    void setBtn(){
+    void setBtn(ScreenSize screenSize){
         JButton buttons = new JButton("다음으로 넘어가기2");
         mainPanel.add(buttons);
 
@@ -43,7 +44,7 @@ public class GameUI extends JFrame {
         buttons.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new MainSetting();
+                new MainSetting(screenSize);
                 setVisible(false);
             }
         });

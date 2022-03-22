@@ -1,12 +1,15 @@
 package main;
 
 import setting.MainSetting;
+import setting.ScreenSize;
 import start.StartUI;
 
 import javax.swing.*;
 
 public class Play {
     public static void main(String[] args) {
+
+        //맥을 위한 코드
         try {
             System.setProperty("apple.laf.useScreenMenuBar", "true");
             System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Test");
@@ -26,7 +29,8 @@ public class Play {
         }
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                new StartUI();
+                ScreenSize screenSize = new ScreenSize();
+                new StartUI(screenSize);
             }
         });
 

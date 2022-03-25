@@ -13,9 +13,10 @@ import java.awt.event.ActionListener;
 public class StartUI extends JFrame {
 
     private JPanel mainPanel;
+    private ScreenSize screenSize = ScreenSize.getInstance();
 
 
-    public StartUI(ScreenSize screenSize){
+    public StartUI(){
         //JFrame setting
         super("software-tetris");//제목
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);// 메모리까지 종료
@@ -33,12 +34,12 @@ public class StartUI extends JFrame {
         mainPanel.setBorder(border);
 
         this.getContentPane().add(mainPanel,BorderLayout.CENTER);
-        setBtn(screenSize);
+        setBtn();
 
 
     }
 
-    public void setBtn(ScreenSize screenSize){
+    public void setBtn(){
         JButton buttons = new JButton("다음으로 넘어가기1");
         mainPanel.add(buttons);
 
@@ -46,7 +47,7 @@ public class StartUI extends JFrame {
         buttons.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new GameUI(screenSize);
+                new GameUI();
                 setVisible(false);
             }
         });

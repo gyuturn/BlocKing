@@ -29,8 +29,8 @@ public class Play {
         }
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                ScreenSize screenSize = new ScreenSize();
-                new StartUI(screenSize);
+//                ScreenSize screenSize = new ScreenSize();
+                new StartUI();
             }
         });
 

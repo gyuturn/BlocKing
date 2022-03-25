@@ -9,8 +9,9 @@ import java.awt.event.ActionListener;
 public class FixSize extends JFrame {
     private JPanel FixSizePanel;
     private JRadioButton[] radioButtons = new JRadioButton[3];
+    private ScreenSize screenSize =ScreenSize.getInstance();
 
-    public FixSize(ScreenSize screenSize) {
+    public FixSize() {
         //JFrame setting
         super("software-tetris");//제목
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);// 메모리까지 종료
@@ -29,10 +30,10 @@ public class FixSize extends JFrame {
 
         this.getContentPane().add(FixSizePanel,BorderLayout.CENTER);
 
-        selectSize(screenSize);
+        selectSize();
     }
 
-    public void selectSize(ScreenSize screenSize) {
+    public void selectSize() {
         JPanel radioPanel = new JPanel();
         GridLayout gridLayout=new GridLayout( 3,1);
         radioPanel.setLayout(gridLayout);
@@ -70,7 +71,7 @@ public class FixSize extends JFrame {
 
                 }
 
-                new MainSetting(screenSize);
+                new MainSetting();
                 setVisible(false);
 
             }

@@ -6,33 +6,34 @@ public class ScreenSize {
     *
      */
 
-    private int width;
+    private  int width;
 
-    private int height;
+    private  int height;
 
-    public ScreenSize() {
+    private static ScreenSize screenSize = new ScreenSize();
+
+    private ScreenSize() {
         this.width = 400;
         this.height=500;
     }
 
-    public ScreenSize(int width, int height) {
-        this.width = width;
-        this.height = height;
+    public static ScreenSize getInstance() {
+        return screenSize;
     }
 
-    public int getWidth() {
+    public  int getWidth() {
         return width;
     }
 
-    public void setWidth(int width) {
+    public  void setWidth(int width) {
         this.width = width;
     }
 
-    public int getHeight() {
+    public  int getHeight() {
         return height;
     }
 
-    public void setHeight(int height) {
+    public  void setHeight(int height) {
         this.height = height;
     }
 }

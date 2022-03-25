@@ -1,3 +1,5 @@
-public class BlockPresenter {
+package game.Model;
+
+public class BlockController {
     
 }

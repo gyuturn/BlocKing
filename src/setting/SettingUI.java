@@ -8,7 +8,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class MainSetting extends JFrame {
+public class SettingUI extends JFrame {
 
     private JPanel mainPanel;
     private ScreenSize screenSize = ScreenSize.getInstance();
@@ -16,7 +16,7 @@ public class MainSetting extends JFrame {
     private final String settingList[] = {"화면사이즈 조절", "게임 조작 키 설정", "스코어보드 초기화", "색맹모드", "모든 설정 기본으로 돌리기"};
 
 
-    public MainSetting(){
+    public SettingUI(){
         //JFrame setting
         super("software-tetris");//제목
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);// 메모리까지 종료

@@ -1,7 +1,6 @@
 package main;
 
-import setting.MainSetting;
-import setting.ScreenSize;
+import scoreBoard.ScoreBoardUI;
 import start.StartUI;
 
 import javax.swing.*;
@@ -29,8 +28,8 @@ public class Play {
         }
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-//                ScreenSize screenSize = new ScreenSize();
-                new StartUI();
+//                new StartUI();
+                new ScoreBoardUI();
             }
         });
 

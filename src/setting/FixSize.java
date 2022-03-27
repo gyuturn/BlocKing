@@ -71,7 +71,7 @@ public class FixSize extends JFrame {
 
                 }
 
-                new MainSetting();
+                new SettingUI();
                 setVisible(false);
 
             }

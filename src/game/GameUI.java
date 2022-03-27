@@ -1,6 +1,5 @@
 package game;
-import setting.FixSize;
-import setting.MainSetting;
+import setting.SettingUI;
 import setting.ScreenSize;
 
 import javax.swing.*;
@@ -45,7 +44,7 @@ public class GameUI extends JFrame {
         buttons.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new MainSetting();
+                new SettingUI();
                 setVisible(false);
             }
         });

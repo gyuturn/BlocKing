@@ -1,8 +1,8 @@
 # BlocKing
 
-## Convention
+# Convention
 
-### java Convention
+## java Convention
 1. directory 소문자 ex)main,setting
 2. className 첫글자 대문자 ex)ScoreList
 3. 변수 및 함수명 camelCase ex)mainPanel

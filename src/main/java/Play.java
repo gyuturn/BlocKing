@@ -1,5 +1,3 @@
-package main;
-
 import scoreBoard.ScoreBoardUI;
 import start.StartUI;
 

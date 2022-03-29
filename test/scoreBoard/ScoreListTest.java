@@ -1,10 +1,13 @@
 package scoreBoard;
 
+import junit.framework.Assert;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.*;
+import static org.assertj.core.api.Assertions.*;
+
 
 public class ScoreListTest {
     ScoreList scoreList = ScoreList.getInstance();
@@ -14,13 +17,27 @@ public class ScoreListTest {
     }
 
     @Test
+    @DisplayName("점수  push  기능")
+    public void 점수푸쉬(){
+        //given
+        User test1 = new User("test1", 100);
+        User test2 = new User("test2", 100);
+        //when
+        scoreList.push(test1);
+        scoreList.push(test2);
+        //then
+        assertThat(test1).isSameAs(scoreList.getList().get(0));
+        assertThat(test2).isSameAs(scoreList.getList().get(1));
+
+    }
+
+    @Test
+    @DisplayName("점수 오름차순 정렬")
     public void ScoreListSortByDescTest() {
         //given
         User user1 = new User("test1", 100);
         User user2 = new User("test2", 60);
         User user3 = new User("test3", 80);
-
-
         scoreList.push(user1);
         scoreList.push(user2);
         scoreList.push(user3);
@@ -29,9 +46,7 @@ public class ScoreListTest {
         scoreList.sortDescByScore();
         //then
         //비교하기 위해 내림차순으로 넣기
-        Assertions.assertEquals(100, scoreList.getList().get(0).getScore());
-        Assertions.assertEquals(80, scoreList.getList().get(1).getScore());
-        Assertions.assertEquals(60, scoreList.getList().get(2).getScore());
+        assertThat(100).isEqualTo(scoreList.getList().get(0).getScore());
 
     }
 

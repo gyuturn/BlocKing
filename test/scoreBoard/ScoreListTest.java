@@ -17,6 +17,19 @@ public class ScoreListTest {
     }
 
     @Test
+    @DisplayName("점수 모두 삭제")
+    public void 점수모두삭제(){
+        //given
+        User test1 = new User("test1", 100);
+        User test2 = new User("test2", 100);
+        //when
+        scoreList.deleteAll();
+        //then
+        assertThat(scoreList.getList().size()).isEqualTo(0);
+
+    }
+
+    @Test
     @DisplayName("점수  push  기능")
     public void 점수푸쉬(){
         //given
@@ -47,6 +60,8 @@ public class ScoreListTest {
         //then
         //비교하기 위해 내림차순으로 넣기
         assertThat(100).isEqualTo(scoreList.getList().get(0).getScore());
+        assertThat(80).isEqualTo(scoreList.getList().get(1).getScore());
+        assertThat(60).isEqualTo(scoreList.getList().get(2).getScore());
 
     }
 

@@ -130,4 +130,21 @@ public class GameManager_NormalMode extends GameManager {
 
     //#endregion
 
+    //#region Utils
+
+    private void SetTimeScale(int scale) {
+        
+        timeScale = scale;
+
+        timer = new Timer(timeScale, new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				OneFrame();
+			}
+		});
+
+        timer.start();
+    }
+
+    //#endregion
 }

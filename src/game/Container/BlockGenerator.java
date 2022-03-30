@@ -1,4 +1,4 @@
-package game.Container;
+package game.container;
 
 public class BlockGenerator {
     

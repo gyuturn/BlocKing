@@ -1,7 +1,8 @@
-package game.Model.BlockTypes;
+package game.model.blocktypes;
 
-import game.Model.BlockController;
 import java.awt.Color;
+
+import game.model.BlockController;
 
 public class JBlock extends BlockController {
     

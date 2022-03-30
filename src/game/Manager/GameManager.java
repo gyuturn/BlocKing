@@ -1,4 +1,4 @@
-package game.Manager;
+package game.manager;
 
 public abstract class GameManager {
 

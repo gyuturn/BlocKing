@@ -2,6 +2,7 @@ package scoreBoard;
 
 import setting.FixSizeUI;
 import setting.ScreenSize;
+import start.StartUI;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -70,6 +71,17 @@ public class ScoreBoardUI extends JFrame{
             @Override
             public void actionPerformed(ActionEvent e) {
                 new ScoreInputUI(score);
+                setVisible(false);
+            }
+        });
+
+
+        //사용자 입력을 받지 않고 시작화면으로 이동
+        //사용자의 이름 및 점수 입력 받음
+        exitBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new StartUI();
                 setVisible(false);
             }
         });

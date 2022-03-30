@@ -2,13 +2,13 @@ package game.Manager;
 
 public abstract class GameManager {
 
-    public abstract void StartGameFramework();
+    public abstract void startGameFramework();
 
-    public abstract void StopGameFramework();
+    public abstract void stopGameFramework();
 
-    protected abstract void GameFramework();
+    protected abstract void gameFramework();
 
-    protected abstract void OneFrame();
+    protected abstract void oneFrame();
 
-    protected abstract void GameOver();
+    protected abstract void gameOver();
 }

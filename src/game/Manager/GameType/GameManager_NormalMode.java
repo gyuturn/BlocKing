@@ -37,51 +37,51 @@ public class GameManager_NormalMode extends GameManager {
 
     
     @Override
-    protected void GameFramework() { //전체적인 게임의 동작 흐름
-        GameReady();
-        StartTimer();
+    protected void gameFramework() { //전체적인 게임의 동작 흐름
+        gameReady();
+        startTimer();
 
         while(!isGameOver)
         {
-            CreateNewBlock();   //블록 생성
-            CheckBlockConfirm(); //블록이 바닥에 닿으면 return 합니다.
+            createNewBlock();   //블록 생성
+            checkBlockConfirm(); //블록이 바닥에 닿으면 return 합니다.
 
-            SetGameBalance(); //게임 진행도에 따라 블럭 속도 조절
+            setGameBalance(); //게임 진행도에 따라 블럭 속도 조절
         }
 
-        GameOver();
+        gameOver();
     }
 
 
-    private void GameReady() {
+    private void gameReady() {
         //게임을 준비합니다.
     }
 
-    private void StartTimer() {
+    private void startTimer() {
 
         timer = new Timer(timeScale, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				OneFrame();
+				oneFrame();
 			}
 		});
 
         timer.start();
     }
 
-    private void CreateNewBlock() {
+    private void createNewBlock() {
         //curBlock = BlockGenerator.getInstance().CreateBlock();
         blockCount++;
     }
 
-    private void CheckBlockConfirm() {
+    private void checkBlockConfirm() {
         while(!isGameOver)
         {
             if(isBlockStop) return;
         }
     }
 
-    private void SetGameBalance() {
+    private void setGameBalance() {
         //일정 수 이상 블록이 삭제되면 떨어지는 속도가 증가합니다.
         if(timeScale < blockCount / 10)
         {
@@ -96,17 +96,17 @@ public class GameManager_NormalMode extends GameManager {
 
     
     @Override
-    protected void GameOver() {
+    protected void gameOver() {
         //게임이 종료되면 호출됩니다.
     }
 
     @Override
-    public void StartGameFramework() {
+    public void startGameFramework() {
         //GameFramework를 시작
     }
 
     @Override
-    public void StopGameFramework() {
+    public void stopGameFramework() {
         //GameFramework를 멈추고 싶은 경우
         //일시정지 등등
     }
@@ -116,15 +116,15 @@ public class GameManager_NormalMode extends GameManager {
     //#region OneFrame
 
     @Override
-    protected void OneFrame() { //매 프레임마다 진행되는 동작
-        MoveDown();
-        RequestDrawBoard();
+    protected void oneFrame() { //매 프레임마다 진행되는 동작
+        moveDown();
+        requestDrawBoard();
     }
 
-    private void MoveDown() {
+    private void moveDown() {
 
     }
-    private void RequestDrawBoard() {
+    private void requestDrawBoard() {
 
     }
 
@@ -132,14 +132,14 @@ public class GameManager_NormalMode extends GameManager {
 
     //#region Utils
 
-    private void SetTimeScale(int scale) {
+    private void setTimeScale(int scale) {
         
         timeScale = scale;
 
         timer = new Timer(timeScale, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				OneFrame();
+				oneFrame();
 			}
 		});
 
@@ -150,7 +150,7 @@ public class GameManager_NormalMode extends GameManager {
 
     //#region Interaction
 
-    public void InitKeyListener() {
+    public void initKeyListener() {
         //GameUI.getInstance().pane.add(addKeyListener(interaction));
     }
 
@@ -164,24 +164,24 @@ public class GameManager_NormalMode extends GameManager {
 		public void keyPressed(KeyEvent e) {
 			switch(e.getKeyCode()) {
 			case KeyEvent.VK_DOWN:
-				MoveDown();
-				RequestDrawBoard();
+				moveDown();
+				requestDrawBoard();
 				System.out.println("input down");
 				break;
 			case KeyEvent.VK_RIGHT:
-				MoveDown();
-				RequestDrawBoard();
+				moveDown();
+				requestDrawBoard();
 				System.out.println("input right");
 				break;
 			case KeyEvent.VK_LEFT:
-				MoveDown();
-				RequestDrawBoard();
+				moveDown();
+				requestDrawBoard();
 				System.out.println("input left");
 				break;
 			case KeyEvent.VK_UP:
 				//eraseCurr();
 				//curr.rotate();
-				RequestDrawBoard();
+				requestDrawBoard();
 				System.out.println("input up");
 				break;
 			}

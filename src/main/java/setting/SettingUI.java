@@ -85,7 +85,7 @@ public class SettingUI extends JFrame {
         buttons[0].addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new FixSize();
+                new FixSizeUI();
                 setVisible(false);
             }
         });

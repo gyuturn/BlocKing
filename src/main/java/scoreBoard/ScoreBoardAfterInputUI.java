@@ -67,7 +67,7 @@ public class ScoreBoardAfterInputUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //나중에 startUI로 바꾸기
-                new ScoreBoardUI(90);
+                new StartUI();
                 setVisible(false);
             }
         });

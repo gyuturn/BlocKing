@@ -113,4 +113,21 @@ public class GameManager_NormalMode extends GameManager {
     
     //#endregion
 
+    //#region OneFrame
+
+    @Override
+    protected void OneFrame() { //매 프레임마다 진행되는 동작
+        MoveDown();
+        RequestDrawBoard();
+    }
+
+    private void MoveDown() {
+
+    }
+    private void RequestDrawBoard() {
+
+    }
+
+    //#endregion
+
 }

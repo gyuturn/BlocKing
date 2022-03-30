@@ -147,4 +147,52 @@ public class GameManager_NormalMode extends GameManager {
     }
 
     //#endregion
+
+    //#region Interaction
+
+    public void InitKeyListener() {
+        //GameUI.getInstance().pane.add(addKeyListener(interaction));
+    }
+
+    public class Interaction implements KeyListener {
+		@Override
+		public void keyTyped(KeyEvent e) {
+				
+		}
+
+		@Override
+		public void keyPressed(KeyEvent e) {
+			switch(e.getKeyCode()) {
+			case KeyEvent.VK_DOWN:
+				MoveDown();
+				RequestDrawBoard();
+				System.out.println("input down");
+				break;
+			case KeyEvent.VK_RIGHT:
+				MoveDown();
+				RequestDrawBoard();
+				System.out.println("input right");
+				break;
+			case KeyEvent.VK_LEFT:
+				MoveDown();
+				RequestDrawBoard();
+				System.out.println("input left");
+				break;
+			case KeyEvent.VK_UP:
+				//eraseCurr();
+				//curr.rotate();
+				RequestDrawBoard();
+				System.out.println("input up");
+				break;
+			}
+		}
+
+		@Override
+		public void keyReleased(KeyEvent e) {
+			
+		}
+	}
+
+    //#endregion
+
 }

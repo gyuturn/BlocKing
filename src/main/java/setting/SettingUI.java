@@ -1,6 +1,7 @@
 package setting;
 
 import game.GameUI;
+import scoreBoard.ScoreBoardUI;
 
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
@@ -12,8 +13,9 @@ public class SettingUI extends JFrame {
 
     private JPanel mainPanel;
     private ScreenSize screenSize = ScreenSize.getInstance();
-    private JButton[] buttons = new JButton[5];
-    private final String settingList[] = {"화면사이즈 조절", "게임 조작 키 설정", "스코어보드 초기화", "색맹모드", "모든 설정 기본으로 돌리기"};
+    private JButton[] buttons = new JButton[6];
+
+    private final String settingList[] = {"화면사이즈 조절", "게임 조작 키 설정", "스코어보드 초기화", "색맹모드", "모든 설정 기본으로 돌리기","스코어 보드"};  //스코어 보드는 테스트용 -> 실제는 게임 시작화면에 있어야함
 
 
     public SettingUI(){
@@ -67,7 +69,7 @@ public class SettingUI extends JFrame {
     public void setBtn(){
         //btnPanel setting
         JPanel btnPanel = new JPanel();
-        GridLayout gridLayout=new GridLayout( 5,1);
+        GridLayout gridLayout=new GridLayout( 6,1);
         btnPanel.setLayout(gridLayout);
         btnPanel.setBackground(Color.BLACK);
         btnPanel.setBorder(BorderFactory.createEmptyBorder(screenSize.getHeight()/2,0,0,0));
@@ -86,6 +88,15 @@ public class SettingUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new FixSizeUI();
+                setVisible(false);
+            }
+        });
+
+        //스코어 보드 event--test용
+        buttons[5].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new ScoreBoardUI(70);
                 setVisible(false);
             }
         });

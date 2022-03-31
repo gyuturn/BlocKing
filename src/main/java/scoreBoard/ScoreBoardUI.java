@@ -25,6 +25,28 @@ public class ScoreBoardUI extends JFrame{
     private JButton exitBtn;
 
 
+    //시작화면에서의 scoreBoardUI 점수 입력값 없음
+    public ScoreBoardUI(){
+        //JFrame setting
+        super("software-tetris");//제목
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);// 메모리까지 종료
+        this.setSize(screenSize.getWidth(),screenSize.getHeight());
+        this.setVisible(true);
+
+        //board display setting
+        mainPanel = new JPanel();
+        mainPanel.setBackground(Color.BLACK);
+
+        CompoundBorder border = BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(Color.GRAY, 10),
+                BorderFactory.createLineBorder(Color.DARK_GRAY, 5)
+        );
+        mainPanel.setBorder(border);
+        this.getContentPane().add(mainPanel,BorderLayout.CENTER);
+
+        showScoreList();
+    }
+
 
     //게임이 끝난 후 사용자에게 점수입력을 받기위해 생성자 parameter로 설정
     public ScoreBoardUI(int score){
@@ -47,11 +69,6 @@ public class ScoreBoardUI extends JFrame{
 
         showScoreList();
         showInputBtn(score);
-
-
-
-
-
 
     }
 

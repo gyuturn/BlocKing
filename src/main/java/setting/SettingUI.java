@@ -2,6 +2,7 @@ package setting;
 
 import game.GameUI;
 import scoreBoard.ScoreBoardUI;
+import scoreBoard.ScoreList;
 
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
@@ -9,11 +10,14 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import static javax.swing.JOptionPane.YES_NO_OPTION;
+
 public class SettingUI extends JFrame {
 
     private JPanel mainPanel;
     private ScreenSize screenSize = ScreenSize.getInstance();
     private JButton[] buttons = new JButton[6];
+    private ScoreList scoreList = ScoreList.getInstance();
 
     private final String settingList[] = {"화면사이즈 조절", "게임 조작 키 설정", "스코어보드 초기화", "색맹모드", "모든 설정 기본으로 돌리기","스코어 보드"};  //스코어 보드는 테스트용 -> 실제는 게임 시작화면에 있어야함
 
@@ -92,6 +96,19 @@ public class SettingUI extends JFrame {
             }
         });
 
+        //스코어 보드 기록 초기화
+        buttons[2].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int result = JOptionPane.showConfirmDialog(null, "정말로 삭제하시겠습니까?","스코어 보드 기록 초기화",YES_NO_OPTION);
+                if(result==0){
+                    scoreList.deleteAll();
+                }
+
+
+
+            }
+        });
 
 
         //스코어 보드 event--test용

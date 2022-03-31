@@ -30,13 +30,6 @@ public class Play {
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 new StartUI();
-
-//              //  scoreBoardUI 테스트 위한 코드
-//                ScoreList scoreList = ScoreList.getInstance();
-//                scoreList.push(new User("test", 100));
-//                scoreList.push(new User("test2", 110));
-//
-//                new ScoreBoardUI(80);
             }
         });
 

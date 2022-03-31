@@ -47,7 +47,6 @@ public class ScoreBoardUI extends JFrame{
         showScoreList();
     }
 
-
     //게임이 끝난 후 사용자에게 점수입력을 받기위해 생성자 parameter로 설정
     public ScoreBoardUI(int score){
         //JFrame setting
@@ -69,6 +68,11 @@ public class ScoreBoardUI extends JFrame{
 
         showScoreList();
         showInputBtn(score);
+
+
+
+
+
 
     }
 

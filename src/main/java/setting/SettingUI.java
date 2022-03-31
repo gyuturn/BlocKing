@@ -92,11 +92,13 @@ public class SettingUI extends JFrame {
             }
         });
 
+
+
         //스코어 보드 event--test용
         buttons[5].addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new ScoreBoardUI(70);
+                new ScoreBoardUI();
                 setVisible(false);
             }
         });

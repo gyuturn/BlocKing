@@ -2,6 +2,7 @@ package scoreBoard;
 
 import setting.FixSizeUI;
 import setting.ScreenSize;
+import setting.SettingUI;
 import start.StartUI;
 
 import javax.swing.*;
@@ -23,6 +24,7 @@ public class ScoreBoardUI extends JFrame{
     private JPanel scorePanel;
     private JButton inputBtn;
     private JButton exitBtn;
+    private JButton backToStartBtn;
 
 
     //시작화면에서의 scoreBoardUI 점수 입력값 없음
@@ -44,7 +46,8 @@ public class ScoreBoardUI extends JFrame{
         mainPanel.setBorder(border);
         this.getContentPane().add(mainPanel,BorderLayout.CENTER);
 
-        showScoreList();
+        showScoreListForStartMenu();
+        showBackToStartBtn();
     }
 
 
@@ -104,6 +107,70 @@ public class ScoreBoardUI extends JFrame{
         });
 
     }
+
+    private void showBackToStartBtn(){
+        backToStartBtn = new JButton("뒤로가기");
+        scorePanel.add(backToStartBtn);
+
+
+        //시작메뉴로 가기(현재는 세팅으로 감)
+        backToStartBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new SettingUI();
+                setVisible(false);
+            }
+        });
+
+    }
+
+    private void showScoreListForStartMenu(){
+        //스코어 리스트 최대 10개까지 설정
+        int listToIndex;
+        if (scoreList.getList().size() >= 10) {
+            listToIndex=10;
+        }
+        else{
+            listToIndex = scoreList.getList().size();
+        }
+
+
+        scorePanel = new JPanel();
+        scorePanel.setBackground(Color.BLACK);
+        GridLayout gridLayout = new GridLayout(listToIndex+3, 2,1,height/30);
+        scorePanel.setLayout(gridLayout);
+        scorePanel.setBorder(BorderFactory.createEmptyBorder(10, 70, 10, 0));
+
+
+        JLabel titleLabel = new JLabel("   스코어 리스트");
+        titleLabel.setForeground(Color.WHITE);
+        scorePanel.add(titleLabel);
+        scorePanel.add(new JLabel(" "));
+
+        JLabel nameLabel = new JLabel("이름");
+        nameLabel.setForeground(Color.WHITE);
+        scorePanel.add(nameLabel);
+        JLabel scoreLabel = new JLabel("점수");
+        scoreLabel.setForeground(Color.WHITE);
+        scorePanel.add(scoreLabel);
+
+
+
+        for (int i = 0; i < listToIndex; i++) {
+
+            JLabel userNameLabel = new JLabel(scoreList.getList().get(i).getName());
+            userNameLabel.setForeground(Color.WHITE);
+            scorePanel.add(userNameLabel);
+
+            JLabel userScoreLabel = new JLabel(Integer.toString(scoreList.getList().get(i).getScore()));
+            userScoreLabel.setForeground(Color.WHITE);
+            scorePanel.add(userScoreLabel);
+        }
+
+        mainPanel.add(scorePanel,CENTER_ALIGNMENT);
+    }
+
+
 
     private void showScoreList() {
         //스코어 리스트 최대 10개까지 설정

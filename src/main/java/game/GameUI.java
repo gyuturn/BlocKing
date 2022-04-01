@@ -90,7 +90,7 @@ public class GameUI extends JFrame {
         buttons.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new MainSetting();
+                new SettingUI();
                 setVisible(false);
             }
         });

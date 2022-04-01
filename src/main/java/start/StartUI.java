@@ -1,7 +1,6 @@
 package start;
 
 import game.GameUI;
-import setting.FixSize;
 import setting.ScreenSize;
 
 import javax.swing.*;

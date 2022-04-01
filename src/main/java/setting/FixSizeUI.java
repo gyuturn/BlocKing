@@ -6,12 +6,12 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class FixSize extends JFrame {
+public class FixSizeUI extends JFrame {
     private JPanel FixSizePanel;
     private JRadioButton[] radioButtons = new JRadioButton[3];
     private ScreenSize screenSize =ScreenSize.getInstance();
 
-    public FixSize() {
+    public FixSizeUI() {
         //JFrame setting
         super("software-tetris");//제목
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);// 메모리까지 종료
@@ -71,7 +71,7 @@ public class FixSize extends JFrame {
 
                 }
 
-                new MainSetting();
+                new SettingUI();
                 setVisible(false);
 
             }

@@ -2,6 +2,7 @@ import scoreBoard.ScoreBoardUI;
 import scoreBoard.ScoreInputUI;
 import scoreBoard.ScoreList;
 import scoreBoard.User;
+import setting.SettingUI;
 import start.StartUI;
 
 import javax.swing.*;
@@ -29,7 +30,8 @@ public class Play {
         }
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                new StartUI();
+                //new StartUI();
+                new SettingUI();
             }
         });
 

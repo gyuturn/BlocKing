@@ -6,7 +6,7 @@ public class BoardManager {
     
     private static BoardManager instance = new BoardManager();
 
-    public BoardManager getInstance() {
+    public static BoardManager getInstance() {
         return instance;
     }
     
@@ -17,8 +17,8 @@ public class BoardManager {
     //board에 문자를 입력하여 현태 상태 표시
     // 'X' : 테두리
     // 'O' :
-    char[][] board;
-    char[][] boardColor;
+    public char[][] board;
+    public char[][] boardColor;
 
     public BoardManager() {
         board = new char [][] {

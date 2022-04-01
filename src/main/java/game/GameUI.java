@@ -1,8 +1,9 @@
 package game;
 import game.manager.InGameUIManager;
-import setting.FixSize;
-import setting.MainSetting;
+//import setting.FixSize;
+//import setting.MainSetting;
 import setting.ScreenSize;
+import setting.SettingUI;
 
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;

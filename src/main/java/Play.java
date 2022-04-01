@@ -30,8 +30,7 @@ public class Play {
         }
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                //new StartUI();
-                new SettingUI();
+                new StartUI();
             }
         });
 

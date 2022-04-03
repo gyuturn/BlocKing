@@ -9,6 +9,8 @@ import javax.swing.border.CompoundBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import static javax.swing.JOptionPane.YES_NO_OPTION;
 
@@ -43,6 +45,13 @@ public class SettingUI extends JFrame {
         setBtn();
 //        setLabel();
         backBtn();
+
+        //종료 시 현재 setting 및 scoreBoard 저장
+        this.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent event) {
+                SaveAndLoad.SaveSetting();
+            }
+        });
 
 
     }

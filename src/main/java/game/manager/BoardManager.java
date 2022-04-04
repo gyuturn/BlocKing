@@ -91,6 +91,19 @@ public class BoardManager {
         curBlock.posCol = targetCol;
     }
     
+    public void eraseBlock(BlockController curBlock) {
+        for(int i=0; i<curBlock.height(); i++) {
+            for(int j=0; j<curBlock.width(); j++) {
+                board[curBlock.posRow+i][curBlock.posCol+j] = 0;
+            }
+        }
+    }
+
+    public void translateBlock(BlockController curBlock, int row, int col) {
+        eraseBlock(curBlock);
+        setBlockPos(curBlock, curBlock.posRow+row, curBlock.posCol+col);
+    }
+
 
 //#region Debug
     public void printBoard() {

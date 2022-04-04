@@ -1,5 +1,8 @@
 package game.manager;
 
+import game.model.BlockController;
+import game.model.BlockModel;
+
 public class BoardManager {
 
 //#region Singleton
@@ -75,7 +78,35 @@ public class BoardManager {
 //#endregion
 
 //#region Board Controll
+    public void setBlockPos(BlockController curBlock, int targetRow, int targetCol) {
 
+        for(int i=0; i<curBlock.height(); i++) {
+            for(int j=0; j<curBlock.width(); j++) {
+                if(curBlock.getShape(i, j) == 1)
+				    board[targetRow+i][targetCol+j] = 'O' ;
+            }
+        }
+        
+        curBlock.posRow = targetRow;
+        curBlock.posCol = targetCol;
+    }
+    
+
+//#region Debug
+    public void printBoard() {
+        for(int i=0; i<22; i++)
+        {
+            for(int j=0; j<12; j++)
+            {
+                char curText = BoardManager.getInstance().board[i][j];
+                if(curText == 0)
+                    System.out.print(" ");
+                else
+                    System.out.print(curText);
+            }
+            System.out.print("\n");
+        }
+    }
 //#endregion
 }
 

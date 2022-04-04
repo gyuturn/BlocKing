@@ -104,6 +104,24 @@ public class BoardManager {
         setBlockPos(curBlock, curBlock.posRow+row, curBlock.posCol+col);
     }
 
+    public int eraseLine() {
+        int lineCount = 0;
+
+        for(int i=0; i<22; i++) {
+            char[] checker = {'X', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'X'};
+            if(board[i] == checker) {
+                for(int j=1; j<11; j++) {
+                    board[i][j] = 0;
+                }
+                lineCount++;
+            }
+        }
+
+        return lineCount;
+    }
+    
+
+//#endregion
 
 //#region Debug
     public void printBoard() {

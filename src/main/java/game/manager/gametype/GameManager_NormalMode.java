@@ -237,12 +237,18 @@ public class GameManager_NormalMode extends GameManager {
 				System.out.println("input left");
 				break;
 			case KeyEvent.VK_UP:
-                BoardManager.getInstance().eraseBlock(curBlock);
-                curBlock.rotate();
+                BoardManager.getInstance().printBoard();
+                //curBlock.rotate();
                 //BoardManager.getInstance().setBlockPos(curBlock, curBlock.posRow, curBlock.posCol);
 				requestDrawBoard();
 				System.out.println("input up");
 				break;
+            case KeyEvent.VK_SPACE:
+                while(BoardManager.getInstance().checkBlockMovable(curBlock))
+                {
+                    blockMoveDown();
+                }
+                
 			}
 		}
 

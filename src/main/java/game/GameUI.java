@@ -1,18 +1,24 @@
 package game;
-import game.manager.InGameUIManager;
-//import setting.FixSize;
-//import setting.MainSetting;
-import setting.ScreenSize;
-import setting.SettingUI;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JTextPane;
 import javax.swing.border.CompoundBorder;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
+import game.manager.BoardManager;
+import game.manager.InGameUIManager;
+import game.manager.gametype.GameManager_NormalMode;
+import setting.ScreenSize;
+import setting.SettingUI;
 
 
 public class GameUI extends JFrame {
@@ -80,6 +86,13 @@ public class GameUI extends JFrame {
         instance = this;
 
         InGameUIManager.getInstance().drawBoard();
+        //GameManager_NormalMode.getInstance().startGameFramework();
+        GameManager_NormalMode.getInstance().initKeyListener(); //동작 가능
+        //GameManager_NormalMode.getInstance().startGameFramework();
+        GameManager_NormalMode.getInstance().createNewBlock();
+
+        GameManager_NormalMode.getInstance().startTimer();
+        BoardManager.getInstance().printBoard();
 
     }
 

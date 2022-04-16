@@ -143,10 +143,12 @@ public class BoardManager {
         for(int i=0; i<curBlock.width(); i++)
         {
             
-            if(board[curBlock.posRow + indexOfBottom[i] + 1][curBlock.posCol] != ' ') {
+            if(board[curBlock.posRow + indexOfBottom[i] + 1][curBlock.posCol + i] != ' ') {
                 return false;
             }
         }
+
+        
 
         return true;
     }

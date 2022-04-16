@@ -98,6 +98,7 @@ public class GameManager_NormalMode extends GameManager {
     private void gameReady() {
         //게임을 준비합니다.
         initKeyListener();
+        BlockGenerator.getInstance().initBlockQueue();
     }
 
     public void createNewBlock() {

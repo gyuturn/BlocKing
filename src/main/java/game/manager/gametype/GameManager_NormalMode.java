@@ -9,6 +9,7 @@ import javax.swing.Timer;
 
 import game.GameUI;
 import game.container.BlockGenerator;
+import game.manager.BoardManager;
 import game.manager.GameManager;
 import game.manager.InGameUIManager;
 import game.model.BlockController;
@@ -26,6 +27,7 @@ public class GameManager_NormalMode extends GameManager {
 
     private Timer timer;
     private KeyListener interaction;
+    private Step curStep = Step.GameReady;
 
 //#region Singleton
 
@@ -39,20 +41,45 @@ public class GameManager_NormalMode extends GameManager {
 
 //#region GameFramework
 
-    class GameFramework extends Thread {
-        public void run() {
-            try{
-                sleep(5);
-            }
-            catch(InterruptedException e) {
-                return;
-            }
-            gameFramework();
-        }
+    public enum Step {
+
+	    GameReady,
+        StartTimer,
+        
+        //while !gameOver
+        CreatNewBlock,
+        BlockMove,
+        SetGameBalance,
+
+        GameOver
     }
     
     @Override
     protected void gameFramework() { //전체적인 게임의 동작 흐름
+        
+        switch(curStep) {
+            case GameReady:
+                gameReady(); 
+                
+                curStep = Step.StartTimer; break;
+            case StartTimer :
+                curStep = Step.CreatNewBlock; break;
+
+            case CreatNewBlock:
+                createNewBlock();
+                
+                curStep = Step.BlockMove; break;
+            case BlockMove:
+                moveBlock();
+                if(isBlockStop) curStep = Step.SetGameBalance; break;
+
+            case SetGameBalance:
+                setGameBalance();
+                curStep = Step.CreatNewBlock; break;
+            case GameOver :
+                gameOver(); break;
+        }
+/*
         gameReady();
         startTimer();
 
@@ -65,24 +92,12 @@ public class GameManager_NormalMode extends GameManager {
         }
 
         gameOver();
+*/
     }
-
 
     private void gameReady() {
         //게임을 준비합니다.
         initKeyListener();
-    }
-
-    public void startTimer() {
-
-        timer = new Timer(timeScale, new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				oneFrame();
-			}
-		});
-
-        timer.start();
     }
 
     public void createNewBlock() {
@@ -93,11 +108,9 @@ public class GameManager_NormalMode extends GameManager {
         System.out.println("create");
     }
 
-    private void checkBlockConfirm() {
-        while(!isGameOver)
-        {
-            if(isBlockStop) return;
-        }
+    private void moveBlock() {
+        BoardManager.getInstance().translateBlock(curBlock, 1, 0);
+        //curBlock
     }
 
     private void setGameBalance() {
@@ -118,16 +131,27 @@ public class GameManager_NormalMode extends GameManager {
         //게임이 종료되면 호출됩니다.
     }
 
-    @Override
     public void startGameFramework() {
 
+        timer = new Timer(timeScale, new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+                
+				oneFrame();
+			}
+		});
+
+        timer.start();
     }
+    
 
     @Override
     public void stopGameFramework() {
         //GameFramework를 멈추고 싶은 경우
         //일시정지 등등
     }
+
+    
     
 //#endregion
 
@@ -135,13 +159,10 @@ public class GameManager_NormalMode extends GameManager {
 
     @Override
     protected void oneFrame() { //매 프레임마다 진행되는 동작
-        moveDown();
+        gameFramework();
         requestDrawBoard();
     }
 
-    private void moveDown() {
-
-    }
     private void requestDrawBoard() {
         InGameUIManager.getInstance().drawBoard();
     }
@@ -183,23 +204,22 @@ public class GameManager_NormalMode extends GameManager {
 		public void keyPressed(KeyEvent e) {
 			switch(e.getKeyCode()) {
 			case KeyEvent.VK_DOWN:
-				moveDown();
+                BoardManager.getInstance().translateBlock(curBlock, 1, 0);  
 				requestDrawBoard();
 				System.out.println("input down");
 				break;
 			case KeyEvent.VK_RIGHT:
-				moveDown();
-				requestDrawBoard();
+                BoardManager.getInstance().translateBlock(curBlock, 0, 1);
+                requestDrawBoard();
 				System.out.println("input right");
 				break;
 			case KeyEvent.VK_LEFT:
-				moveDown();
+                BoardManager.getInstance().translateBlock(curBlock, 0, -1);
 				requestDrawBoard();
 				System.out.println("input left");
 				break;
 			case KeyEvent.VK_UP:
-				//eraseCurr();
-				//curr.rotate();
+                
 				requestDrawBoard();
 				System.out.println("input up");
 				break;

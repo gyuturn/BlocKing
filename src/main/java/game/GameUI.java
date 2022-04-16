@@ -1,24 +1,19 @@
 package game;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import game.manager.InGameUIManager;
+import game.manager.gametype.GameManager_NormalMode;
+//import setting.FixSize;
+//import setting.MainSetting;
+import setting.ScreenSize;
+import setting.SettingUI;
 
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JTextPane;
+import javax.swing.*;
 import javax.swing.border.CompoundBorder;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
-
-import game.manager.BoardManager;
-import game.manager.InGameUIManager;
-import game.manager.gametype.GameManager_NormalMode;
-import setting.ScreenSize;
-import setting.SettingUI;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 
 public class GameUI extends JFrame {
@@ -28,6 +23,7 @@ public class GameUI extends JFrame {
     private JTextPane nextBlockPane;
     private JPanel mainPanel;
     private ScreenSize screenSize=ScreenSize.getInstance();
+    private Font f1;
 
     private static GameUI instance;
     public static GameUI getInstance() {
@@ -58,7 +54,7 @@ public class GameUI extends JFrame {
         );
 
 
-
+        f1 = new Font("monospaced", Font.BOLD,13);
 
         pane = new JTextPane();
 
@@ -71,7 +67,11 @@ public class GameUI extends JFrame {
         StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
         doc.setParagraphAttributes(0, doc.getLength(), center, false);
 
+
         pane.setBackground(Color.BLACK);
+        pane.setForeground(Color.GREEN);
+        pane.setFont(f1);
+
         //pane.setBounds(30,30,500,1000);
         mainPanel.add(pane);
 
@@ -85,14 +85,7 @@ public class GameUI extends JFrame {
 
         instance = this;
 
-        InGameUIManager.getInstance().drawBoard();
-        //GameManager_NormalMode.getInstance().startGameFramework();
-        GameManager_NormalMode.getInstance().initKeyListener(); //동작 가능
-        //GameManager_NormalMode.getInstance().startGameFramework();
-        GameManager_NormalMode.getInstance().createNewBlock();
-
-        GameManager_NormalMode.getInstance().startTimer();
-        BoardManager.getInstance().printBoard();
+        GameManager_NormalMode.getInstance().startGameFramework();
 
     }
 

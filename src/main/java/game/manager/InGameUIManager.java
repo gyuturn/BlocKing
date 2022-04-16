@@ -28,5 +28,7 @@ public class InGameUIManager {
         StyledDocument doc = pane.getStyledDocument();
         //doc.setParagraphAttributes(0, doc.getLength(), styleSet, false);
         pane.setStyledDocument(doc);
+
+        System.out.println("Log : Draw Board");
     }
 }

@@ -1,5 +1,7 @@
 package game.container;
 
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Random;
 
 import game.model.BlockController;
@@ -13,8 +15,11 @@ import game.model.blocktypes.TBlock;
 import game.model.blocktypes.ZBlock;
 
 import game.manager.BoardManager;
+import game.manager.gametype.GameManager_NormalMode;
 
 public class BlockGenerator {
+
+	public Queue<BlockController> blockQueue = new LinkedList<>(); //앞으로 생성할 블록들
 
     private static BlockGenerator instance = new BlockGenerator();
     
@@ -55,11 +60,27 @@ public class BlockGenerator {
         BoardManager.getInstance().setBlockPos(curBlock, row , col);
     }
 
+
+    public void addBlock() {
+        BlockController newBlock = getRandomBlock();
+		blockQueue.add(newBlock);
+
     public BlockController createBlock() {
         BlockController newBlock = getRandomBlock();
         initNewBlockPos(newBlock, 0, 5);
 
 		return newBlock;
     }
+
+	public void createBlock() {
+		BlockController curBlock = blockQueue.poll();
+		initNewBlockPos(curBlock, 0, 5);
+		GameManager_NormalMode.getInstance().curBlock = curBlock;
+	}
+
+	public void initBlockQueue() {
+		addBlock();
+		addBlock();
+	}
     
 }

@@ -13,6 +13,7 @@ import game.manager.BoardManager;
 import game.manager.GameManager;
 import game.manager.InGameUIManager;
 import game.model.BlockController;
+import javafx.scene.layout.Background;
 
 public class GameManager_NormalMode extends GameManager {
 
@@ -23,7 +24,7 @@ public class GameManager_NormalMode extends GameManager {
     private int lineCount = 0;
     private int score = 0;
 
-    private BlockController curBlock;
+    public BlockController curBlock;
 
     private Timer timer;
     private KeyListener interaction;
@@ -60,18 +61,22 @@ public class GameManager_NormalMode extends GameManager {
         switch(curStep) {
             case GameReady:
                 gameReady(); 
-                
                 curStep = Step.StartTimer; break;
+
             case StartTimer :
                 curStep = Step.CreatNewBlock; break;
 
             case CreatNewBlock:
                 createNewBlock();
-                
-                curStep = Step.BlockMove; break;
+                curStep = Step.BlockMove;break;
+
             case BlockMove:
-                moveBlock();
-                if(isBlockStop) curStep = Step.SetGameBalance; break;
+                checkBlockStop(); 
+                if(!isBlockStop)
+                    blockMoveDown();
+                else
+                    curStep = Step.SetGameBalance;
+                break;
 
             case SetGameBalance:
                 setGameBalance();
@@ -98,20 +103,28 @@ public class GameManager_NormalMode extends GameManager {
     private void gameReady() {
         //게임을 준비합니다.
         initKeyListener();
+        BlockGenerator.getInstance().initBlockQueue();
     }
 
     public void createNewBlock() {
+        BlockGenerator.getInstance().addBlock();
         BlockGenerator.getInstance().createBlock();
-        InGameUIManager.getInstance().drawBoard();
         blockCount++;
 
         System.out.println("create");
     }
 
-    private void moveBlock() {
+    private void checkBlockStop() {
+        System.out.println(BoardManager.getInstance().checkBlockMovable(curBlock));
+        isBlockStop = !BoardManager.getInstance().checkBlockMovable(curBlock);
+    }
+
+    private void blockMoveDown() {
         BoardManager.getInstance().translateBlock(curBlock, 1, 0);
         //curBlock
     }
+
+    
 
     private void setGameBalance() {
         //일정 수 이상 블록이 삭제되면 떨어지는 속도가 증가합니다.
@@ -204,7 +217,12 @@ public class GameManager_NormalMode extends GameManager {
 		public void keyPressed(KeyEvent e) {
 			switch(e.getKeyCode()) {
 			case KeyEvent.VK_DOWN:
-                BoardManager.getInstance().translateBlock(curBlock, 1, 0);  
+                
+                checkBlockStop(); 
+                if(!isBlockStop)
+                    blockMoveDown();
+                else
+                    curStep = Step.SetGameBalance;
 				requestDrawBoard();
 				System.out.println("input down");
 				break;
@@ -219,7 +237,9 @@ public class GameManager_NormalMode extends GameManager {
 				System.out.println("input left");
 				break;
 			case KeyEvent.VK_UP:
-                
+                BoardManager.getInstance().eraseBlock(curBlock);
+                curBlock.rotate();
+                //BoardManager.getInstance().setBlockPos(curBlock, curBlock.posRow, curBlock.posCol);
 				requestDrawBoard();
 				System.out.println("input up");
 				break;

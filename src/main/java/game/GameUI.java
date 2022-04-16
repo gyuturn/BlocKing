@@ -1,5 +1,6 @@
 package game;
 import game.manager.InGameUIManager;
+import game.manager.gametype.GameManager_NormalMode;
 //import setting.FixSize;
 //import setting.MainSetting;
 import setting.ScreenSize;
@@ -84,7 +85,7 @@ public class GameUI extends JFrame {
 
         instance = this;
 
-        InGameUIManager.getInstance().drawBoard();
+        GameManager_NormalMode.getInstance().startGameFramework();
 
     }
 

@@ -94,7 +94,7 @@ public class BoardManager {
     public void eraseBlock(BlockController curBlock) {
         for(int i=0; i<curBlock.height(); i++) {
             for(int j=0; j<curBlock.width(); j++) {
-                board[curBlock.posRow+i][curBlock.posCol+j] = 0;
+                board[curBlock.posRow+i][curBlock.posCol+j] = ' ';
             }
         }
     }
@@ -122,6 +122,34 @@ public class BoardManager {
     
 
 //#endregion
+
+
+//#region
+    public boolean checkBlockMovable(BlockController curBlock)
+    {
+        int[] indexOfBottom = new int[curBlock.width()];
+
+        for(int i=0; i<curBlock.width(); i++) {
+            for(int j=0; j<curBlock.height(); j++) {
+                if(curBlock.shape[j][i] == 1)
+                    indexOfBottom[i] = j;
+            }
+        }
+
+        for(int i=0; i<curBlock.width(); i++) {
+            System.out.print(indexOfBottom[i]);
+        }
+
+        for(int i=0; i<curBlock.width(); i++)
+        {
+            
+            if(board[curBlock.posRow + indexOfBottom[i] + 1][curBlock.posCol] != ' ') {
+                return false;
+            }
+        }
+
+        return true;
+    }
 
 //#region Debug
     public void printBoard() {

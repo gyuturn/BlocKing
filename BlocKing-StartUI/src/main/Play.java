@@ -1,9 +1,7 @@
-import scoreBoard.ScoreBoardUI;
-import scoreBoard.ScoreInputUI;
-import scoreBoard.ScoreList;
-import scoreBoard.User;
-import setting.SaveAndLoad;
-import setting.SettingUI;
+package main;
+
+import setting.MainSetting;
+import setting.ScreenSize;
 import start.StartUI;
 
 import javax.swing.*;
@@ -31,8 +29,7 @@ public class Play {
         }
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                //저장 값 불러오기
-                SaveAndLoad.LoadSetting();
+//                ScreenSize screenSize = new ScreenSize();
                 new StartUI();
             }
         });

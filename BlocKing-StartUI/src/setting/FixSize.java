@@ -2,17 +2,16 @@ package setting;
 
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
-import javax.xml.soap.Text;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class FixSizeUI extends JFrame {
+public class FixSize extends JFrame {
     private JPanel FixSizePanel;
     private JRadioButton[] radioButtons = new JRadioButton[3];
     private ScreenSize screenSize =ScreenSize.getInstance();
 
-    public FixSizeUI() {
+    public FixSize() {
         //JFrame setting
         super("software-tetris");//제목
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);// 메모리까지 종료
@@ -72,7 +71,7 @@ public class FixSizeUI extends JFrame {
 
                 }
 
-                new SettingUI();
+                new MainSetting();
                 setVisible(false);
 
             }

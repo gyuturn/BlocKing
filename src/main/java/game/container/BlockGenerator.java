@@ -27,11 +27,15 @@ public class BlockGenerator {
         return instance;
     }
 
-	
+	public static int block;
 
+	public int getBlock(){
+		return block;
+	}
+    
     private BlockController getRandomBlock() {
 		Random rnd = new Random(System.currentTimeMillis());
-		int block = rnd.nextInt(6);
+		 block = rnd.nextInt(6);
 		switch(block) {
 		case 0:
 			return new IBlock();
@@ -56,9 +60,16 @@ public class BlockGenerator {
         BoardManager.getInstance().setBlockPos(curBlock, row , col);
     }
 
+
     public void addBlock() {
         BlockController newBlock = getRandomBlock();
 		blockQueue.add(newBlock);
+
+    public BlockController createBlock() {
+        BlockController newBlock = getRandomBlock();
+        initNewBlockPos(newBlock, 0, 5);
+
+		return newBlock;
     }
 
 	public void createBlock() {

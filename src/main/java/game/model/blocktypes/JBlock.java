@@ -10,16 +10,18 @@ public class JBlock extends BlockController {
     protected void initModel()
     {
         shape = new int[][] { 
-			{1, 1, 1, 1}
+				{1, 1, 1},
+				{0, 0, 1}
 		};
-		color = Color.CYAN;
+		color = Color.BLUE;
     }
 
     public JBlock() {
 		shape = new int[][] { 
-			{1, 1, 1, 1}
+			{1, 1, 1},
+			{0, 0, 1}
 		};
-		color = Color.CYAN;
+		color = Color.BLUE;
 	}
 
 }

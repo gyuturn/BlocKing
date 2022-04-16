@@ -23,7 +23,7 @@ public class GameManager_NormalMode extends GameManager {
     private int lineCount = 0;
     private int score = 0;
 
-    private BlockController curBlock;
+    public BlockController curBlock;
 
     private Timer timer;
     private KeyListener interaction;

@@ -13,6 +13,7 @@ import game.model.blocktypes.TBlock;
 import game.model.blocktypes.ZBlock;
 
 import game.manager.BoardManager;
+import game.manager.gametype.GameManager_NormalMode;
 
 public class BlockGenerator {
 
@@ -51,6 +52,7 @@ public class BlockGenerator {
 
     public void createBlock() {
         BlockController newBlock = getRandomBlock();
+		GameManager_NormalMode.getInstance().curBlock = newBlock;
         initNewBlockPos(newBlock, 0, 5);
     }
     

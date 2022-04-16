@@ -18,9 +18,9 @@ public class StartUI extends JFrame {
 
     private JPanel mainPanel;
     private ScreenSize screenSize = ScreenSize.getInstance();
-    ImageIcon titleImg1 = new ImageIcon("src/start/img/title1.png");
-    ImageIcon titleImg2 = new ImageIcon("src/start/img/title2.png");
-    ImageIcon titleImg3 = new ImageIcon("src/start/img/title3.png");
+    ImageIcon titleImg1 = new ImageIcon("./src/main/java/start/img/title1.png");
+    ImageIcon titleImg2 = new ImageIcon("./src/main/java/start/img/title2.png");
+    ImageIcon titleImg3 = new ImageIcon("./src/main/java/start/img/title3.png");
 
 
 

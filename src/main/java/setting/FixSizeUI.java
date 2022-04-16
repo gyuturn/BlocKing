@@ -2,6 +2,7 @@ package setting;
 
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
+import javax.xml.soap.Text;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

@@ -42,9 +42,12 @@ public class SettingUI extends JFrame {
         mainPanel.setBorder(border);
 
         this.getContentPane().add(mainPanel,BorderLayout.CENTER);
+        setTitle();
         setBtn();
+
+
 //        setLabel();
-        backBtn();
+//        backBtn();
 
         //종료 시 현재 setting 및 scoreBoard 저장
         this.addWindowListener(new WindowAdapter() {
@@ -53,6 +56,10 @@ public class SettingUI extends JFrame {
             }
         });
 
+
+    }
+
+    private void setTitle() {
 
     }
 
@@ -71,13 +78,13 @@ public class SettingUI extends JFrame {
 
 
 
-    public void setLabel(){
-        JLabel settingLabel = new JLabel("SETTING");
-        settingLabel.setForeground(Color.GRAY);
-        settingLabel.setBackground(Color.WHITE);
-
-        mainPanel.add(settingLabel,"North");
-    }
+//    public void setLabel(){
+//        JLabel settingLabel = new JLabel("SETTING");
+//        settingLabel.setForeground(Color.GRAY);
+//        settingLabel.setBackground(Color.WHITE);
+//
+//        mainPanel.add(settingLabel,"North");
+//    }
 
     public void setBtn(){
         //btnPanel setting
@@ -118,6 +125,22 @@ public class SettingUI extends JFrame {
 
             }
         });
+
+        //모든 설정 기본으로 돌리기
+        buttons[4].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int result = JOptionPane.showConfirmDialog(null, "모든 설정을 초기화 하시겠습니까??","설정 초기화",YES_NO_OPTION);
+                if(result==0){
+                    screenSize.setWidth(400);
+                    screenSize.setHeight(500);
+
+                    setVisible(false);
+                    new SettingUI();
+                }
+            }
+        });
+
 
 
         //스코어 보드 event--test용

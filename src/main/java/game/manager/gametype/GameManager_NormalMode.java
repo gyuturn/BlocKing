@@ -1,13 +1,16 @@
 package game.manager.gametype;
 
-import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import javax.swing.Timer;
+
+import game.GameUI;
+import game.container.BlockGenerator;
 import game.manager.GameManager;
+import game.manager.InGameUIManager;
 import game.model.BlockController;
 
 public class GameManager_NormalMode extends GameManager {
@@ -21,21 +24,32 @@ public class GameManager_NormalMode extends GameManager {
 
     private BlockController curBlock;
 
-    Timer timer;
+    private Timer timer;
     private KeyListener interaction;
 
-    //#region Singleton
+//#region Singleton
 
     private static GameManager_NormalMode instance = new GameManager_NormalMode();
     
-    public GameManager_NormalMode getInstance() {
+    public static GameManager_NormalMode getInstance() {
         return instance;
     }
 
-    //#endregion
+//#endregion
 
-    //#region GameFramework
+//#region GameFramework
 
+    class GameFramework extends Thread {
+        public void run() {
+            try{
+                sleep(5);
+            }
+            catch(InterruptedException e) {
+                return;
+            }
+            gameFramework();
+        }
+    }
     
     @Override
     protected void gameFramework() { //전체적인 게임의 동작 흐름
@@ -56,9 +70,10 @@ public class GameManager_NormalMode extends GameManager {
 
     private void gameReady() {
         //게임을 준비합니다.
+        initKeyListener();
     }
 
-    private void startTimer() {
+    public void startTimer() {
 
         timer = new Timer(timeScale, new ActionListener() {
 			@Override
@@ -70,9 +85,12 @@ public class GameManager_NormalMode extends GameManager {
         timer.start();
     }
 
-    private void createNewBlock() {
-        //curBlock = BlockGenerator.getInstance().CreateBlock();
+    public void createNewBlock() {
+        BlockGenerator.getInstance().createBlock();
+        InGameUIManager.getInstance().drawBoard();
         blockCount++;
+
+        System.out.println("create");
     }
 
     private void checkBlockConfirm() {
@@ -94,7 +112,6 @@ public class GameManager_NormalMode extends GameManager {
             timeScale--;
         }
     }
-
     
     @Override
     protected void gameOver() {
@@ -103,7 +120,7 @@ public class GameManager_NormalMode extends GameManager {
 
     @Override
     public void startGameFramework() {
-        //GameFramework를 시작
+
     }
 
     @Override
@@ -112,9 +129,9 @@ public class GameManager_NormalMode extends GameManager {
         //일시정지 등등
     }
     
-    //#endregion
+//#endregion
 
-    //#region OneFrame
+//#region OneFrame
 
     @Override
     protected void oneFrame() { //매 프레임마다 진행되는 동작
@@ -126,12 +143,12 @@ public class GameManager_NormalMode extends GameManager {
 
     }
     private void requestDrawBoard() {
-
+        InGameUIManager.getInstance().drawBoard();
     }
 
-    //#endregion
+//#endregion
 
-    //#region Utils
+//#region Utils
 
     private void setTimeScale(int scale) {
         
@@ -147,12 +164,13 @@ public class GameManager_NormalMode extends GameManager {
         timer.start();
     }
 
-    //#endregion
+//#endregion
 
-    //#region Interaction
+//#region Interaction
 
     public void initKeyListener() {
-        //GameUI.getInstance().pane.add(addKeyListener(interaction));
+        interaction = new Interaction();
+        GameUI.getInstance().pane.addKeyListener(interaction);
     }
 
     public class Interaction implements KeyListener {
@@ -194,6 +212,6 @@ public class GameManager_NormalMode extends GameManager {
 		}
 	}
 
-    //#endregion
+//#endregion
 
 }

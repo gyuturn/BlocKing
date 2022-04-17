@@ -259,6 +259,7 @@ public class GameManager_NormalMode extends GameManager {
                 {
                     blockMoveDown();
                 }
+                timer.restart();
                 requestDrawBoard();
             
             case KeyEvent.VK_T:

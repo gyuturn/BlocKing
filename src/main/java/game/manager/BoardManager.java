@@ -98,7 +98,8 @@ public class BoardManager {
     public void eraseBlock(BlockController curBlock) {
         for(int i=0; i<curBlock.height(); i++) {
             for(int j=0; j<curBlock.width(); j++) {
-                board[curBlock.posRow+i][curBlock.posCol+j] = ' ';
+                if(curBlock.getShape(i, j) == 1)
+                    board[curBlock.posRow+i][curBlock.posCol+j] = ' ';
             }
         }
     }

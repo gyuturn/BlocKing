@@ -117,7 +117,7 @@ public class ScoreBoardUI extends JFrame{
         backToStartBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new SettingUI();
+                new StartUI();
                 setVisible(false);
             }
         });

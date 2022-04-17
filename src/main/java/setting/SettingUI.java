@@ -3,6 +3,7 @@ package setting;
 import game.GameUI;
 import scoreBoard.ScoreBoardUI;
 import scoreBoard.ScoreList;
+import start.StartUI;
 
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
@@ -21,7 +22,11 @@ public class SettingUI extends JFrame {
     private JButton[] buttons = new JButton[6];
     private ScoreList scoreList = ScoreList.getInstance();
 
-    private final String settingList[] = {"화면사이즈 조절", "게임 조작 키 설정", "스코어보드 초기화", "색맹모드", "모든 설정 기본으로 돌리기","스코어 보드"};  //스코어 보드는 테스트용 -> 실제는 게임 시작화면에 있어야함
+    ImageIcon titleImg1 = new ImageIcon("./src/main/java/start/img/title1.png");
+    ImageIcon titleImg2 = new ImageIcon("./src/main/java/start/img/title2.png");
+    ImageIcon titleImg3 = new ImageIcon("./src/main/java/start/img/title3.png");
+
+    private final String settingList[] = {"화면사이즈 조절", "게임 조작 키 설정", "스코어보드 초기화", "색맹모드", "모든 설정 기본으로 돌리기","시작메뉴"};  //스코어 보드는 테스트용 -> 실제는 게임 시작화면에 있어야함
 
 
     public SettingUI(){
@@ -60,7 +65,19 @@ public class SettingUI extends JFrame {
     }
 
     private void setTitle() {
+        JButton titleBtn;
+        if(screenSize.getWidth() == 400){
+            titleBtn = new JButton(titleImg1);
+        }
+        else if(screenSize.getWidth() == 600){
+            titleBtn = new JButton(titleImg2);
+        }
+        else{
+            titleBtn = new JButton(titleImg3);
+        }
+        titleBtn.setBackground(Color.BLACK);
 
+        mainPanel.add(titleBtn);
     }
 
     public void backBtn(){
@@ -92,7 +109,7 @@ public class SettingUI extends JFrame {
         GridLayout gridLayout=new GridLayout( 6,1);
         btnPanel.setLayout(gridLayout);
         btnPanel.setBackground(Color.BLACK);
-        btnPanel.setBorder(BorderFactory.createEmptyBorder(screenSize.getHeight()/2,0,0,0));
+        btnPanel.setBorder(BorderFactory.createEmptyBorder(screenSize.getHeight()/4,0,0,0));
 
 
 
@@ -143,11 +160,11 @@ public class SettingUI extends JFrame {
 
 
 
-        //스코어 보드 event--test용
+        //시작메뉴로
         buttons[5].addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new ScoreBoardUI();
+                new StartUI();
                 setVisible(false);
             }
         });

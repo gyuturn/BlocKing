@@ -78,7 +78,7 @@ public class BoardManager {
 //#endregion
 
 //#region Board Controll
-    public void setBlockPos(BlockController curBlock, int targetRow, int targetCol) {
+    public BlockController setBlockPos(BlockController curBlock, int targetRow, int targetCol) {
 
         for(int i=0; i<curBlock.height(); i++) {
             for(int j=0; j<curBlock.width(); j++) {
@@ -89,6 +89,8 @@ public class BoardManager {
         
         curBlock.posRow = targetRow;
         curBlock.posCol = targetCol;
+
+        return curBlock;
     }
     
     public void eraseBlock(BlockController curBlock) {

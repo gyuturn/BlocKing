@@ -24,6 +24,10 @@ public class GameManager_NormalMode extends GameManager {
     private int lineCount = 0;
     private int score = 0;
 
+    public BlockController getCurBlock() {
+        return curBlock;
+    }
+
     public BlockController curBlock;
 
     private Timer timer;

@@ -27,11 +27,17 @@ public class BlockGenerator {
         return instance;
     }
 
-	
+	public static int block;
 
-    private BlockController getRandomBlock() {
+	public int getBlock(){
+		return block;
+	}
+
+
+    
+    public BlockController getRandomBlock() {
 		Random rnd = new Random(System.currentTimeMillis());
-		int block = rnd.nextInt(6);
+		 block = rnd.nextInt(6);
 		switch(block) {
 		case 0:
 			return new IBlock();
@@ -56,20 +62,27 @@ public class BlockGenerator {
         BoardManager.getInstance().setBlockPos(curBlock, row , col);
     }
 
-    public void addBlock() {
-        BlockController newBlock = getRandomBlock();
-		blockQueue.add(newBlock);
-    }
 
-	public void createBlock() {
+    public void addBlock() {
+		BlockController newBlock = getRandomBlock();
+		blockQueue.add(newBlock);
+	}
+
+
+
+	public BlockController  createBlock() {
 		BlockController curBlock = blockQueue.poll();
 		initNewBlockPos(curBlock, 0, 5);
 		GameManager_NormalMode.getInstance().curBlock = curBlock;
+		return curBlock;
 	}
 
 	public void initBlockQueue() {
 		addBlock();
 		addBlock();
 	}
-    
+
+	public Queue<BlockController> getBlockQueue() {
+		return blockQueue;
+	}
 }

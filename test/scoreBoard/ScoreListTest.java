@@ -1,4 +1,4 @@
-/*
+
 package scoreBoard;
 
 import junit.framework.Assert; //junit framework
@@ -66,4 +66,4 @@ public class ScoreListTest {
 
     }
 
-}*/
+}

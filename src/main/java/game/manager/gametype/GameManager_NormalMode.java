@@ -125,7 +125,8 @@ public class GameManager_NormalMode extends GameManager {
     }
 
     private void checkLineDelete() {
-        BoardManager.getInstance().eraseFullLine();
+        lineCount += BoardManager.getInstance().eraseFullLine();
+        score = lineCount;
     }
 
     

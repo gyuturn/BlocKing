@@ -130,9 +130,8 @@ public class BoardManager {
 //#endregion
 
 
-//#region
-    public boolean checkBlockMovable(BlockController curBlock)
-    {
+//#region checkMovable
+    public boolean checkBlockMovable(BlockController curBlock) {
         int[] indexOfBottom = new int[curBlock.width()];
 
         for(int i=0; i<curBlock.width(); i++) {
@@ -142,21 +141,52 @@ public class BoardManager {
             }
         }
 
-        /* Debug
-        for(int i=0; i<curBlock.width(); i++) {
-            System.out.print(indexOfBottom[i]);
-        }
-        */
-
-        for(int i=0; i<curBlock.width(); i++)
-        {
-            
+        for(int i=0; i<curBlock.width(); i++) { 
             if(board[curBlock.posRow + indexOfBottom[i] + 1][curBlock.posCol + i] != ' ') {
                 return false;
             }
         }
 
-        
+        return true;
+    }
+
+    public boolean checkLeftSide(BlockController curBlock) {
+        int[] indexOfLeft = new int[curBlock.height()];
+
+        for(int i=0; i<curBlock.height(); i++) {
+            for(int j=0; j<curBlock.width(); j++) {
+                if(curBlock.shape[i][j] == 1) {
+                    indexOfLeft[i] = j;
+                    break;
+                }
+            }
+        }
+
+        for(int i=0; i<curBlock.height(); i++) {
+            if(board[curBlock.posRow + i][curBlock.posCol + indexOfLeft[i] - 1] != ' ') {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public boolean checkRightSide(BlockController curBlock) {
+        int[] indexOfRight = new int[curBlock.height()];
+
+        for(int i=0; i<curBlock.height(); i++) {
+            for(int j=0; j<curBlock.width(); j++) {
+                if(curBlock.shape[i][j] == 1) {
+                    indexOfRight[i] = j;
+                }
+            }
+        }
+
+        for(int i=0; i<curBlock.height(); i++) {
+            if(board[curBlock.posRow + i][curBlock.posCol + indexOfRight[i] + 1] != ' ') {
+                return false;
+            }
+        }
 
         return true;
     }

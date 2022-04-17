@@ -222,23 +222,27 @@ public class GameManager_NormalMode extends GameManager {
 		public void keyPressed(KeyEvent e) {
 			switch(e.getKeyCode()) {
 			case KeyEvent.VK_DOWN:
-                
                 checkBlockStop(); 
                 if(!isBlockStop)
                     blockMoveDown();
-                else
+                else {
                     curStep = Step.SetGameBalance;
-				requestDrawBoard();
+				    requestDrawBoard();
+                }
 				System.out.println("input down");
 				break;
 			case KeyEvent.VK_RIGHT:
-                BoardManager.getInstance().translateBlock(curBlock, 0, 1);
-                requestDrawBoard();
+                if(BoardManager.getInstance().checkRightSide(curBlock)) {
+                    BoardManager.getInstance().translateBlock(curBlock, 0, 1);
+                    requestDrawBoard();
+                }
 				System.out.println("input right");
 				break;
 			case KeyEvent.VK_LEFT:
-                BoardManager.getInstance().translateBlock(curBlock, 0, -1);
-				requestDrawBoard();
+                if(BoardManager.getInstance().checkLeftSide(curBlock)) {
+                    BoardManager.getInstance().translateBlock(curBlock, 0, -1);
+				    requestDrawBoard();
+                }
 				System.out.println("input left");
 				break;
 			case KeyEvent.VK_UP:

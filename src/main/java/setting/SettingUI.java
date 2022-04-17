@@ -129,6 +129,15 @@ public class SettingUI extends JFrame {
             }
         });
 
+        //화면사이즈 조절 event
+        buttons[1].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new KeySettingUI();
+                setVisible(false);
+            }
+        });
+
         //스코어 보드 기록 초기화
         buttons[2].addActionListener(new ActionListener() {
             @Override
@@ -137,9 +146,6 @@ public class SettingUI extends JFrame {
                 if(result==0){
                     scoreList.deleteAll();
                 }
-
-
-
             }
         });
 

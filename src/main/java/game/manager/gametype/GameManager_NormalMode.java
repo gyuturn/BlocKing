@@ -146,6 +146,7 @@ public class GameManager_NormalMode extends GameManager {
     @Override
     protected void gameOver() {
         //게임이 종료되면 호출됩니다.
+        timer.stop();
     }
 
     public void startGameFramework() {
@@ -153,7 +154,6 @@ public class GameManager_NormalMode extends GameManager {
         timer = new Timer(timeScale, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-                
 				oneFrame();
 			}
 		});
@@ -164,8 +164,15 @@ public class GameManager_NormalMode extends GameManager {
 
     @Override
     public void stopGameFramework() {
-        //GameFramework를 멈추고 싶은 경우
-        //일시정지 등등
+        timer.stop();
+    }
+
+    public void pauseGame() {
+        timer.stop();
+    }
+
+    public void resumeGame() {
+        timer.restart();
     }
 
     
@@ -253,7 +260,12 @@ public class GameManager_NormalMode extends GameManager {
                     blockMoveDown();
                 }
                 requestDrawBoard();
-                
+            
+            case KeyEvent.VK_T:
+                if(timer.isRunning())
+                    pauseGame();
+                else
+                    resumeGame();
 			}
 		}
 

@@ -223,12 +223,13 @@ public class GameManager_NormalMode extends GameManager {
 			switch(e.getKeyCode()) {
 			case KeyEvent.VK_DOWN:
                 checkBlockStop(); 
-                if(!isBlockStop)
+                if(!isBlockStop) {
                     blockMoveDown();
-                else {
-                    curStep = Step.SetGameBalance;
-				    requestDrawBoard();
+                    requestDrawBoard();
                 }
+                else
+                    curStep = Step.SetGameBalance;
+				
 				System.out.println("input down");
 				break;
 			case KeyEvent.VK_RIGHT:

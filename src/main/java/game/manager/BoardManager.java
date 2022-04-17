@@ -1,5 +1,7 @@
 package game.manager;
 
+import java.util.Arrays;
+
 import game.model.BlockController;
 import game.model.BlockModel;
 
@@ -103,22 +105,24 @@ public class BoardManager {
 
     public void translateBlock(BlockController curBlock, int row, int col) {
         eraseBlock(curBlock);
-        setBlockPos(curBlock, curBlock.posRow+row, curBlock.posCol+col);
+        drawBlock(curBlock, curBlock.posRow+row, curBlock.posCol+col);
     }
 
-    public int eraseLine() {
+    public int eraseFullLine() {
         int lineCount = 0;
+        char[] checker = {'X', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'X'};
 
         for(int i=0; i<22; i++) {
-            char[] checker = {'X', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'X'};
-            if(board[i] == checker) {
-                for(int j=1; j<11; j++) {
-                    board[i][j] = 0;
+            if(Arrays.equals(board[i], checker)) {
+                for(int j=i; j>0; j--)
+                {
+                    board[j] = board[j-1].clone();
                 }
+                
                 lineCount++;
             }
         }
-
+        
         return lineCount;
     }
     
@@ -138,9 +142,11 @@ public class BoardManager {
             }
         }
 
+        /* Debug
         for(int i=0; i<curBlock.width(); i++) {
             System.out.print(indexOfBottom[i]);
         }
+        */
 
         for(int i=0; i<curBlock.width(); i++)
         {

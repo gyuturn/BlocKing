@@ -54,6 +54,7 @@ public class GameManager_NormalMode extends GameManager {
         //while !gameOver
         CreatNewBlock,
         BlockMove,
+        CheckLineDelete,
         SetGameBalance,
 
         GameOver
@@ -78,30 +79,26 @@ public class GameManager_NormalMode extends GameManager {
                 checkBlockStop(); 
                 if(!isBlockStop)
                     blockMoveDown();
-                else
-                    curStep = Step.SetGameBalance;
+                else {
+                    curStep = Step.CheckLineDelete;
+                    gameFramework();
+                }
+                    
                 break;
+
+            case CheckLineDelete:
+                checkLineDelete();
+                curStep = Step.SetGameBalance;
+                gameFramework(); break;
 
             case SetGameBalance:
                 setGameBalance();
-                curStep = Step.CreatNewBlock; break;
+                curStep = Step.CreatNewBlock;
+                gameFramework(); break;
+
             case GameOver :
                 gameOver(); break;
         }
-/*
-        gameReady();
-        startTimer();
-
-        while(!isGameOver)
-        {
-            createNewBlock();   //블록 생성
-            checkBlockConfirm(); //블록이 바닥에 닿으면 return 합니다.
-
-            setGameBalance(); //게임 진행도에 따라 블럭 속도 조절
-        }
-
-        gameOver();
-*/
     }
 
     private void gameReady() {
@@ -119,13 +116,16 @@ public class GameManager_NormalMode extends GameManager {
     }
 
     private void checkBlockStop() {
-        System.out.println(BoardManager.getInstance().checkBlockMovable(curBlock));
         isBlockStop = !BoardManager.getInstance().checkBlockMovable(curBlock);
     }
 
     private void blockMoveDown() {
         BoardManager.getInstance().translateBlock(curBlock, 1, 0);
         //curBlock
+    }
+
+    private void checkLineDelete() {
+        BoardManager.getInstance().eraseFullLine();
     }
 
     
@@ -252,6 +252,7 @@ public class GameManager_NormalMode extends GameManager {
                 {
                     blockMoveDown();
                 }
+                requestDrawBoard();
                 
 			}
 		}

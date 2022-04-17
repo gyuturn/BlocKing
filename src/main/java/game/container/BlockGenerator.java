@@ -59,7 +59,7 @@ public class BlockGenerator {
 
     private void initNewBlockPos(BlockController curBlock, int row, int col)
     {
-        BoardManager.getInstance().setBlockPos(curBlock, row , col);
+        BoardManager.getInstance().drawBlock(curBlock, row , col);
     }
 
 

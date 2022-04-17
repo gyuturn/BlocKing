@@ -32,8 +32,10 @@ public class BlockGenerator {
 	public int getBlock(){
 		return block;
 	}
+
+
     
-    private BlockController getRandomBlock() {
+    public BlockController getRandomBlock() {
 		Random rnd = new Random(System.currentTimeMillis());
 		 block = rnd.nextInt(6);
 		switch(block) {
@@ -62,15 +64,11 @@ public class BlockGenerator {
 
 
     public void addBlock() {
-        BlockController newBlock = getRandomBlock();
+		BlockController newBlock = getRandomBlock();
 		blockQueue.add(newBlock);
+	}
 
-    public BlockController createBlock() {
-        BlockController newBlock = getRandomBlock();
-        initNewBlockPos(newBlock, 0, 5);
 
-		return newBlock;
-    }
 
 	public void createBlock() {
 		BlockController curBlock = blockQueue.poll();
@@ -82,5 +80,8 @@ public class BlockGenerator {
 		addBlock();
 		addBlock();
 	}
-    
+
+	public Queue<BlockController> getBlockQueue() {
+		return blockQueue;
+	}
 }

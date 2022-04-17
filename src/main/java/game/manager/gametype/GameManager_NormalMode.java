@@ -31,7 +31,8 @@ public class GameManager_NormalMode extends GameManager {
     public BlockController curBlock;
 
     private Timer timer;
-    private KeyListener interaction;
+    private KeyListener interaction_play;
+    private KeyListener interaction_utils;
     private Step curStep = Step.GameReady;
 
 //#region Singleton
@@ -73,7 +74,7 @@ public class GameManager_NormalMode extends GameManager {
 
             case CreatNewBlock:
                 createNewBlock();
-                curStep = Step.BlockMove;break;
+                curStep = Step.BlockMove; break;
 
             case BlockMove:
                 checkBlockStop(); 
@@ -83,9 +84,8 @@ public class GameManager_NormalMode extends GameManager {
                     curStep = Step.CheckLineDelete;
                     gameFramework();
                 }
-                    
                 break;
-
+            
             case CheckLineDelete:
                 checkLineDelete();
                 curStep = Step.SetGameBalance;
@@ -112,7 +112,7 @@ public class GameManager_NormalMode extends GameManager {
         BlockGenerator.getInstance().createBlock();
         blockCount++;
 
-        System.out.println("create");
+        //System.out.println("create");
     }
 
     private void checkBlockStop() {
@@ -128,8 +128,6 @@ public class GameManager_NormalMode extends GameManager {
         lineCount += BoardManager.getInstance().eraseFullLine();
         score = lineCount;
     }
-
-    
 
     private void setGameBalance() {
         //일정 수 이상 블록이 삭제되면 떨어지는 속도가 증가합니다.
@@ -157,20 +155,16 @@ public class GameManager_NormalMode extends GameManager {
         timer.start();
     }
     
-
     @Override
     public void stopGameFramework() {
         timer.stop();
+        GameUI.getInstance().pane.removeKeyListener(interaction_play);
     }
 
-    public void pauseGame() {
-        timer.stop();
-    }
-
-    public void resumeGame() {
+    public void restartGameFramework() {
         timer.restart();
+        GameUI.getInstance().pane.addKeyListener(interaction_play);
     }
-
     
     
 //#endregion
@@ -212,11 +206,13 @@ public class GameManager_NormalMode extends GameManager {
 //#region Interaction
 
     public void initKeyListener() {
-        interaction = new Interaction();
-        GameUI.getInstance().pane.addKeyListener(interaction);
+        interaction_play = new Interaction_Play();
+        interaction_utils = new Interaction_Utils();
+        GameUI.getInstance().pane.addKeyListener(interaction_play);
+        GameUI.getInstance().pane.addKeyListener(interaction_utils);
     }
 
-    public class Interaction implements KeyListener {
+    public class Interaction_Play implements KeyListener {
 		@Override
 		public void keyTyped(KeyEvent e) {
 				
@@ -260,12 +256,29 @@ public class GameManager_NormalMode extends GameManager {
                 timer.restart();
                 requestDrawBoard();
                 break;
-            
+			}
+		}
+
+		@Override
+		public void keyReleased(KeyEvent e) {
+			
+		}
+	}
+
+    public class Interaction_Utils implements KeyListener {
+		@Override
+		public void keyTyped(KeyEvent e) {
+				
+		}
+
+		@Override
+		public void keyPressed(KeyEvent e) {
+			switch(e.getKeyCode()) {
             case KeyEvent.VK_T:
                 if(timer.isRunning())
-                    pauseGame();
+                    stopGameFramework();
                 else
-                    resumeGame();
+                    restartGameFramework();
                 break;
 			}
 		}

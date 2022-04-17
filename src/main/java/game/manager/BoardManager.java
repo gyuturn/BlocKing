@@ -80,7 +80,7 @@ public class BoardManager {
 //#endregion
 
 //#region Board Controll
-    public BlockController drawBlock(BlockController curBlock, int targetRow, int targetCol) {
+    public BlockController setBlockPos(BlockController curBlock, int targetRow, int targetCol) {
 
         for(int i=0; i<curBlock.height(); i++) {
             for(int j=0; j<curBlock.width(); j++) {
@@ -106,7 +106,7 @@ public class BoardManager {
 
     public void translateBlock(BlockController curBlock, int row, int col) {
         eraseBlock(curBlock);
-        drawBlock(curBlock, curBlock.posRow+row, curBlock.posCol+col);
+        setBlockPos(curBlock, curBlock.posRow+row, curBlock.posCol+col);
     }
 
     public int eraseFullLine() {
@@ -130,8 +130,7 @@ public class BoardManager {
 
 //#endregion
 
-
-//#region checkMovable
+//#region Side check
     public boolean checkBlockMovable(BlockController curBlock) {
         int[] indexOfBottom = new int[curBlock.width()];
 
@@ -191,6 +190,7 @@ public class BoardManager {
 
         return true;
     }
+//#endregion
 
 //#region Debug
     public void printBoard() {

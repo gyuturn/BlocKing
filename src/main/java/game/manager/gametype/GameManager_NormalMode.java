@@ -254,8 +254,7 @@ public class GameManager_NormalMode extends GameManager {
 				System.out.println("input up");
 				break;
             case KeyEvent.VK_SPACE:
-                while(BoardManager.getInstance().checkBlockMovable(curBlock))
-                {
+                while(BoardManager.getInstance().checkBlockMovable(curBlock)) {
                     blockMoveDown();
                 }
                 timer.restart();

@@ -37,7 +37,7 @@ public class BlockGenerator {
     
     public BlockController getRandomBlock() {
 		Random rnd = new Random(System.currentTimeMillis());
-		 block = rnd.nextInt(6);
+		 block = rnd.nextInt(7);
 		switch(block) {
 		case 0:
 			return new IBlock();

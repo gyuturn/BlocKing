@@ -259,12 +259,14 @@ public class GameManager_NormalMode extends GameManager {
                 }
                 timer.restart();
                 requestDrawBoard();
+                break;
             
             case KeyEvent.VK_T:
                 if(timer.isRunning())
                     pauseGame();
                 else
                     resumeGame();
+                break;
 			}
 		}
 

@@ -1,6 +1,8 @@
 package game.container;
 
 import game.manager.BoardManager;
+import game.manager.GameManager;
+import game.manager.gametype.GameManager_NormalMode;
 import game.model.BlockController;
 import game.model.blocktypes.*;
 import org.assertj.core.api.Assertions;
@@ -16,35 +18,16 @@ import static org.junit.jupiter.api.Assertions.*;
 public class BlockGeneratorTest {
     BoardManager boardManager = BoardManager.getInstance();
     BlockGenerator blockGenerator = BlockGenerator.getInstance();
+    GameManager gameManager = GameManager_NormalMode.getInstance();
+
 
 
     @After
-    public void resetBoard(){
-       boardManager.board=new char [][] {
-               {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'}, //1행
-               {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
-               {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
-               {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
-               {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
-               {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
-               {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
-               {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
-               {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
-               {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'}, //10행
-               {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
-               {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
-               {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
-               {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
-               {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
-               {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
-               {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
-               {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
-               {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
-               {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'}, //20행
-               {'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'},
-               {'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'}
-       };
-
+    public void resetQueue(){
+        Queue<BlockController> blockQueue = blockGenerator.getBlockQueue();
+        while (!blockQueue.isEmpty()) {
+            blockQueue.poll();
+        }
     }
 
     @Test
@@ -92,18 +75,44 @@ public class BlockGeneratorTest {
     }
 
     @Test
-    @DisplayName("생성된 블록 queue에 넣음 test")//큐의 사이즈 및 마지막 객체 넣은 객체인지 확인
+    @DisplayName("생성된 블록 queue에 넣음 test")//큐의 사이즈 확인
     public void addBlock(){
         //given
         Queue<BlockController> blockQueue = blockGenerator.getBlockQueue();
-        int size = blockQueue.size();
+        int beforeSize = blockQueue.size();
         //when
         blockGenerator.addBlock();
         //then
-        assertThat(blockQueue.size()).isEqualTo(size+1); // 큐에 넣은 후 사이즈 확인
-
+        assertThat(blockQueue.size()).isEqualTo(beforeSize+1); // 큐에 넣은 후 사이즈 확인
     }
 
+    @Test
+    @DisplayName("처음 시작시에는 블록 두개 queue push test")// 큐의 사이즈 확인
+    public void initBlockQueue(){
+        //given
+        Queue<BlockController> blockQueue = blockGenerator.getBlockQueue();
+        int beforeSize = blockQueue.size();
+        //when
+        blockGenerator.initBlockQueue();
+        //then
+        assertThat(blockQueue.size()).isEqualTo(beforeSize+2); // 큐에 넣은 후 사이즈 확인
+    }
+
+    @Test
+    @DisplayName("queue 에 있는 블럭을 가져와 board 생성 test")
+    public void createBlock(){
+        //given
+        blockGenerator.initBlockQueue();
+        Queue<BlockController> blockQueue = blockGenerator.getBlockQueue();
+        BlockController peekBlock = blockQueue.peek();
+        //when
+        blockGenerator.createBlock();
+        //then
+        assertThat(gameManager.getCurBlock()).isSameAs(peekBlock);
+        assertThat(peekBlock.posRow).isSameAs(0);
+        assertThat(peekBlock.posCol).isSameAs(5);
+
+    }
 
 //    @Test
 //    @DisplayName("랜덤한 숫자에 따른 블록 생성(0행 5열에 생성) test")

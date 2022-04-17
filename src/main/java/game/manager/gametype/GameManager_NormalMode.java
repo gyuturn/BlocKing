@@ -132,15 +132,10 @@ public class GameManager_NormalMode extends GameManager {
 
     private void setGameBalance() {
         //일정 수 이상 블록이 삭제되면 떨어지는 속도가 증가합니다.
-        if(timeScale < blockCount / 10)
-        {
-            timeScale--;
-        }
-        //일정 수 이상 줄이 삭제되면 떨어지는 속도가 증가합니다.
-        if(timeScale < lineCount / 10)
-        {
-            timeScale--;
-        }
+        timeScale = 100 * (10 - blockCount/10); 
+        timeScale = 100 * (10 - lineCount/10);
+        timeScale -= 100;
+        setTimeScale(timeScale);
     }
     
     @Override
@@ -196,6 +191,8 @@ public class GameManager_NormalMode extends GameManager {
 //#region Utils
 
     private void setTimeScale(int scale) {
+
+        timer.stop();
         
         timeScale = scale;
 

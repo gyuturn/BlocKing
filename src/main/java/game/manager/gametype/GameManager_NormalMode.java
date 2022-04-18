@@ -17,23 +17,25 @@ import javafx.scene.layout.Background;
 
 public class GameManager_NormalMode extends GameManager {
 
+    private boolean isBlockMovable = true;
     private boolean isGameOver = false;
-    private boolean isBlockStop = false;
+    
     private static int timeScale = 1000;
     private int blockCount = 0;
     private int lineCount = 0;
     private int score = 0;
 
-    public BlockController getCurBlock() {
-        return curBlock;
-    }
-
-    public BlockController curBlock;
+    
 
     private Timer timer;
     private KeyListener interaction_play;
     private KeyListener interaction_utils;
     private Step curStep = Step.GameReady;
+
+    public BlockController curBlock;
+    public BlockController getCurBlock() {
+        return curBlock;
+    }
 
 //#region Singleton
 
@@ -66,75 +68,79 @@ public class GameManager_NormalMode extends GameManager {
         
         switch(curStep) {
             case GameReady:
-                gameReady(); 
-                curStep = Step.StartTimer; break;
+                curStep = gameReady(); 
+                break;
 
             case StartTimer :
-                curStep = Step.CreatNewBlock; break;
+                curStep = Step.CreatNewBlock;
+                break;
 
             case CreatNewBlock:
-                createNewBlock();
-                curStep = Step.BlockMove; break;
+                curStep = createNewBlock();
+                break;
 
             case BlockMove:
-                checkBlockStop(); 
-                if(!isBlockStop)
-                    blockMoveDown();
-                else {
-                    curStep = Step.CheckLineDelete;
-                    gameFramework();
-                }
+                curStep = blockMove();
+                if(curStep != Step.BlockMove) gameFramework();
                 break;
             
             case CheckLineDelete:
-                checkLineDelete();
-                curStep = Step.SetGameBalance;
-                gameFramework(); break;
+                curStep = checkLineDelete();
+                gameFramework();
+                break;
 
             case SetGameBalance:
-                setGameBalance();
-                curStep = Step.CreatNewBlock;
-                gameFramework(); break;
+                curStep = setGameBalance();
+                gameFramework();
+                break;
 
             case GameOver :
-                gameOver(); break;
+                gameOver();
+                break;
         }
     }
 
-    private void gameReady() {
+    private Step gameReady() {
         //게임을 준비합니다.
         initKeyListener();
         BlockGenerator.getInstance().initBlockQueue();
+
+        return Step.StartTimer;
     }
 
-    public void createNewBlock() {
+    public Step createNewBlock() {
         BlockGenerator.getInstance().addBlock();
         BlockGenerator.getInstance().createBlock();
         blockCount++;
 
-        //System.out.println("create");
+        return Step.BlockMove;
     }
 
-    private void checkBlockStop() {
-        isBlockStop = !BoardManager.getInstance().checkBlockMovable(curBlock);
+    private Step blockMove() {
+        isBlockMovable = BoardManager.getInstance().checkBlockMovable(curBlock);
+        if(isBlockMovable) {
+            BoardManager.getInstance().translateBlock(curBlock, 1, 0);
+            return Step.BlockMove;
+        }
+        else
+            return Step.CheckLineDelete;
     }
 
-    private void blockMoveDown() {
-        BoardManager.getInstance().translateBlock(curBlock, 1, 0);
-        //curBlock
-    }
-
-    private void checkLineDelete() {
+    private Step checkLineDelete() {
         lineCount += BoardManager.getInstance().eraseFullLine();
         score = lineCount;
+
+        return Step.SetGameBalance;
     }
 
-    private void setGameBalance() {
+    private Step setGameBalance() {
         //일정 수 이상 블록이 삭제되면 떨어지는 속도가 증가합니다.
         timeScale = 100 * (10 - blockCount/10); 
         timeScale = 100 * (10 - lineCount/10);
         timeScale -= 100;
         setTimeScale(timeScale);
+
+        return Step.CreatNewBlock;
     }
     
     @Override
@@ -222,14 +228,8 @@ public class GameManager_NormalMode extends GameManager {
 		public void keyPressed(KeyEvent e) {
 			switch(e.getKeyCode()) {
 			case KeyEvent.VK_DOWN:
-                checkBlockStop(); 
-                if(!isBlockStop) {
-                    blockMoveDown();
-                    requestDrawBoard();
-                }
-                else
-                    curStep = Step.SetGameBalance;
-				
+                blockMove();
+                requestDrawBoard();
 				System.out.println("input down");
 				break;
 			case KeyEvent.VK_RIGHT:
@@ -256,7 +256,7 @@ public class GameManager_NormalMode extends GameManager {
 				break;
             case KeyEvent.VK_SPACE:
                 while(BoardManager.getInstance().checkBlockMovable(curBlock)) {
-                    blockMoveDown();
+                    BoardManager.getInstance().translateBlock(curBlock, 1, 0);
                 }
                 timer.restart();
                 requestDrawBoard();

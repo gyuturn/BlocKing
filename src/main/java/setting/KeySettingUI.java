@@ -1,12 +1,9 @@
 package setting;
 
-import scoreBoard.ScoreList;
-
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Locale;
 
 public class KeySettingUI extends JFrame{
     private JPanel mainPanel;
@@ -14,9 +11,7 @@ public class KeySettingUI extends JFrame{
 
     private JTextField[] keyTextField = new JTextField[6];
     private JLabel[] keyName = new JLabel[6];
-
-    private JButton checkBtn = new JButton("확인");
-    private ButtonGroup btnGroup = new ButtonGroup();
+    private JButton[] buttons = new JButton[2];;
     private JPanel radioPanel;
     ImageIcon titleImg1 = new ImageIcon("./src/main/java/start/img/title1.png");
     ImageIcon titleImg2 = new ImageIcon("./src/main/java/start/img/title2.png");
@@ -41,9 +36,12 @@ public class KeySettingUI extends JFrame{
 
         this.getContentPane().add(mainPanel,BorderLayout.CENTER);
         setTitle();
+
         selectKeySet();
         eventListenerKeyField();
+
         checkBtn();
+        eventListenerBtn();
 
         //종료 시 현재 setting 및 scoreBoard 저장
         this.addWindowListener(new WindowAdapter() {
@@ -53,12 +51,35 @@ public class KeySettingUI extends JFrame{
         });
     }
 
+    private void eventListenerBtn() {
+        //확인 버튼 클릭시 세팅 값 저장
+        buttons[0].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new FixSizeUI();
+                setVisible(false);
+            }
+        });
+
+        //뒤로가기 버튼 시 저장하지 않고 settingUI로 이동
+        buttons[1].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new SettingUI();
+                setVisible(false);
+            }
+        });
+    }
+
     private void checkBtn() {
-        radioPanel.add(checkBtn);
+        buttons[0]= new JButton("확인");
+        buttons[1]= new JButton("뒤로가기");
+        radioPanel.add(buttons[0]);
+        radioPanel.add(buttons[1]);
     }
 
 
-    //A와 B중 구현
+
     private void selectKeySet() {
         radioPanel = new JPanel();
         GridLayout gridLayout=new GridLayout( 7,2);
@@ -82,8 +103,8 @@ public class KeySettingUI extends JFrame{
         keyName[4]=new JLabel("한번에 내리기");
         keyTextField[4] = new JTextField("SPACE");
 
-        keyName[5] = new JLabel("아이템 사용");
-        keyTextField[5] = new JTextField("R");
+        keyName[5] = new JLabel("일시정지");
+        keyTextField[5] = new JTextField("T");
 
         for (int i = 0; i < 6; i++) {
             keyName[i].setForeground(Color.white);

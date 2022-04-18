@@ -3,6 +3,7 @@ package start;
 import game.GameUI;
 import scoreBoard.ScoreBoardUI;
 import setting.ScreenSize;
+import setting.SettingUI;
 
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
@@ -151,7 +152,7 @@ public class StartUI extends JFrame {
         settingButtons.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //new MainSetting();
+                new SettingUI();
                 setVisible(false);
             }
         });

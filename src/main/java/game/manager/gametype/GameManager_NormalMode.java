@@ -119,6 +119,7 @@ public class GameManager_NormalMode extends GameManager {
         isBlockMovable = BoardManager.getInstance().checkBlockMovable(curBlock);
         if(isBlockMovable) {
             BoardManager.getInstance().translateBlock(curBlock, 1, 0);
+            onBlockMove();
             return Step.BlockMove;
         }
         else
@@ -128,11 +129,7 @@ public class GameManager_NormalMode extends GameManager {
     private Step checkLineDelete() {
         int curLineCount = BoardManager.getInstance().eraseFullLine();
         lineCount += curLineCount;
-        score += curLineCount * curSpeed;
-
-        System.out.printf("\n");
-        System.out.printf("score : %d \n", score);
-        System.out.printf("curSpeed : %d\n\n", curSpeed);
+        onLineErase(curLineCount);
 
         return Step.SetGameBalance;
     }
@@ -183,12 +180,36 @@ public class GameManager_NormalMode extends GameManager {
     protected void oneFrame() { //매 프레임마다 진행되는 동작
         gameFramework();
         requestDrawBoard();
+        printStatus();
     }
 
     private void requestDrawBoard() {
         InGameUIManager.getInstance().drawBoard();
     }
 
+    private void printStatus() {
+        System.out.printf("\n");
+        System.out.printf("score : %d \n", score);
+        System.out.printf("curSpeed : %d\n\n", curSpeed);
+    }
+
+//#endregion
+
+//#region Events
+    private int onBlockMove() {
+        score += curSpeed;
+
+        return 0;
+    }
+
+    private int onLineErase(int count) {
+        score += curSpeed * count * 10;
+
+        if(count > 2) {
+            score += 1000;
+        }
+        return 0;
+    }
 //#endregion
 
 //#region Utils

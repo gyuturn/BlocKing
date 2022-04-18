@@ -1,5 +1,7 @@
 package game.manager;
 
+import java.util.Arrays;
+
 import game.model.BlockController;
 import game.model.BlockModel;
 
@@ -79,7 +81,6 @@ public class BoardManager {
 
 //#region Board Controll
     public BlockController setBlockPos(BlockController curBlock, int targetRow, int targetCol) {
-
         for(int i=0; i<curBlock.height(); i++) {
             for(int j=0; j<curBlock.width(); j++) {
                 if(curBlock.getShape(i, j) == 1)
@@ -96,39 +97,62 @@ public class BoardManager {
     public void eraseBlock(BlockController curBlock) {
         for(int i=0; i<curBlock.height(); i++) {
             for(int j=0; j<curBlock.width(); j++) {
-                board[curBlock.posRow+i][curBlock.posCol+j] = ' ';
+                if(curBlock.getShape(i, j) == 1)
+                    board[curBlock.posRow+i][curBlock.posCol+j] = ' ';
             }
         }
     }
 
     public void translateBlock(BlockController curBlock, int row, int col) {
         eraseBlock(curBlock);
-        setBlockPos(curBlock, curBlock.posRow+row, curBlock.posCol+col);
+        if(checkDrawable(curBlock.shape, curBlock.posRow+row, curBlock.posCol+col))
+            setBlockPos(curBlock, curBlock.posRow+row, curBlock.posCol+col);
+        else
+            setBlockPos(curBlock, curBlock.posRow, curBlock.posCol);
     }
 
-    public int eraseLine() {
+    public int eraseFullLine() {
         int lineCount = 0;
+        char[] checker = {'X', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'X'};
 
         for(int i=0; i<22; i++) {
-            char[] checker = {'X', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'X'};
-            if(board[i] == checker) {
-                for(int j=1; j<11; j++) {
-                    board[i][j] = 0;
+            if(Arrays.equals(board[i], checker)) {
+                for(int j=i; j>0; j--)
+                {
+                    board[j] = board[j-1].clone();
                 }
+                
                 lineCount++;
             }
         }
-
+        
         return lineCount;
     }
     
 
 //#endregion
 
+//#region checkDrawable
+    
+    public boolean checkDrawable(int[][] targetShape, int targetRow, int targetCol) {
 
-//#region
-    public boolean checkBlockMovable(BlockController curBlock)
-    {
+        int height = targetShape.length;
+        int width = 0;
+
+        if(height > 0)
+            width = targetShape[0].length;
+
+        for(int i=0; i<height; i++) {
+            for(int j=0; j<width; j++) {
+                if(targetShape[i][j] == 1 && board[targetRow+i][targetCol+j] != ' ')
+                    return false;
+            }
+        }
+
+        return true;
+    }
+
+    public boolean checkBlockMovable(BlockController curBlock) {
         int[] indexOfBottom = new int[curBlock.width()];
 
         for(int i=0; i<curBlock.width(); i++) {
@@ -138,22 +162,56 @@ public class BoardManager {
             }
         }
 
-        for(int i=0; i<curBlock.width(); i++) {
-            System.out.print(indexOfBottom[i]);
-        }
-
-        for(int i=0; i<curBlock.width(); i++)
-        {
-            
+        for(int i=0; i<curBlock.width(); i++) { 
             if(board[curBlock.posRow + indexOfBottom[i] + 1][curBlock.posCol + i] != ' ') {
                 return false;
             }
         }
 
-        
+        return true;
+    }
+
+    public boolean checkLeftSide(BlockController curBlock) {
+        int[] indexOfLeft = new int[curBlock.height()];
+
+        for(int i=0; i<curBlock.height(); i++) {
+            for(int j=0; j<curBlock.width(); j++) {
+                if(curBlock.shape[i][j] == 1) {
+                    indexOfLeft[i] = j;
+                    break;
+                }
+            }
+        }
+
+        for(int i=0; i<curBlock.height(); i++) {
+            if(board[curBlock.posRow + i][curBlock.posCol + indexOfLeft[i] - 1] != ' ') {
+                return false;
+            }
+        }
 
         return true;
     }
+
+    public boolean checkRightSide(BlockController curBlock) {
+        int[] indexOfRight = new int[curBlock.height()];
+
+        for(int i=0; i<curBlock.height(); i++) {
+            for(int j=0; j<curBlock.width(); j++) {
+                if(curBlock.shape[i][j] == 1) {
+                    indexOfRight[i] = j;
+                }
+            }
+        }
+
+        for(int i=0; i<curBlock.height(); i++) {
+            if(board[curBlock.posRow + i][curBlock.posCol + indexOfRight[i] + 1] != ' ') {
+                return false;
+            }
+        }
+
+        return true;
+    }
+//#endregion
 
 //#region Debug
     public void printBoard() {

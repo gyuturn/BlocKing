@@ -20,7 +20,11 @@ public class GameManager_NormalMode extends GameManager {
     private boolean isBlockMovable = true;
     private boolean isGameOver = false;
     
+    private static int maxSpeed = 100000;
+    private static int basicSpeed = 100;
+    private static int curSpeed = 100;
     private static int timeScale = 1000;
+    
     private int blockCount = 0;
     private int lineCount = 0;
     private int score = 0;
@@ -52,7 +56,6 @@ public class GameManager_NormalMode extends GameManager {
     public enum Step {
 
 	    GameReady,
-        StartTimer,
         
         //while !gameOver
         CreatNewBlock,
@@ -69,10 +72,6 @@ public class GameManager_NormalMode extends GameManager {
         switch(curStep) {
             case GameReady:
                 curStep = gameReady(); 
-                break;
-
-            case StartTimer :
-                curStep = Step.CreatNewBlock;
                 break;
 
             case CreatNewBlock:
@@ -105,7 +104,7 @@ public class GameManager_NormalMode extends GameManager {
         initKeyListener();
         BlockGenerator.getInstance().initBlockQueue();
 
-        return Step.StartTimer;
+        return Step.CreatNewBlock;
     }
 
     public Step createNewBlock() {
@@ -120,6 +119,7 @@ public class GameManager_NormalMode extends GameManager {
         isBlockMovable = BoardManager.getInstance().checkBlockMovable(curBlock);
         if(isBlockMovable) {
             BoardManager.getInstance().translateBlock(curBlock, 1, 0);
+            onBlockMove();
             return Step.BlockMove;
         }
         else
@@ -127,17 +127,16 @@ public class GameManager_NormalMode extends GameManager {
     }
 
     private Step checkLineDelete() {
-        lineCount += BoardManager.getInstance().eraseFullLine();
-        score = lineCount;
+        int curLineCount = BoardManager.getInstance().eraseFullLine();
+        lineCount += curLineCount;
+        onLineErase(curLineCount);
 
         return Step.SetGameBalance;
     }
 
     private Step setGameBalance() {
-        //일정 수 이상 블록이 삭제되면 떨어지는 속도가 증가합니다.
-        timeScale = 100 * (10 - blockCount/10); 
-        timeScale = 100 * (10 - lineCount/10);
-        timeScale -= 100;
+        curSpeed = basicSpeed + lineCount + blockCount;
+        timeScale = maxSpeed / curSpeed;
         setTimeScale(timeScale);
 
         return Step.CreatNewBlock;
@@ -181,12 +180,36 @@ public class GameManager_NormalMode extends GameManager {
     protected void oneFrame() { //매 프레임마다 진행되는 동작
         gameFramework();
         requestDrawBoard();
+        printStatus();
     }
 
     private void requestDrawBoard() {
         InGameUIManager.getInstance().drawBoard();
     }
 
+    private void printStatus() {
+        System.out.printf("\n");
+        System.out.printf("score : %d \n", score);
+        System.out.printf("curSpeed : %d\n\n", curSpeed);
+    }
+
+//#endregion
+
+//#region Events
+    private int onBlockMove() {
+        score += curSpeed;
+
+        return 0;
+    }
+
+    private int onLineErase(int count) {
+        score += curSpeed * count * 10;
+
+        if(count > 2) {
+            score += 1000;
+        }
+        return 0;
+    }
 //#endregion
 
 //#region Utils

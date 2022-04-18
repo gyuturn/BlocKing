@@ -54,7 +54,7 @@ public class SettingUI extends JFrame {
 //        setLabel();
 //        backBtn();
 
-        //종료 시 현재 setting 및 scoreBoard 저장
+        //종료 시 현재 setting값 저장
         this.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent event) {
                 SaveAndLoad.SaveSetting();

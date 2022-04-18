@@ -3,6 +3,7 @@ import game.manager.InGameUIManager;
 import game.manager.gametype.GameManager_NormalMode;
 //import setting.FixSize;
 //import setting.MainSetting;
+import setting.SaveAndLoad;
 import setting.ScreenSize;
 import setting.SettingUI;
 
@@ -14,6 +15,8 @@ import javax.swing.text.StyledDocument;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 
 public class GameUI extends JFrame {
@@ -86,6 +89,14 @@ public class GameUI extends JFrame {
         instance = this;
 
         GameManager_NormalMode.getInstance().startGameFramework();
+
+        //종료 시 현재 setting값 저장
+        this.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent event) {
+                SaveAndLoad.SaveSetting();
+            }
+        });
+
 
     }
 

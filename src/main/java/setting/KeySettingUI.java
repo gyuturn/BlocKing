@@ -8,8 +8,9 @@ import java.awt.event.*;
 public class KeySettingUI extends JFrame{
     private JPanel mainPanel;
     private ScreenSize screenSize = ScreenSize.getInstance();
-
+    private KeySetting keySetting = KeySetting.getInstance();
     private JTextField[] keyTextField = new JTextField[6];
+    private int[] keyCode = new int[6];
     private JLabel[] keyName = new JLabel[6];
     private JButton[] buttons = new JButton[2];;
     private JPanel radioPanel;
@@ -56,7 +57,15 @@ public class KeySettingUI extends JFrame{
         buttons[0].addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new FixSizeUI();
+                int left = keyCode[0];
+                int right = keyCode[1];
+                int downBlock = keyCode[2];
+                int turnBlock = keyCode[3];
+                int onetimeBlock = keyCode[4];
+                int stop = keyCode[5];
+
+                keySetting.setKeySetting(left, right, turnBlock, downBlock, stop, onetimeBlock);
+                new SettingUI();
                 setVisible(false);
             }
         });
@@ -118,12 +127,13 @@ public class KeySettingUI extends JFrame{
     private void eventListenerKeyField() {
 
         for (int i = 0; i < keyName.length; i++) {
-
             int finalI = i;
             keyTextField[i].addKeyListener(new KeyAdapter() {
                 public void keyReleased(KeyEvent e) { // 키가 눌렷을때의 이벤트
-                    String s = e.getKeyText(e.getKeyCode()); // 키값
+                    int keyCode = e.getKeyCode();
+                    String s = e.getKeyText(keyCode); // 키값
                     String upperCase = s.toUpperCase();
+                    KeySettingUI.this.keyCode[finalI]=keyCode;
                     if(s.length()==1) {
                         keyTextField[finalI].setText("");
                         keyTextField[finalI].setText(upperCase);

@@ -14,8 +14,10 @@ import game.manager.GameManager;
 import game.manager.InGameUIManager;
 import game.model.BlockController;
 import javafx.scene.layout.Background;
+import setting.KeySetting;
 
 public class GameManager_NormalMode extends GameManager {
+    private KeySetting keySetting = KeySetting.getInstance();
 
     private boolean isBlockMovable = true;
     private boolean isGameOver = false;
@@ -247,25 +249,67 @@ public class GameManager_NormalMode extends GameManager {
 				
 		}
 
-		@Override
-		public void keyPressed(KeyEvent e) {
-			switch(e.getKeyCode()) {
-			case KeyEvent.VK_DOWN:
+//		@Override
+//		public void keyPressed(KeyEvent e) {
+//            System.out.println("e.getKeyCode() = " + e.getKeyCode());
+//
+//			switch(e.getKeyCode()) {
+//			case KeyEvent.VK_DOWN:
+//                blockMove();
+//                requestDrawBoard();
+//				System.out.println("input down");
+//				break;
+//			case KeyEvent.VK_RIGHT:
+//                BoardManager.getInstance().translateBlock(curBlock, 0, 1);
+//                requestDrawBoard();
+//				System.out.println("input right");
+//				break;
+//			case KeyEvent.VK_LEFT:
+//                BoardManager.getInstance().translateBlock(curBlock, 0, -1);
+//				requestDrawBoard();
+//				System.out.println("input left");
+//				break;
+//			case KeyEvent.VK_UP:
+//                BoardManager.getInstance().eraseBlock(curBlock);
+//                curBlock.rotate();
+//                if(!BoardManager.getInstance().checkDrawable(curBlock.shape, curBlock.posRow, curBlock.posCol)) {
+//                    curBlock.rotate();
+//                    curBlock.rotate();
+//                    curBlock.rotate();
+//                }
+//                BoardManager.getInstance().setBlockPos(curBlock, curBlock.posRow, curBlock.posCol);
+//				requestDrawBoard();
+//				System.out.println("input up");
+//				break;
+//            case KeyEvent.VK_SPACE:
+//                while(BoardManager.getInstance().checkBlockMovable(curBlock)) {
+//                    BoardManager.getInstance().translateBlock(curBlock, 1, 0);
+//                }
+//                timer.restart();
+//                requestDrawBoard();
+//                break;
+//			}
+//		}
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+            System.out.println("e.getKeyCode() = " + e.getKeyCode());
+            if (keySetting.getDownBlock() == e.getKeyCode()) {
                 blockMove();
                 requestDrawBoard();
-				System.out.println("input down");
-				break;
-			case KeyEvent.VK_RIGHT:
+                System.out.println("input down");
+            }
+            else if (keySetting.getRight() == e.getKeyCode()) {
                 BoardManager.getInstance().translateBlock(curBlock, 0, 1);
                 requestDrawBoard();
-				System.out.println("input right");
-				break;
-			case KeyEvent.VK_LEFT:
+                System.out.println("input right");
+            }
+            else if (keySetting.getLeft() == e.getKeyCode()) {
                 BoardManager.getInstance().translateBlock(curBlock, 0, -1);
-				requestDrawBoard();
-				System.out.println("input left");
-				break;
-			case KeyEvent.VK_UP:
+                requestDrawBoard();
+                System.out.println("input left");
+            }
+            else if (keySetting.getTurnBlock() == e.getKeyCode()) {
                 BoardManager.getInstance().eraseBlock(curBlock);
                 curBlock.rotate();
                 if(!BoardManager.getInstance().checkDrawable(curBlock.shape, curBlock.posRow, curBlock.posCol)) {
@@ -274,18 +318,16 @@ public class GameManager_NormalMode extends GameManager {
                     curBlock.rotate();
                 }
                 BoardManager.getInstance().setBlockPos(curBlock, curBlock.posRow, curBlock.posCol);
-				requestDrawBoard();
-				System.out.println("input up");
-				break;
-            case KeyEvent.VK_SPACE:
+                requestDrawBoard();
+                System.out.println("input up");
+            } else if (keySetting.getOneTimeDown() == e.getKeyCode()) {
                 while(BoardManager.getInstance().checkBlockMovable(curBlock)) {
                     BoardManager.getInstance().translateBlock(curBlock, 1, 0);
                 }
                 timer.restart();
                 requestDrawBoard();
-                break;
-			}
-		}
+            }
+        }
 
 		@Override
 		public void keyReleased(KeyEvent e) {
@@ -299,18 +341,28 @@ public class GameManager_NormalMode extends GameManager {
 				
 		}
 
-		@Override
-		public void keyPressed(KeyEvent e) {
-			switch(e.getKeyCode()) {
-            case KeyEvent.VK_T:
+//		@Override
+//		public void keyPressed(KeyEvent e) {
+//			switch(e.getKeyCode()) {
+//            case KeyEvent.VK_T:
+//                BoardManager.getInstance().printBoard();
+//                if(timer.isRunning())
+//                    stopGameFramework();
+//                else
+//                    restartGameFramework();
+//                break;
+//			}
+//		}
+        @Override
+        public void keyPressed(KeyEvent e) {
+            if (keySetting.getStop() == e.getKeyCode()) {
                 BoardManager.getInstance().printBoard();
                 if(timer.isRunning())
                     stopGameFramework();
                 else
                     restartGameFramework();
-                break;
-			}
-		}
+            }
+        }
 
 		@Override
 		public void keyReleased(KeyEvent e) {

@@ -21,6 +21,7 @@ public class SettingUI extends JFrame {
     private ScreenSize screenSize = ScreenSize.getInstance();
     private JButton[] buttons = new JButton[6];
     private ScoreList scoreList = ScoreList.getInstance();
+    private KeySetting keySetting = KeySetting.getInstance();
 
     ImageIcon titleImg1 = new ImageIcon("./src/main/java/start/img/title1.png");
     ImageIcon titleImg2 = new ImageIcon("./src/main/java/start/img/title2.png");
@@ -157,6 +158,8 @@ public class SettingUI extends JFrame {
                 if(result==0){
                     screenSize.setWidth(400);
                     screenSize.setHeight(500);
+
+                    keySetting.resetDefault();
 
                     setVisible(false);
                     new SettingUI();

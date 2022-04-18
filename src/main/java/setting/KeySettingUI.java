@@ -64,6 +64,39 @@ public class KeySettingUI extends JFrame{
                 int onetimeBlock = keyCode[4];
                 int stop = keyCode[5];
 
+                for (int i = 0; i < keyCode.length; i++) {
+                    if (keyCode[i] == 0) {
+                        switch (i){
+                            case 0:
+                                keyCode[0] = keySetting.getLeft();
+                                left = keyCode[0];
+                                break;
+                            case 1:
+                                keyCode[1] = keySetting.getRight();
+                                right=keyCode[1];
+                                break;
+                            case 2:
+                                keyCode[2] = keySetting.getDownBlock();
+                                downBlock=keyCode[2];
+                                break;
+                            case 3:
+                                keyCode[3] = keySetting.getTurnBlock();
+                                turnBlock=keyCode[3];
+                                break;
+                            case 4:
+                                keyCode[4] = keySetting.getOneTimeDown();
+                                onetimeBlock=keyCode[4];
+                                break;
+                            case 5:
+                                keyCode[5] = keySetting.getStop();
+                                stop = keyCode[5];
+                                break;
+
+                        }
+
+                    }
+                }
+
                 keySetting.setKeySetting(left, right, turnBlock, downBlock, stop, onetimeBlock);
                 new SettingUI();
                 setVisible(false);
@@ -97,23 +130,28 @@ public class KeySettingUI extends JFrame{
         radioPanel.setBorder(BorderFactory.createEmptyBorder(screenSize.getHeight() / 4, 0, 0, 0));
 
         keyName[0]=new JLabel("왼쪽 이동");
-
-        keyTextField[0]=new JTextField("LEFT");
+        String left = KeyEvent.getKeyText(keySetting.getLeft());
+        keyTextField[0]=new JTextField(left);
 
         keyName[1]=new JLabel("오른쪽 이동");
-        keyTextField[1] = new JTextField("RIGHT");
+        String right = KeyEvent.getKeyText(keySetting.getRight());
+        keyTextField[1] = new JTextField(right);
 
         keyName[2] = new JLabel("내리기");
-        keyTextField[2]=new JTextField("DOWN");
+        String downBlock = KeyEvent.getKeyText(keySetting.getDownBlock());
+        keyTextField[2]=new JTextField(downBlock);
 
         keyName[3] = new JLabel("회전시키기");
-        keyTextField[3] = new JTextField("UP");
+        String turnBlock = KeyEvent.getKeyText(keySetting.getTurnBlock());
+        keyTextField[3] = new JTextField(turnBlock);
 
         keyName[4]=new JLabel("한번에 내리기");
-        keyTextField[4] = new JTextField("SPACE");
+        String oneTimeDown = KeyEvent.getKeyText(keySetting.getOneTimeDown());
+        keyTextField[4] = new JTextField(oneTimeDown);
 
         keyName[5] = new JLabel("일시정지");
-        keyTextField[5] = new JTextField("T");
+        String stop = KeyEvent.getKeyText(keySetting.getStop());
+        keyTextField[5] = new JTextField(stop);
 
         for (int i = 0; i < 6; i++) {
             keyName[i].setForeground(Color.white);

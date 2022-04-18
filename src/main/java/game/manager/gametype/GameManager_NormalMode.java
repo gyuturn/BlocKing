@@ -247,9 +247,15 @@ public class GameManager_NormalMode extends GameManager {
 				System.out.println("input left");
 				break;
 			case KeyEvent.VK_UP:
-                BoardManager.getInstance().printBoard();
-                //curBlock.rotate();
-                //BoardManager.getInstance().setBlockPos(curBlock, curBlock.posRow, curBlock.posCol);
+                BoardManager.getInstance().eraseBlock(curBlock);
+                curBlock.rotate();
+                if(!BoardManager.getInstance().checkDrawable(curBlock.shape, curBlock.posRow, curBlock.posCol)) {
+                    curBlock.rotate();
+                    curBlock.rotate();
+                    curBlock.rotate();
+                }
+                        
+                BoardManager.getInstance().setBlockPos(curBlock, curBlock.posRow, curBlock.posCol);
 				requestDrawBoard();
 				System.out.println("input up");
 				break;
@@ -279,6 +285,7 @@ public class GameManager_NormalMode extends GameManager {
 		public void keyPressed(KeyEvent e) {
 			switch(e.getKeyCode()) {
             case KeyEvent.VK_T:
+                BoardManager.getInstance().printBoard();
                 if(timer.isRunning())
                     stopGameFramework();
                 else

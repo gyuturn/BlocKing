@@ -81,7 +81,6 @@ public class BoardManager {
 
 //#region Board Controll
     public BlockController setBlockPos(BlockController curBlock, int targetRow, int targetCol) {
-
         for(int i=0; i<curBlock.height(); i++) {
             for(int j=0; j<curBlock.width(); j++) {
                 if(curBlock.getShape(i, j) == 1)
@@ -185,6 +184,24 @@ public class BoardManager {
         for(int i=0; i<curBlock.height(); i++) {
             if(board[curBlock.posRow + i][curBlock.posCol + indexOfRight[i] + 1] != ' ') {
                 return false;
+            }
+        }
+
+        return true;
+    }
+
+    public boolean checkDrawable(int[][] targetShape, int targetRow, int targetCol) {
+
+        int height = targetShape.length;
+        int width = 0;
+
+        if(height > 0)
+            width = targetShape[0].length;
+
+        for(int i=0; i<height; i++) {
+            for(int j=0; j<width; j++) {
+                if(targetShape[i][j] == 1 && board[targetRow+i][targetCol+j] != ' ')
+                    return false;
             }
         }
 

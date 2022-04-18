@@ -13,18 +13,19 @@ public abstract class BlockController extends BlockModel {
 	}
 	
 	public void rotate() {
+
+		int w = width();
+		int h = height();
         
-        int[][] newShape = new int[width()][height()];
+        int[][] newShape = new int[w][h];
 
-        for(int i=0; i<width(); i++)
-        {
-            for(int j=0; j<height(); j++)
-            {
-                newShape[i][j] = getShape(j, height()-1-i); 
-            }
-
-            shape = newShape;
+        for(int i=0; i<w; i++) {
+            for(int j=0; j<h; j++) {
+                newShape[i][j] = getShape(h - 1 - j, i);
+            }            
         }
+
+		shape = newShape;
 
     }
 	

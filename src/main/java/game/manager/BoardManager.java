@@ -105,7 +105,10 @@ public class BoardManager {
 
     public void translateBlock(BlockController curBlock, int row, int col) {
         eraseBlock(curBlock);
-        setBlockPos(curBlock, curBlock.posRow+row, curBlock.posCol+col);
+        if(checkDrawable(curBlock.shape, curBlock.posRow+row, curBlock.posCol+col))
+            setBlockPos(curBlock, curBlock.posRow+row, curBlock.posCol+col);
+        else
+            setBlockPos(curBlock, curBlock.posRow, curBlock.posCol);
     }
 
     public int eraseFullLine() {
@@ -129,7 +132,26 @@ public class BoardManager {
 
 //#endregion
 
-//#region Side check
+//#region checkDrawable
+    
+    public boolean checkDrawable(int[][] targetShape, int targetRow, int targetCol) {
+
+        int height = targetShape.length;
+        int width = 0;
+
+        if(height > 0)
+            width = targetShape[0].length;
+
+        for(int i=0; i<height; i++) {
+            for(int j=0; j<width; j++) {
+                if(targetShape[i][j] == 1 && board[targetRow+i][targetCol+j] != ' ')
+                    return false;
+            }
+        }
+
+        return true;
+    }
+
     public boolean checkBlockMovable(BlockController curBlock) {
         int[] indexOfBottom = new int[curBlock.width()];
 
@@ -184,24 +206,6 @@ public class BoardManager {
         for(int i=0; i<curBlock.height(); i++) {
             if(board[curBlock.posRow + i][curBlock.posCol + indexOfRight[i] + 1] != ' ') {
                 return false;
-            }
-        }
-
-        return true;
-    }
-
-    public boolean checkDrawable(int[][] targetShape, int targetRow, int targetCol) {
-
-        int height = targetShape.length;
-        int width = 0;
-
-        if(height > 0)
-            width = targetShape[0].length;
-
-        for(int i=0; i<height; i++) {
-            for(int j=0; j<width; j++) {
-                if(targetShape[i][j] == 1 && board[targetRow+i][targetCol+j] != ' ')
-                    return false;
             }
         }
 

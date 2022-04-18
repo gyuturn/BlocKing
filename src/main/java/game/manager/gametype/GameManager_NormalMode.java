@@ -233,17 +233,13 @@ public class GameManager_NormalMode extends GameManager {
 				System.out.println("input down");
 				break;
 			case KeyEvent.VK_RIGHT:
-                if(BoardManager.getInstance().checkRightSide(curBlock)) {
-                    BoardManager.getInstance().translateBlock(curBlock, 0, 1);
-                    requestDrawBoard();
-                }
+                BoardManager.getInstance().translateBlock(curBlock, 0, 1);
+                requestDrawBoard();
 				System.out.println("input right");
 				break;
 			case KeyEvent.VK_LEFT:
-                if(BoardManager.getInstance().checkLeftSide(curBlock)) {
-                    BoardManager.getInstance().translateBlock(curBlock, 0, -1);
-				    requestDrawBoard();
-                }
+                BoardManager.getInstance().translateBlock(curBlock, 0, -1);
+				requestDrawBoard();
 				System.out.println("input left");
 				break;
 			case KeyEvent.VK_UP:
@@ -254,7 +250,6 @@ public class GameManager_NormalMode extends GameManager {
                     curBlock.rotate();
                     curBlock.rotate();
                 }
-                        
                 BoardManager.getInstance().setBlockPos(curBlock, curBlock.posRow, curBlock.posCol);
 				requestDrawBoard();
 				System.out.println("input up");

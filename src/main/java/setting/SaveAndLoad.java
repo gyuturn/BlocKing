@@ -62,7 +62,7 @@ public class SaveAndLoad {
             keySettingFile.close();
 
             //스코어리스트 10개까지 저장
-            FileWriter scoreListFile = new FileWriter("src/main/java/save/ScoreList.json");
+            FileWriter scoreListFile = new FileWriter("src/main/java/save/NoItemScoreList.json");
             scoreListFile.write(scoreBoardJson.toJSONString());
             scoreListFile.flush();
             scoreListFile.close();
@@ -84,7 +84,7 @@ public class SaveAndLoad {
             screenSize.setHeight((Integer) screenSizeMap.get("height"));
 
             //스코어 보드 load
-            InputStream getScoreBoard = new FileInputStream("src/main/java/save/ScoreList.json");
+            InputStream getScoreBoard = new FileInputStream("src/main/java/save/NoItemScoreList.json");
             HashMap<String,Object> scoreBoardMap = new ObjectMapper().readValue(getScoreBoard, HashMap.class);
             System.out.println("scoreBoardMap = " + scoreBoardMap.size());
             int size = scoreBoardMap.size()/3;

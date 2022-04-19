@@ -1,10 +1,10 @@
-package scoreBoard;
+package scoreBoard.NoItemScoreBoard;
 
+import scoreBoard.User;
 import setting.SaveAndLoad;
 import setting.ScreenSize;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;

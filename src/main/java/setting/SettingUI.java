@@ -1,7 +1,6 @@
 package setting;
 
 import game.GameUI;
-import scoreBoard.ScoreBoardUI;
 import scoreBoard.ScoreList;
 import start.StartUI;
 

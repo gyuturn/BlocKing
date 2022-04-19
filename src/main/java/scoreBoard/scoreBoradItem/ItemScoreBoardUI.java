@@ -1,13 +1,11 @@
-package scoreBoard;
+package scoreBoard.scoreBoradItem;
 
-import setting.FixSizeUI;
+import scoreBoard.ScoreList;
 import setting.SaveAndLoad;
 import setting.ScreenSize;
-import setting.SettingUI;
 import start.StartUI;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -15,7 +13,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-public class ScoreBoardUI extends JFrame{
+public class ItemScoreBoardUI extends JFrame{
 
     private JPanel mainPanel;
     private ScreenSize screenSize = ScreenSize.getInstance();
@@ -31,7 +29,7 @@ public class ScoreBoardUI extends JFrame{
 
 
     //시작화면에서의 scoreBoardUI 점수 입력값 없음
-    public ScoreBoardUI(){
+    public ItemScoreBoardUI(){
         //JFrame setting
         super("software-tetris");//제목
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);// 메모리까지 종료
@@ -155,7 +153,7 @@ public class ScoreBoardUI extends JFrame{
         scorePanel.setBorder(BorderFactory.createEmptyBorder(10, 70, 10, 0));
 
 
-        JLabel titleLabel = new JLabel("   스코어 리스트");
+        JLabel titleLabel = new JLabel(" 스코어 리스트-ItemMode");
         titleLabel.setForeground(Color.WHITE);
         scorePanel.add(titleLabel);
         scorePanel.add(new JLabel(" "));

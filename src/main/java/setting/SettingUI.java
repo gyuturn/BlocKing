@@ -1,7 +1,7 @@
 package setting;
 
 import game.GameUI;
-import scoreBoard.ScoreList;
+import scoreBoard.NoItemScoreBoard.ScoreList;
 import start.StartUI;
 
 import javax.swing.*;

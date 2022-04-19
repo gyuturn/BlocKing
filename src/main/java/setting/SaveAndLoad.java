@@ -76,20 +76,12 @@ public class SaveAndLoad {
 
         try{
             //화면 크기 load
-//            FileReader readerToScreenSize = new FileReader("src/main/java/save/ScreenSize.json");
-//            Object screenSizeJson1 = parser.parse(readerToScreenSize);
-//            JSONObject screenSizeJson2 =(JSONObject) screenSizeJson1;
-//            readerToScreenSize.close();
             InputStream getScreenSize = new FileInputStream("src/main/java/save/ScreenSize.json");
             HashMap<String,Object> screenSizeMap = new ObjectMapper().readValue(getScreenSize, HashMap.class);
             screenSize.setWidth((Integer) screenSizeMap.get("width"));
             screenSize.setHeight((Integer) screenSizeMap.get("height"));
 
             //스코어 보드 load
-//            FileReader readerToScoreList = new FileReader("src/main/java/save/ScoreList.json");
-//            Object scoreListJson1 = parser.parse(readerToScoreList);
-//            JSONObject scoreListJson2 =(JSONObject) scoreListJson1;
-//            readerToScoreList.close();
             InputStream getScoreBoard = new FileInputStream("src/main/java/save/ScoreList.json");
             HashMap<String,Object> scoreBoardMap = new ObjectMapper().readValue(getScoreBoard, HashMap.class);
             System.out.println("scoreBoardMap = " + scoreBoardMap.size());

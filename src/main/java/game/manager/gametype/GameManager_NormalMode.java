@@ -19,17 +19,17 @@ public class GameManager_NormalMode extends GameManager {
 
     private boolean isBlockMovable = true;
     private boolean isGameOver = false;
-    
+
     private static int maxSpeed = 100000;
     private static int basicSpeed = 100;
     private static int curSpeed = 100;
     private static int timeScale = 1000;
-    
+
     private int blockCount = 0;
     private int lineCount = 0;
     private int score = 0;
 
-    
+
 
     private Timer timer;
     private KeyListener interaction_play;
@@ -56,12 +56,13 @@ public class GameManager_NormalMode extends GameManager {
     public enum Step {
 
 	    GameReady,
+        StartTimer,
         
         //while !gameOver
         CreatNewBlock,
         BlockMove,
-        CheckLineDelete,
         SetGameBalance,
+        CheckLineDelete,
 
         GameOver
     }
@@ -71,7 +72,7 @@ public class GameManager_NormalMode extends GameManager {
         
         switch(curStep) {
             case GameReady:
-                curStep = gameReady(); 
+                curStep = gameReady();
                 break;
 
             case CreatNewBlock:
@@ -82,7 +83,7 @@ public class GameManager_NormalMode extends GameManager {
                 curStep = blockMove();
                 if(curStep != Step.BlockMove) gameFramework();
                 break;
-            
+
             case CheckLineDelete:
                 curStep = checkLineDelete();
                 gameFramework();
@@ -153,13 +154,14 @@ public class GameManager_NormalMode extends GameManager {
         timer = new Timer(timeScale, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+                
 				oneFrame();
 			}
 		});
 
         timer.start();
     }
-    
+
     @Override
     public void stopGameFramework() {
         timer.stop();
@@ -170,7 +172,7 @@ public class GameManager_NormalMode extends GameManager {
         timer.restart();
         GameUI.getInstance().pane.addKeyListener(interaction_play);
     }
-    
+
     
 //#endregion
 
@@ -217,7 +219,7 @@ public class GameManager_NormalMode extends GameManager {
     private void setTimeScale(int scale) {
 
         timer.stop();
-        
+
         timeScale = scale;
 
         timer = new Timer(timeScale, new ActionListener() {
@@ -289,14 +291,14 @@ public class GameManager_NormalMode extends GameManager {
 
 		@Override
 		public void keyReleased(KeyEvent e) {
-			
+
 		}
 	}
 
     public class Interaction_Utils implements KeyListener {
 		@Override
 		public void keyTyped(KeyEvent e) {
-				
+
 		}
 
 		@Override

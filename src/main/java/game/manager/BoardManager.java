@@ -156,7 +156,7 @@ public class BoardManager {
 
         for(int i=0; i<curBlock.width(); i++) {
             for(int j=0; j<curBlock.height(); j++) {
-                if(curBlock.shape[j][i] == 1)
+                if(curBlock.shape[j][i] == 'O')
                     indexOfBottom[i] = j;
             }
         }
@@ -175,7 +175,7 @@ public class BoardManager {
 
         for(int i=0; i<curBlock.height(); i++) {
             for(int j=0; j<curBlock.width(); j++) {
-                if(curBlock.shape[i][j] == 1) {
+                if(curBlock.shape[i][j] == 'O') {
                     indexOfLeft[i] = j;
                     break;
                 }
@@ -196,7 +196,7 @@ public class BoardManager {
 
         for(int i=0; i<curBlock.height(); i++) {
             for(int j=0; j<curBlock.width(); j++) {
-                if(curBlock.shape[i][j] == 1) {
+                if(curBlock.shape[i][j] == 'O') {
                     indexOfRight[i] = j;
                 }
             }

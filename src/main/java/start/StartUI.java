@@ -1,22 +1,27 @@
 package start;
 
 import game.GameUI;
+import game.manager.gametype.GameManager_NormalMode;
 import scoreBoard.ScoreBoardUI;
-import setting.SaveAndLoad;
 import setting.ScreenSize;
 import setting.SettingUI;
 
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+import java.awt.event.KeyAdapter;
 
 import static start.IsButtonClicked.btnClicked;
 
 public class StartUI extends JFrame {
 
-    private JPanel mainPanel;
+    public  JPanel mainPanel;
     private ScreenSize screenSize = ScreenSize.getInstance();
+    private KeyListener startInteraction;
     ImageIcon titleImg1 = new ImageIcon("./src/main/java/start/img/title1.png");
     ImageIcon titleImg2 = new ImageIcon("./src/main/java/start/img/title2.png");
     ImageIcon titleImg3 = new ImageIcon("./src/main/java/start/img/title3.png");
@@ -41,27 +46,197 @@ public class StartUI extends JFrame {
         mainPanel.setBorder(border);
 
 
+
+
         this.getContentPane().add(mainPanel,BorderLayout.CENTER);
 
 
         titleBtn();
-        gameBtn();
-        settingBtn();
-        scbBtn();
-        exitBtn();
-        //defaultBtn();
 
-        //종료 시 현재 setting값 저장
-        this.addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent event) {
-                SaveAndLoad.SaveSetting();
+        JButton gameButtons = new JButton("게임 시작");
+        mainPanel.add(gameButtons);
+
+        JButton settingButtons = new JButton("설정 메뉴");
+        mainPanel.add(settingButtons);
+
+        JButton scbButtons = new JButton("스코어보드");
+        mainPanel.add(scbButtons);
+
+        JButton exitButtons = new JButton("게임 종료");
+        mainPanel.add(exitButtons);
+
+
+        btnClicked.setGameBtnClicked();
+        if(btnClicked.isGameBtnClicked()){
+            gameButtons.setForeground(Color.red);
+        }
+
+        //다음으로 넘어가는 event
+        gameButtons.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new GameUI();
+                setVisible(false);
+            }
+        });
+
+        gameButtons.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_UP) {
+                    if(btnClicked.isGameBtnClicked()){
+                        btnClicked.setExitBtnClicked();
+                        exitButtons.setForeground(Color.red);
+                        gameButtons.setForeground(Color.black);
+                    }
+                    else if(btnClicked.isSettingBtnClicked()){
+                        btnClicked.setGameBtnClicked();
+                        gameButtons.setForeground(Color.red);
+                        settingButtons.setForeground(Color.black);
+                    }
+                    else if(btnClicked.isScbBtnClicked()){
+                        btnClicked.setSettingBtnClicked();
+                        settingButtons.setForeground(Color.red);
+                        scbButtons.setForeground(Color.black);
+
+                    }
+                    else if(btnClicked.isExitBtnClicked()){
+                        btnClicked.setScbBtnClicked();
+                        scbButtons.setForeground(Color.red);
+                        exitButtons.setForeground(Color.black);
+                    }
+
+                } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+                    if(btnClicked.isGameBtnClicked()){
+                        btnClicked.setSettingBtnClicked();
+                        settingButtons.setForeground(Color.red);
+                        gameButtons.setForeground(Color.black);
+
+                    }
+                    else if(btnClicked.isSettingBtnClicked()){
+                        btnClicked.setScbBtnClicked();
+                        scbButtons.setForeground(Color.red);
+                        settingButtons.setForeground(Color.black);
+                    }
+                    else if(btnClicked.isScbBtnClicked()){
+                        btnClicked.setExitBtnClicked();
+                        exitButtons.setForeground(Color.red);
+                        scbButtons.setForeground(Color.black);
+                    }
+                    else if(btnClicked.isExitBtnClicked()){
+                        btnClicked.setGameBtnClicked();
+                        gameButtons.setForeground(Color.red);
+                        exitButtons.setForeground(Color.black);
+                    }
+                } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+                    if(btnClicked.isGameBtnClicked()){
+                        btnClicked.setExitBtnClicked();
+                        exitButtons.setForeground(Color.red);
+                        gameButtons.setForeground(Color.black);
+                    }
+                    else if(btnClicked.isSettingBtnClicked()){
+                        btnClicked.setGameBtnClicked();
+                        gameButtons.setForeground(Color.red);
+                        settingButtons.setForeground(Color.black);
+                    }
+                    else if(btnClicked.isScbBtnClicked()){
+                        btnClicked.setSettingBtnClicked();
+                        settingButtons.setForeground(Color.red);
+                        scbButtons.setForeground(Color.black);
+
+                    }
+                    else if(btnClicked.isExitBtnClicked()){
+                        btnClicked.setScbBtnClicked();
+                        scbButtons.setForeground(Color.red);
+                        exitButtons.setForeground(Color.black);
+                    }
+                } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+                    if(btnClicked.isGameBtnClicked()){
+                        btnClicked.setSettingBtnClicked();
+                        settingButtons.setForeground(Color.red);
+                        gameButtons.setForeground(Color.black);
+
+                    }
+                    else if(btnClicked.isSettingBtnClicked()){
+                        btnClicked.setScbBtnClicked();
+                        scbButtons.setForeground(Color.red);
+                        settingButtons.setForeground(Color.black);
+                    }
+                    else if(btnClicked.isScbBtnClicked()){
+                        btnClicked.setExitBtnClicked();
+                        exitButtons.setForeground(Color.red);
+                        scbButtons.setForeground(Color.black);
+                    }
+                    else if(btnClicked.isExitBtnClicked()){
+                        btnClicked.setGameBtnClicked();
+                        gameButtons.setForeground(Color.red);
+                        exitButtons.setForeground(Color.black);
+                    }
+                } else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    if(btnClicked.isGameBtnClicked()){
+                        new GameUI();
+                        setVisible(false);
+                    }
+                    else if(btnClicked.isSettingBtnClicked()){
+                        new SettingUI();
+                        setVisible(false);
+                    }
+                    else if(btnClicked.isScbBtnClicked()){
+                        new ScoreBoardUI();
+                        setVisible(false);
+                    }
+                    else if(btnClicked.isExitBtnClicked()){
+                        System.exit(0);
+                    }
+                }
+
+            }
+        });
+        gameButtons.requestFocus();
+
+
+
+
+        //다음으로 넘어가는 event
+        settingButtons.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new SettingUI();
+                setVisible(false);
             }
         });
 
 
 
 
+        //다음으로 넘어가는 event
+        scbButtons.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new ScoreBoardUI();
+                setVisible(false);
+            }
+        });
+
+
+        //다음으로 넘어가는 event
+        exitButtons.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        });
+
+
+
+
+
+
+
+        //defaultBtn();
     }
+
+
 
 
     public void titleBtn(){
@@ -83,6 +258,8 @@ public class StartUI extends JFrame {
         settingTitles.setPreferredSize(new Dimension((int)(screenSize.getWidth()*0.8), (int)(screenSize.getWidth()*0.17))); // 버튼 크기 지정
         mainPanel.add(settingTitles);
 
+
+
         settingTitles.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -93,146 +270,22 @@ public class StartUI extends JFrame {
     }
 
     public void gameBtn(){
-        JButton gameButtons = new JButton("게임 시작");
-        mainPanel.add(gameButtons);
-
-        btnClicked.setGameBtnClicked();
-        if(btnClicked.isGameBtnClicked()){
-            gameButtons.setForeground(Color.red);
-        }
-
-        //다음으로 넘어가는 event
-        gameButtons.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new GameUI();
-                setVisible(false);
-            }
-        });
-
-        gameButtons.addKeyListener(new KeyListener() {
-            @Override
-            public void keyTyped(KeyEvent e) {
-
-            }
-
-            @Override
-            public void keyPressed(KeyEvent e)  {
-                if(btnClicked.isGameBtnClicked()){
-                    // 37 왼쪽, 38 위쪽, 39 오른쪽, 40 아래쪽
-                    //if( e.getKeyCode() == 37 )
-                    //if( e.getKeyCode() == 38 )
-                    if( e.getKeyCode() == 39 ){
-                        btnClicked.setSettingBtnClicked();
-                    }
-                    if( e.getKeyCode() == 40 ){
-                        btnClicked.setSettingBtnClicked();
-                    }
-                }
-
-            }
-
-            @Override
-            public void keyReleased(KeyEvent e) {
-
-            }
-        });
-
 
     }
 
     public void settingBtn(){
-        JButton settingButtons = new JButton("설정 메뉴");
-        mainPanel.add(settingButtons);
-
-        if(btnClicked.isSettingBtnClicked()){
-            settingButtons.setForeground(Color.red);
-        }
-
-        boolean isClicked = false;
-        if(isClicked == true){
-           settingButtons.setForeground(Color.red);
-        }
-
-        //다음으로 넘어가는 event
-        settingButtons.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new SettingUI();
-                setVisible(false);
-            }
-        });
-
-        settingButtons.addKeyListener(new KeyListener() {
-            @Override
-            public void keyTyped(KeyEvent e) {
-
-            }
-
-            @Override
-            public void keyPressed(KeyEvent e)  {
-                if(btnClicked.isSettingBtnClicked()){
-                    // 37 왼쪽, 38 위쪽, 39 오른쪽, 40 아래쪽
-                    if( e.getKeyCode() == 37 ) {
-                        btnClicked.setGameBtnClicked();
-                    }
-                    if( e.getKeyCode() == 38 ) {
-                        btnClicked.setGameBtnClicked();
-                    }
-                    if( e.getKeyCode() == 39 ){
-                        btnClicked.setScbBtnClicked();
-                    }
-                    if( e.getKeyCode() == 40 ){
-                        btnClicked.setScbBtnClicked();
-                    }
-                }
-
-            }
-
-            @Override
-            public void keyReleased(KeyEvent e) {
-
-            }
-        });
 
     }
 
     public void scbBtn(){//스코어보드 버튼
-        JButton scbButtons = new JButton("스코어보드");
-        mainPanel.add(scbButtons);
 
-        boolean isClicked = false;
-        if(isClicked == true){
-            scbButtons.setForeground(Color.red);
-        }
-
-        //다음으로 넘어가는 event
-        scbButtons.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new ScoreBoardUI();
-                setVisible(false);
-            }
-        });
     }
 
     public void exitBtn(){
-        JButton exitButtons = new JButton("게임 종료");
-        mainPanel.add(exitButtons);
 
-        boolean isClicked = false;
-        if(isClicked == true){
-            exitButtons.setForeground(Color.red);
-        }
-
-        //다음으로 넘어가는 event
-        exitButtons.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.exit(0);
-            }
-        });
     }
+
+
 
     public void defaultBtn(){
         JButton defaultButtons = new JButton("기본값 버튼입니다");

@@ -1,6 +1,11 @@
 package start;
 
+import game.GameUI;
+import game.manager.gametype.GameManager_NormalMode;
 import setting.ScreenSize;
+
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 public class IsButtonClicked {
 
@@ -9,6 +14,7 @@ public class IsButtonClicked {
     private  boolean settingBtnClicked;
     private  boolean scbBtnClicked;
     private  boolean exitBtnClicked;
+
 
     public static IsButtonClicked btnClicked = new IsButtonClicked();
 
@@ -45,24 +51,30 @@ public class IsButtonClicked {
         settingBtnClicked= false;
         scbBtnClicked= false;
         exitBtnClicked= false;
+        System.out.println("game");
     }
     public void setSettingBtnClicked() {
         gameBtnClicked= false;
         settingBtnClicked= true;
         scbBtnClicked= false;
         exitBtnClicked= false;
+        System.out.println("set");
     }
     public void setScbBtnClicked() {
         gameBtnClicked= false;
         settingBtnClicked= false;
         scbBtnClicked= true;
         exitBtnClicked= false;
+        System.out.println("scb");
     }
     public void setExitBtnClicked() {
         gameBtnClicked= false;
         settingBtnClicked= false;
         scbBtnClicked= false;
         exitBtnClicked= true;
+        System.out.println("exit");
     }
+
+
 
 }

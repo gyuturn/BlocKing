@@ -15,7 +15,6 @@ public class KeySettingTest {
     public void resetDefault() {
         //given
         keySetting.setLeft(32);
-
         //when
 
         //then

@@ -32,6 +32,7 @@ public class KeySetting {
         this.downBlock = 40;
         this.stop = 84;
         this.oneTimeDown = 32;
+        this.escape=27;
 
     }
 
@@ -42,6 +43,7 @@ public class KeySetting {
         this.downBlock = 40;
         this.stop = 84;
         this.oneTimeDown = 32;
+        this.escape=27;
     }
 
     //key 중복값 있는지 확인

@@ -4,7 +4,7 @@ import java.awt.Color;
 
 public abstract class BlockModel {
 
-    public int[][] shape;
+    public char[][] shape;
     protected Color color;
 
     public int posRow = 0;

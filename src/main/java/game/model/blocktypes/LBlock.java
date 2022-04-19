@@ -9,17 +9,17 @@ public class LBlock extends BlockController{
     @Override
     protected void initModel()
     {
-        shape = new int[][] { 
-			{1, 1, 1},
-			{1, 0, 0}
+        shape = new char[][] { 
+			{'O', 'O', 'O'},
+			{'O', ' ', ' '}
 		};
 		color = Color.ORANGE;
     }
 
     public LBlock() {
-		shape = new int[][] { 
-			{1, 1, 1},
-			{1, 0, 0}
+		shape = new char[][] { 
+			{'O', 'O', 'O'},
+			{'O', ' ', ' '}
 		};
 		color = Color.ORANGE;
 	}

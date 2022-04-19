@@ -83,7 +83,7 @@ public class BoardManager {
     public BlockController setBlockPos(BlockController curBlock, int targetRow, int targetCol) {
         for(int i=0; i<curBlock.height(); i++) {
             for(int j=0; j<curBlock.width(); j++) {
-                if(curBlock.getShape(i, j) == 1)
+                if(curBlock.getShape(i, j) == 'O')
 				    board[targetRow+i][targetCol+j] = 'O' ;
             }
         }
@@ -97,7 +97,7 @@ public class BoardManager {
     public void eraseBlock(BlockController curBlock) {
         for(int i=0; i<curBlock.height(); i++) {
             for(int j=0; j<curBlock.width(); j++) {
-                if(curBlock.getShape(i, j) == 1)
+                if(curBlock.getShape(i, j) == 'O')
                     board[curBlock.posRow+i][curBlock.posCol+j] = ' ';
             }
         }
@@ -134,7 +134,7 @@ public class BoardManager {
 
 //#region checkDrawable
     
-    public boolean checkDrawable(int[][] targetShape, int targetRow, int targetCol) {
+    public boolean checkDrawable(char[][] targetShape, int targetRow, int targetCol) {
 
         int height = targetShape.length;
         int width = 0;
@@ -144,7 +144,7 @@ public class BoardManager {
 
         for(int i=0; i<height; i++) {
             for(int j=0; j<width; j++) {
-                if(targetShape[i][j] == 1 && board[targetRow+i][targetCol+j] != ' ')
+                if(targetShape[i][j] == 'O' && board[targetRow+i][targetCol+j] != ' ')
                     return false;
             }
         }
@@ -157,7 +157,7 @@ public class BoardManager {
 
         for(int i=0; i<curBlock.width(); i++) {
             for(int j=0; j<curBlock.height(); j++) {
-                if(curBlock.shape[j][i] == 1)
+                if(curBlock.shape[j][i] == 'O')
                     indexOfBottom[i] = j;
             }
         }
@@ -176,7 +176,7 @@ public class BoardManager {
 
         for(int i=0; i<curBlock.height(); i++) {
             for(int j=0; j<curBlock.width(); j++) {
-                if(curBlock.shape[i][j] == 1) {
+                if(curBlock.shape[i][j] == 'O') {
                     indexOfLeft[i] = j;
                     break;
                 }
@@ -197,7 +197,7 @@ public class BoardManager {
 
         for(int i=0; i<curBlock.height(); i++) {
             for(int j=0; j<curBlock.width(); j++) {
-                if(curBlock.shape[i][j] == 1) {
+                if(curBlock.shape[i][j] == 'O') {
                     indexOfRight[i] = j;
                 }
             }

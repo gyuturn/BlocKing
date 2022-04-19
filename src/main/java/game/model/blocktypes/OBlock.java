@@ -6,22 +6,13 @@ import game.model.BlockController;
 
 public class OBlock extends BlockController{
 
-    @Override
-    protected void initModel()
-    {
-        shape = new int[][] { 
-			{1, 1}, 
-			{1, 1}
-		};
-		color = Color.YELLOW;
-    }
-
     public OBlock() {
-		shape = new int[][] { 
-			{1, 1}, 
-			{1, 1}
+		shape = new char[][] { 
+			{'O', 'O'}, 
+			{'O', 'O'}
 		};
 		color = Color.YELLOW;
+		color_colorBlindMode = Color.YELLOW;
 	}
     
 }

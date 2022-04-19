@@ -6,22 +6,13 @@ import game.model.BlockController;
 
 public class TBlock extends BlockController{
 
-    @Override
-    protected void initModel()
-    {
-        shape = new int[][] { 
-			{0, 1, 0},
-			{1, 1, 1}
-		};
-		color = Color.MAGENTA;
-    }
-
     public TBlock() {
-		shape = new int[][] { 
-			{0, 1, 0},
-			{1, 1, 1}
+		shape = new char[][] { 
+			{' ', 'O', ' '},
+			{'O', 'O', 'O'}
 		};
 		color = Color.MAGENTA;
+		color_colorBlindMode = Color.GRAY;
 	}
     
 }

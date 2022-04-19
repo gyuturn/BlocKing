@@ -9,15 +9,15 @@ public class IBlock extends BlockController{
     @Override
     protected void initModel()
     {
-        shape = new int[][] {
-            {1, 1, 1, 1}
+        shape = new char[][] {
+            {'O', 'O', 'O', 'O'}
         };
         color = Color.CYAN;
     }
 
     public IBlock() {
-		shape = new int[][] { 
-			{1, 1, 1, 1}
+		shape = new char[][] {
+			{'O','O','O','O'}
 		};
 		color = Color.CYAN;
 	}

@@ -68,7 +68,7 @@ public class GameUI extends JFrame {
         pane.setText("test");
         pane.setEditable(false);
         f1 = new Font("monospaced", Font.BOLD,this.getHeight()/38);  //폰트 사이즈 화면크기에 맞게 조정
-        pane.setBounds(10,10,this.getWidth()/2,this.getHeight()*4/5);      // 변화하는 화면 크기에 사이즈 조정
+        pane.setBounds(10,10,this.getWidth()/2,this.getHeight()*4/5);      // 변화하는 화면 크기에 맞춰 사이즈 조정
         mainPanel.add(pane);
 
         pane.setBackground(Color.BLACK);
@@ -102,7 +102,7 @@ public class GameUI extends JFrame {
         btn.setBounds(300,300,100,20);
         mainPanel.add(btn);
 
-        btn.addActionListener(new ActionListener(){             // 키보드와 연동되도록
+        btn.addActionListener(new ActionListener(){             //다른 키로 변경
             public void actionPerformed(ActionEvent e) {
                     System.out.println("버튼이 클릭되었습니다.");
             }
@@ -129,12 +129,11 @@ public class GameUI extends JFrame {
 
         this.getContentPane().add(mainPanel);
 
-
         instance = this;
 
         GameManager_NormalMode.getInstance().startGameFramework();
         //GameManager_NormalMode.getInstance().stopGameFramework();
-        BlockGenerator.getInstance().createBlock(); //블록 미리보기 가져오기 어떻게??
+        BlockGenerator.getInstance().getBlock(); //블록 미리보기 가져오기 어떻게??
         ScreenSize.getInstance().getWidth();
         ScreenSize.getInstance().getHeight();
 
@@ -144,13 +143,11 @@ public class GameUI extends JFrame {
                 SaveAndLoad.SaveSetting();
             }
         });
-
-
     }
 
     void setBtn(){
         JButton buttons = new JButton("다음으로 넘어가기2");
-        buttons.setBounds(400,400,50,50);
+        buttons.setBounds(300,300,50,50);
         mainPanel.add(buttons);
 
         //다음으로 넘어가는 event
@@ -165,7 +162,7 @@ public class GameUI extends JFrame {
 
 }
 
-/* pause 버튼 키보드 연동되도록
+/*
     컴포넌트 위치
     블록 미리보기와 연결
     점수와 연결

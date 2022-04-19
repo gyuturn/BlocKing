@@ -1,6 +1,5 @@
 package scoreBoard.NoItemScoreBoard;
 
-import scoreBoard.ScoreList;
 import scoreBoard.User;
 import setting.SaveAndLoad;
 import setting.ScreenSize;

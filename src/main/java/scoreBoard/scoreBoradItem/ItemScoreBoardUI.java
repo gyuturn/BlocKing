@@ -1,6 +1,6 @@
 package scoreBoard.scoreBoradItem;
 
-import scoreBoard.ScoreList;
+import scoreBoard.NoItemScoreBoard.ScoreList;
 import setting.SaveAndLoad;
 import setting.ScreenSize;
 import start.StartUI;
@@ -17,7 +17,7 @@ public class ItemScoreBoardUI extends JFrame{
 
     private JPanel mainPanel;
     private ScreenSize screenSize = ScreenSize.getInstance();
-    private ScoreList scoreList = ScoreList.getInstance();
+    private ItemScoreList scoreList = ItemScoreList.getInstance();
     //각 label 및 텍스트 위치 설정 (배경 크기 기준)
     private int height = screenSize.getHeight();
     private int width = screenSize.getWidth();

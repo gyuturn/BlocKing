@@ -1,5 +1,7 @@
 import scoreBoard.NoItemScoreBoard.ScoreInputUI;
+import scoreBoard.scoreBoradItem.ItemScoreInputUI;
 import setting.SaveAndLoad;
+import start.StartUI;
 
 import javax.swing.*;
 
@@ -28,8 +30,7 @@ public class Play {
             public void run() {
                 //저장 값 불러오기
                 SaveAndLoad.LoadSetting();
-//                new StartUI();
-                new ScoreInputUI(20,"easy");
+                new StartUI();
             }
         });
 

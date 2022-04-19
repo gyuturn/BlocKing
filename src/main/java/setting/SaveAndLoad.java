@@ -3,9 +3,9 @@ package setting;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
-import scoreBoard.ScoreList;
+import scoreBoard.NoItemScoreBoard.ScoreList;
 import scoreBoard.User;
+import scoreBoard.scoreBoradItem.ItemScoreList;
 
 import java.io.*;
 import java.util.HashMap;
@@ -14,6 +14,7 @@ import java.util.List;
 public class SaveAndLoad {
     private static ScreenSize screenSize = ScreenSize.getInstance();
     private static ScoreList scoreList = ScoreList.getInstance();
+    private static ItemScoreList itemScoreList = ItemScoreList.getInstance();
     private static KeySetting keySetting = KeySetting.getInstance();
 
 
@@ -34,7 +35,7 @@ public class SaveAndLoad {
         keySettingJson.put("stop", keySetting.getStop());
         keySettingJson.put("escape", keySetting.getEscape());
 
-        //스코어보드
+        //스코어보드(item모드 없음)
         List<User> list = scoreList.getList();
         JSONObject scoreBoardJson = new JSONObject();
         int size = list.size();
@@ -46,6 +47,21 @@ public class SaveAndLoad {
             scoreBoardJson.put("name"+i, list.get(i).getName());
             scoreBoardJson.put("score"+i, list.get(i).getScore());
             scoreBoardJson.put("mode"+i, list.get(i).getMode());
+        }
+
+        //스코어보드(item모드)
+        List<User> listForItem = itemScoreList.getList();
+        JSONObject scoreBoardItemJson = new JSONObject();
+        System.out.println("itemScoreList = " + itemScoreList);
+        int sizeForItemList = listForItem.size();
+        //10개 까지만 저장
+        if(sizeForItemList>=10){
+            sizeForItemList=10;
+        }
+        for (int i=0;i<sizeForItemList;i++){
+            scoreBoardItemJson.put("name"+i, listForItem.get(i).getName());
+            scoreBoardItemJson.put("score"+i, listForItem.get(i).getScore());
+            scoreBoardItemJson.put("mode"+i, listForItem.get(i).getMode());
         }
 
         try{
@@ -66,6 +82,13 @@ public class SaveAndLoad {
             scoreListFile.write(scoreBoardJson.toJSONString());
             scoreListFile.flush();
             scoreListFile.close();
+
+            //Item스코어리스트 10개까지 저장
+            FileWriter ItemScoreListFile = new FileWriter("src/main/java/save/ItemScoreList.json");
+            ItemScoreListFile.write(scoreBoardItemJson.toJSONString());
+            ItemScoreListFile.flush();
+            ItemScoreListFile.close();
+
 
 
         } catch (IOException e) {
@@ -96,6 +119,20 @@ public class SaveAndLoad {
 
             }
             scoreList.sortDescByScore();
+
+            //Item스코어 보드 load
+            InputStream getItemScoreBoard = new FileInputStream("src/main/java/save/ItemScoreList.json");
+            HashMap<String,Object> ItemscoreBoardMap = new ObjectMapper().readValue(getItemScoreBoard, HashMap.class);
+            System.out.println("scoreBoardMap = " + ItemscoreBoardMap.size());
+            int ItemListSize = ItemscoreBoardMap.size()/3;
+            if (ItemListSize >= 10) {
+                ItemListSize=10;
+            }
+            for (int i = 0; i < ItemListSize; i++) {
+                itemScoreList.push(new User((String) ItemscoreBoardMap.get("name" + i), (Integer) ItemscoreBoardMap.get("score" + i), (String)ItemscoreBoardMap.get("mode" + i)));
+
+            }
+            itemScoreList.sortDescByScore();
 
             //keySetting Load
             InputStream getKeySetting = new FileInputStream("src/main/java/save/KeySetting.json");

@@ -103,7 +103,8 @@ public class SaveAndLoad {
             int turnBlock = (Integer)getKeySettingMap.get("turnBlock");
             int stop = (Integer)getKeySettingMap.get("stop");
             int oneTimeDown = (Integer)getKeySettingMap.get("oneTimeDown");
-            keySetting.setKeySetting(left,right,turnBlock,downBlock,stop,oneTimeDown);
+            int escape = (Integer)getKeySettingMap.get("escape");
+            keySetting.setKeySetting(left,right,turnBlock,downBlock,stop,oneTimeDown,escape);
 
 
 

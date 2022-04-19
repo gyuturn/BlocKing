@@ -1,5 +1,6 @@
 package scoreBoard;
 
+import setting.SaveAndLoad;
 import setting.ScreenSize;
 import start.StartUI;
 
@@ -8,6 +9,8 @@ import javax.swing.border.CompoundBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class ScoreBoardAfterInputUI extends JFrame {
 
@@ -46,6 +49,14 @@ public class ScoreBoardAfterInputUI extends JFrame {
 
         showScoreList(user);
         showInputBtn();
+
+
+        //종료 시 현재 setting값 저장
+        this.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent event) {
+                SaveAndLoad.SaveSetting();
+            }
+        });
 
 
 

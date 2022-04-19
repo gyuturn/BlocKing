@@ -1,6 +1,7 @@
 package scoreBoard;
 
 import setting.FixSizeUI;
+import setting.SaveAndLoad;
 import setting.ScreenSize;
 import setting.SettingUI;
 import start.StartUI;
@@ -11,6 +12,8 @@ import javax.swing.border.CompoundBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class ScoreBoardUI extends JFrame{
 
@@ -48,6 +51,14 @@ public class ScoreBoardUI extends JFrame{
 
         showScoreListForStartMenu();
         showBackToStartBtn();
+
+        //종료 시 현재 setting값 저장
+        this.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent event) {
+                SaveAndLoad.SaveSetting();
+            }
+        });
+
     }
 
 
@@ -117,10 +128,12 @@ public class ScoreBoardUI extends JFrame{
         backToStartBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new SettingUI();
+                new StartUI();
                 setVisible(false);
             }
         });
+
+
 
     }
 

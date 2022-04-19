@@ -4,6 +4,7 @@ import game.manager.BoardManager;
 import game.manager.InGameUIManager;
 //import setting.FixSize;
 //import setting.MainSetting;
+import setting.SaveAndLoad;
 import game.manager.gametype.GameManager_NormalMode;
 import setting.ScreenSize;
 import setting.SettingUI;
@@ -16,8 +17,11 @@ import javax.swing.text.StyledDocument;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+
 
 
 public class GameUI extends JFrame {
@@ -133,6 +137,14 @@ public class GameUI extends JFrame {
         BlockGenerator.getInstance().createBlock(); //블록 미리보기 가져오기 어떻게??
         ScreenSize.getInstance().getWidth();
         ScreenSize.getInstance().getHeight();
+
+        //종료 시 현재 setting값 저장
+        this.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent event) {
+                SaveAndLoad.SaveSetting();
+            }
+        });
+
 
     }
 

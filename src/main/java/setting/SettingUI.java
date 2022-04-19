@@ -3,6 +3,7 @@ package setting;
 import game.GameUI;
 import scoreBoard.ScoreBoardUI;
 import scoreBoard.ScoreList;
+import start.StartUI;
 
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
@@ -20,8 +21,13 @@ public class SettingUI extends JFrame {
     private ScreenSize screenSize = ScreenSize.getInstance();
     private JButton[] buttons = new JButton[6];
     private ScoreList scoreList = ScoreList.getInstance();
+    private KeySetting keySetting = KeySetting.getInstance();
 
-    private final String settingList[] = {"화면사이즈 조절", "게임 조작 키 설정", "스코어보드 초기화", "색맹모드", "모든 설정 기본으로 돌리기","스코어 보드"};  //스코어 보드는 테스트용 -> 실제는 게임 시작화면에 있어야함
+    ImageIcon titleImg1 = new ImageIcon("./src/main/java/start/img/title1.png");
+    ImageIcon titleImg2 = new ImageIcon("./src/main/java/start/img/title2.png");
+    ImageIcon titleImg3 = new ImageIcon("./src/main/java/start/img/title3.png");
+
+    private final String settingList[] = {"화면사이즈 조절", "게임 조작 키 설정", "스코어보드 초기화", "색맹모드", "모든 설정 기본으로 돌리기","시작메뉴"};  //스코어 보드는 테스트용 -> 실제는 게임 시작화면에 있어야함
 
 
     public SettingUI(){
@@ -49,7 +55,7 @@ public class SettingUI extends JFrame {
 //        setLabel();
 //        backBtn();
 
-        //종료 시 현재 setting 및 scoreBoard 저장
+        //종료 시 현재 setting값 저장
         this.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent event) {
                 SaveAndLoad.SaveSetting();
@@ -60,7 +66,19 @@ public class SettingUI extends JFrame {
     }
 
     private void setTitle() {
+        JButton titleBtn;
+        if(screenSize.getWidth() == 400){
+            titleBtn = new JButton(titleImg1);
+        }
+        else if(screenSize.getWidth() == 600){
+            titleBtn = new JButton(titleImg2);
+        }
+        else{
+            titleBtn = new JButton(titleImg3);
+        }
+        titleBtn.setBackground(Color.BLACK);
 
+        mainPanel.add(titleBtn);
     }
 
     public void backBtn(){
@@ -92,7 +110,7 @@ public class SettingUI extends JFrame {
         GridLayout gridLayout=new GridLayout( 6,1);
         btnPanel.setLayout(gridLayout);
         btnPanel.setBackground(Color.BLACK);
-        btnPanel.setBorder(BorderFactory.createEmptyBorder(screenSize.getHeight()/2,0,0,0));
+        btnPanel.setBorder(BorderFactory.createEmptyBorder(screenSize.getHeight()/4,0,0,0));
 
 
 
@@ -112,6 +130,15 @@ public class SettingUI extends JFrame {
             }
         });
 
+        //화면사이즈 조절 event
+        buttons[1].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new KeySettingUI();
+                setVisible(false);
+            }
+        });
+
         //스코어 보드 기록 초기화
         buttons[2].addActionListener(new ActionListener() {
             @Override
@@ -120,9 +147,6 @@ public class SettingUI extends JFrame {
                 if(result==0){
                     scoreList.deleteAll();
                 }
-
-
-
             }
         });
 
@@ -135,6 +159,8 @@ public class SettingUI extends JFrame {
                     screenSize.setWidth(400);
                     screenSize.setHeight(500);
 
+                    keySetting.resetDefault();
+
                     setVisible(false);
                     new SettingUI();
                 }
@@ -143,11 +169,11 @@ public class SettingUI extends JFrame {
 
 
 
-        //스코어 보드 event--test용
+        //시작메뉴로
         buttons[5].addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new ScoreBoardUI();
+                new StartUI();
                 setVisible(false);
             }
         });

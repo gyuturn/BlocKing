@@ -304,13 +304,19 @@ public class GameManager_NormalMode extends GameManager {
 
         @Override
         public void keyPressed(KeyEvent e) {
-            if (keySetting.getStop() == e.getKeyCode()) {
+            if(keySetting.getStop() == e.getKeyCode()) {
                 BoardManager.getInstance().printBoard();
                 if(timer.isRunning())
                     stopGameFramework();
                 else
                     restartGameFramework();
             }
+            /*
+            if(keySetting.getEscape() == e.getKeyCode()) {
+                new StartUI();
+            }
+            */
+            
         }
 
 		@Override

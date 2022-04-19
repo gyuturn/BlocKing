@@ -13,7 +13,6 @@ import game.manager.BoardManager;
 import game.manager.GameManager;
 import game.manager.InGameUIManager;
 import game.model.BlockController;
-import javafx.scene.layout.Background;
 import setting.KeySetting;
 
 public class GameManager_NormalMode extends GameManager {
@@ -112,7 +111,8 @@ public class GameManager_NormalMode extends GameManager {
 
     public Step createNewBlock() {
         BlockGenerator.getInstance().addBlock();
-        BlockGenerator.getInstance().createBlock();
+        curBlock = BlockGenerator.getInstance().createBlock();
+        InGameUIManager.getInstance().drawNextBlockInfo(BlockGenerator.getInstance().blockQueue.peek());
         blockCount++;
 
         return Step.BlockMove;
@@ -191,7 +191,7 @@ public class GameManager_NormalMode extends GameManager {
         InGameUIManager.getInstance().drawBoard();
     }
 
-    private void printStatus() {
+    protected void printStatus() {
         System.out.printf("\n");
         System.out.printf("score : %d \n", score);
         System.out.printf("curSpeed : %d\n\n", curSpeed);
@@ -218,7 +218,7 @@ public class GameManager_NormalMode extends GameManager {
 
 //#region Utils
 
-    private void setTimeScale(int scale) {
+    protected void setTimeScale(int scale) {
 
         timer.stop();
 
@@ -304,13 +304,19 @@ public class GameManager_NormalMode extends GameManager {
 
         @Override
         public void keyPressed(KeyEvent e) {
-            if (keySetting.getStop() == e.getKeyCode()) {
+            if(keySetting.getStop() == e.getKeyCode()) {
                 BoardManager.getInstance().printBoard();
                 if(timer.isRunning())
                     stopGameFramework();
                 else
                     restartGameFramework();
             }
+            /*
+            if(keySetting.getEscape() == e.getKeyCode()) {
+                new StartUI();
+            }
+            */
+            
         }
 
 		@Override

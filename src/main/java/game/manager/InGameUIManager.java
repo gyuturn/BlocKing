@@ -1,6 +1,7 @@
 package game.manager;
 
 import game.GameUI;
+import game.model.BlockController;
 
 import javax.swing.*;
 import javax.swing.text.StyledDocument;
@@ -31,4 +32,28 @@ public class InGameUIManager {
 
         //System.out.println("Log : Draw Board");
     }
+
+    public void drawNextBlockInfo(BlockController nextBlock) {
+        StringBuffer sb = new StringBuffer();
+        for(int i=0; i< nextBlock.height(); i++)
+        {
+            for(int j=0; j< nextBlock.width(); j++)
+            {
+                char curText = nextBlock.shape[i][j];
+                sb.append(curText);
+            }
+            sb.append('\n');
+        }
+
+        JTextPane pane = GameUI.getInstance().nextBlockPane;
+        pane.setText(sb.toString());
+        StyledDocument doc = pane.getStyledDocument();
+        //doc.setParagraphAttributes(0, doc.getLength(), styleSet, false);
+        pane.setStyledDocument(doc);
+
+    }
+    public void moveScene(){
+
+    }
+
 }

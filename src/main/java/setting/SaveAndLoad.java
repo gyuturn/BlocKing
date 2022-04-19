@@ -32,6 +32,7 @@ public class SaveAndLoad {
         keySettingJson.put("turnBlock", keySetting.getTurnBlock());
         keySettingJson.put("oneTimeDown", keySetting.getOneTimeDown());
         keySettingJson.put("stop", keySetting.getStop());
+        keySettingJson.put("escape", keySetting.getEscape());
 
         //스코어보드
         List<User> list = scoreList.getList();

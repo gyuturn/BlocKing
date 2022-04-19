@@ -150,7 +150,7 @@ public class ScoreBoardUI extends JFrame{
 
         scorePanel = new JPanel();
         scorePanel.setBackground(Color.BLACK);
-        GridLayout gridLayout = new GridLayout(listToIndex+3, 2,1,height/30);
+        GridLayout gridLayout = new GridLayout(listToIndex+4, 2,1,height/30);
         scorePanel.setLayout(gridLayout);
         scorePanel.setBorder(BorderFactory.createEmptyBorder(10, 70, 10, 0));
 
@@ -167,6 +167,10 @@ public class ScoreBoardUI extends JFrame{
         scoreLabel.setForeground(Color.WHITE);
         scorePanel.add(scoreLabel);
 
+        JLabel modeLabel = new JLabel("MODE");
+        modeLabel.setForeground(Color.WHITE);
+        scorePanel.add(modeLabel);
+
 
 
         for (int i = 0; i < listToIndex; i++) {
@@ -176,6 +180,10 @@ public class ScoreBoardUI extends JFrame{
             scorePanel.add(userNameLabel);
 
             JLabel userScoreLabel = new JLabel(Integer.toString(scoreList.getList().get(i).getScore()));
+            userScoreLabel.setForeground(Color.WHITE);
+            scorePanel.add(userScoreLabel);
+
+            JLabel userModeLabel = new JLabel(Integer.toString(scoreList.getList().get(i).getScore()));
             userScoreLabel.setForeground(Color.WHITE);
             scorePanel.add(userScoreLabel);
         }

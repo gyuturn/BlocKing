@@ -21,6 +21,8 @@ public class KeySetting {
 
     private int oneTimeDown;
 
+    private static int keyLength;
+
     public KeySetting() {
         this.left = 37;
         this.right = 39;
@@ -37,6 +39,19 @@ public class KeySetting {
         this.downBlock = 40;
         this.stop = 84;
         this.oneTimeDown = 32;
+    }
+
+    //key 중복값 있는지 확인
+    public boolean overLapKeySetting(){
+        int left = this.left;
+        int right=this.right;
+        int turnBlock = this.turnBlock;
+        int downBlock = this.downBlock;
+        int oneTimeDown = this.oneTimeDown;
+        int stop = this.stop;
+
+        return false;
+
     }
 
     public static KeySetting getKeySetting() {
@@ -77,10 +92,27 @@ public class KeySetting {
     }
 
 
+    public void setLeft(int left) {
+        this.left = left;
+    }
 
+    public void setRight(int right) {
+        this.right = right;
+    }
 
+    public void setTurnBlock(int turnBlock) {
+        this.turnBlock = turnBlock;
+    }
 
+    public void setDownBlock(int downBlock) {
+        this.downBlock = downBlock;
+    }
 
+    public void setStop(int stop) {
+        this.stop = stop;
+    }
 
-
+    public void setOneTimeDown(int oneTimeDown) {
+        this.oneTimeDown = oneTimeDown;
+    }
 }

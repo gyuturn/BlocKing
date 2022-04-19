@@ -1,19 +1,15 @@
 package start;
 
 import game.GameUI;
-import game.manager.gametype.GameManager_NormalMode;
-import scoreBoard.ScoreBoardUI;
+import scoreBoard.NoItemScoreBoard.ScoreBoardUI;
+import setting.SaveAndLoad;
 import setting.ScreenSize;
 import setting.SettingUI;
 
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.KeyAdapter;
+import java.awt.event.*;
 
 import static start.IsButtonClicked.btnClicked;
 
@@ -227,7 +223,12 @@ public class StartUI extends JFrame {
             }
         });
 
-
+        //종료 시 현재 setting값 저장
+        this.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent event) {
+                SaveAndLoad.SaveSetting();
+            }
+        });
 
 
 

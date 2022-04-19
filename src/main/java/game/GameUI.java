@@ -4,6 +4,7 @@ import game.manager.BoardManager;
 import game.manager.InGameUIManager;
 //import setting.FixSize;
 //import setting.MainSetting;
+import game.model.BlockController;
 import setting.SaveAndLoad;
 import game.manager.gametype.GameManager_NormalMode;
 import setting.ScreenSize;
@@ -32,7 +33,7 @@ public class GameUI extends JFrame {
 
     private JTextPane scorePane;
 
-    private JTextPane nextBlockPane;
+    public JTextPane nextBlockPane;
 
     private JButton btn;
 
@@ -64,6 +65,7 @@ public class GameUI extends JFrame {
         mainPanel.setLayout(null);
         mainPanel.setBackground(Color.CYAN);
 
+        //보드 UI 부분
         pane = new JTextPane();
         pane.setText("test");
         pane.setEditable(false);
@@ -87,6 +89,7 @@ public class GameUI extends JFrame {
         nextBlockPane.setBackground(Color.BLACK);
         nextBlockPane.setForeground(Color.WHITE);
         nextBlockPane.setBorder(border);
+        nextBlockPane.setFont(f1);
         nextBlockPane.setBounds(this.getWidth()*5/8,10,this.getWidth()/4,this.getWidth()/4);
         mainPanel.add(nextBlockPane);
 
@@ -94,6 +97,9 @@ public class GameUI extends JFrame {
         scorePane.setText("점    수");
         scorePane.setEditable(false);
         scorePane.setBounds(this.getWidth()*5/8,20+this.getWidth()/4,this.getWidth()/4,this.getWidth()/8);
+
+
+
         mainPanel.add(scorePane);
 
 
@@ -132,8 +138,10 @@ public class GameUI extends JFrame {
         instance = this;
 
         GameManager_NormalMode.getInstance().startGameFramework();
-        //GameManager_NormalMode.getInstance().stopGameFramework();
-        BlockGenerator.getInstance().getBlock(); //블록 미리보기 가져오기 어떻게??
+
+        //InGameUIManager.getInstance().drawNextBlockInfo(BlockGenerator.getInstance().blockQueue.peek()); //블록 미리보기 가져오기 어떻게??
+
+        //화면크기 유지
         ScreenSize.getInstance().getWidth();
         ScreenSize.getInstance().getHeight();
 

@@ -39,19 +39,18 @@ public class InGameUIManager {
         {
             for(int j=0; j< nextBlock.width(); j++)
             {
-                int curText = nextBlock.shape[i][j];
+                char curText = nextBlock.shape[i][j];
                 sb.append(curText);
             }
             sb.append('\n');
         }
 
-        JTextPane pane = GameUI.getInstance().pane;
+        JTextPane pane = GameUI.getInstance().nextBlockPane;
         pane.setText(sb.toString());
         StyledDocument doc = pane.getStyledDocument();
         //doc.setParagraphAttributes(0, doc.getLength(), styleSet, false);
         pane.setStyledDocument(doc);
 
-        //System.out.println("Log : Draw Board");
     }
     public void moveScene(){
 

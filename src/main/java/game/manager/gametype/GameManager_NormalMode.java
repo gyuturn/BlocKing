@@ -113,6 +113,7 @@ public class GameManager_NormalMode extends GameManager {
     public Step createNewBlock() {
         BlockGenerator.getInstance().addBlock();
         BlockGenerator.getInstance().createBlock();
+        InGameUIManager.getInstance().drawNextBlockInfo(BlockGenerator.getInstance().blockQueue.peek());
         blockCount++;
 
         return Step.BlockMove;

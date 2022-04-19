@@ -39,10 +39,10 @@ public class FixSizeUI extends JFrame {
     }
     private void setTitle() {
         JButton titleBtn;
-        if(screenSize.getWidth() == 400){
+        if(screenSize.getWidth() == 800){
             titleBtn = new JButton(titleImg1);
         }
-        else if(screenSize.getWidth() == 600){
+        else if(screenSize.getWidth() == 1024){
             titleBtn = new JButton(titleImg2);
         }
         else{

@@ -45,6 +45,7 @@ public class SaveAndLoad {
         for (int i=0;i<size;i++){
             scoreBoardJson.put("name"+i, list.get(i).getName());
             scoreBoardJson.put("score"+i, list.get(i).getScore());
+            scoreBoardJson.put("mode"+i, list.get(i).getMode());
         }
 
         try{
@@ -86,12 +87,13 @@ public class SaveAndLoad {
             InputStream getScoreBoard = new FileInputStream("src/main/java/save/ScoreList.json");
             HashMap<String,Object> scoreBoardMap = new ObjectMapper().readValue(getScoreBoard, HashMap.class);
             System.out.println("scoreBoardMap = " + scoreBoardMap.size());
-            int size = scoreBoardMap.size()/2;
+            int size = scoreBoardMap.size()/3;
             if (size >= 10) {
                 size=10;
             }
             for (int i = 0; i < size; i++) {
-                scoreList.push(new User((String) scoreBoardMap.get("name" + i), (Integer) scoreBoardMap.get("score" + i)));
+                scoreList.push(new User((String) scoreBoardMap.get("name" + i), (Integer) scoreBoardMap.get("score" + i), (String)scoreBoardMap.get("mode" + i)));
+
             }
             scoreList.sortDescByScore();
 

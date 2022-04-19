@@ -1,5 +1,7 @@
-package scoreBoard;
+package scoreBoard.NoItemScoreBoard;
 
+
+import scoreBoard.User;
 
 import java.util.ArrayList;
 import java.util.Collections;

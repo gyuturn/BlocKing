@@ -14,12 +14,24 @@ import java.util.List;
 public class SaveAndLoad {
     private static ScreenSize screenSize = ScreenSize.getInstance();
     private static ScoreList scoreList = ScoreList.getInstance();
+    private static KeySetting keySetting = KeySetting.getInstance();
+
 
     public static void SaveSetting(){
-        JSONObject screenSizeJson = new JSONObject();
+
         //화면
+        JSONObject screenSizeJson = new JSONObject();
         screenSizeJson.put("width", screenSize.getWidth());
         screenSizeJson.put("height", screenSize.getHeight());
+
+        //keySetting 저장
+        JSONObject keySettingJson = new JSONObject();
+        keySettingJson.put("left", keySetting.getLeft());
+        keySettingJson.put("right", keySetting.getRight());
+        keySettingJson.put("downBlock", keySetting.getDownBlock());
+        keySettingJson.put("turnBlock", keySetting.getTurnBlock());
+        keySettingJson.put("oneTimeDown", keySetting.getOneTimeDown());
+        keySettingJson.put("stop", keySetting.getStop());
 
         //스코어보드
         List<User> list = scoreList.getList();
@@ -40,6 +52,12 @@ public class SaveAndLoad {
             screenSizeFile.write(screenSizeJson.toJSONString());
             screenSizeFile.flush();
             screenSizeFile.close();
+
+            //keySetting json 파일에 저장
+            FileWriter keySettingFile = new FileWriter("src/main/java/save/KeySetting.json");
+            keySettingFile.write(keySettingJson.toJSONString());
+            keySettingFile.flush();
+            keySettingFile.close();
 
             //스코어리스트 10개까지 저장
             FileWriter scoreListFile = new FileWriter("src/main/java/save/ScoreList.json");
@@ -83,6 +101,17 @@ public class SaveAndLoad {
                 scoreList.push(new User((String) scoreBoardMap.get("name" + i), (Integer) scoreBoardMap.get("score" + i)));
             }
             scoreList.sortDescByScore();
+
+            //keySetting Load
+            InputStream getKeySetting = new FileInputStream("src/main/java/save/KeySetting.json");
+            HashMap<String,Object> getKeySettingMap = new ObjectMapper().readValue(getKeySetting, HashMap.class);
+            int left = (Integer)getKeySettingMap.get("left");
+            int right = (Integer)getKeySettingMap.get("right");
+            int downBlock = (Integer)getKeySettingMap.get("downBlock");
+            int turnBlock = (Integer)getKeySettingMap.get("turnBlock");
+            int stop = (Integer)getKeySettingMap.get("stop");
+            int oneTimeDown = (Integer)getKeySettingMap.get("oneTimeDown");
+            keySetting.setKeySetting(left,right,turnBlock,downBlock,stop,oneTimeDown);
 
 
 

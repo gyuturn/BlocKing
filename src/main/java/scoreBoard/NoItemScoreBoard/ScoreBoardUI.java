@@ -152,7 +152,7 @@ public class ScoreBoardUI extends JFrame{
         scorePanel.setBorder(BorderFactory.createEmptyBorder(10, 70, 10, 0));
 
 
-        JLabel titleLabel = new JLabel("   스코어 리스트");
+        JLabel titleLabel = new JLabel("   스코어 리스트(일반모드)");
         titleLabel.setForeground(Color.WHITE);
         scorePanel.add(titleLabel);
         scorePanel.add(new JLabel(" "));

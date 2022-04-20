@@ -235,6 +235,12 @@ public class GameManager_NormalMode extends GameManager {
         timer.start();
     }
 
+    @Override
+    protected void initGameStatus() {
+
+        
+    }
+
 //#endregion
 
 //#region Interaction

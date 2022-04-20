@@ -8,6 +8,8 @@ import java.awt.event.KeyListener;
 import javax.swing.Timer;
 
 import game.GameUI;
+import game.manager.GameInfoManager.GameDifficulty;
+import game.manager.GameInfoManager.GameMode;
 import game.manager.gametype.GameManager_NormalMode;
 import game.model.BlockController;
 import setting.KeySetting;
@@ -36,15 +38,20 @@ public abstract class GameManager {
 
 //#region difficulty
 
-    protected static int maxSpeed = 100000;
-    protected static int basicSpeed = 100;
-    protected static int curSpeed = 100;
+    protected static int maxSpeed = 1000000;
+    protected static int basicSpeed = 1000;
+    protected static int curSpeed = 1000;
     protected static int timeScale = 1000;
+
+    protected static int addSpeed = 0;
 
 //#endregion
 
 
 //#region status
+
+    protected GameMode mode;
+    protected GameDifficulty difficulty;
 
     protected int blockCount = 0;
     protected int lineCount = 0;
@@ -54,6 +61,8 @@ public abstract class GameManager {
     public BlockController getCurBlock() {
         return curBlock;
     }
+
+    protected abstract void initGameStatus();
     
 //#endregion
 

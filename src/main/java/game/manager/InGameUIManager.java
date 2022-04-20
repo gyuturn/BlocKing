@@ -45,29 +45,35 @@ public class InGameUIManager {
 
         JTextPane pane = GameUI.getInstance().pane;
         StyledDocument doc = pane.getStyledDocument();
-        
-        int offset;
-        String color ="";
 
+        //Set Text
         StringBuffer sb = new StringBuffer();
+
         for(int i=0; i<22; i++)
         {
             for(int j=0; j<12; j++)
             {
                 char curText = BoardManager.getInstance().board[i][j];
                 sb.append(curText);
+            }
+            sb.append('\n');
+        }
+        pane.setText(sb.toString());
 
-                offset = 10 * i + j + 1;
+        //Set Color
+        int offset;
+        String color ="";
+
+        for(int i=0; i<22; i++)
+        {
+            for(int j=0; j<12; j++)
+            {
+                offset = 13 * i + j;
                 color += BoardManager.getInstance().boardColor[i][j];
                 doc.setCharacterAttributes(offset, 1, pane.getStyle(color), true);
                 color = "";
             }
-            sb.append('\n');
         }
-
-        pane.setText(sb.toString());
-        pane.setStyledDocument(doc);
-
     }
 
     public void drawNextBlockInfo(BlockController nextBlock) {

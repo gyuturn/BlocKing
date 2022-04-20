@@ -11,8 +11,11 @@ public class ZBlock extends BlockController{
 			{'O', 'O', ' '},
 			{' ', 'O', 'O'}
 		};
-		color = Color.RED;
-		color_colorBlindMode = Color.RED;
+		
+		color_basic = 'R';
+		color_blindMode = 'R';
+
+		color_current = 'R';
 	}
     
 }

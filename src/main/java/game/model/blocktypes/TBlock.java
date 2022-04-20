@@ -11,8 +11,10 @@ public class TBlock extends BlockController{
 			{' ', 'O', ' '},
 			{'O', 'O', 'O'}
 		};
-		color = Color.MAGENTA;
-		color_colorBlindMode = Color.GRAY;
+		color_basic = 'M';
+		color_blindMode = 'A';
+
+		color_current = 'M';
 	}
     
 }

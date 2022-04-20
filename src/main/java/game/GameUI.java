@@ -203,6 +203,7 @@ public class GameUI extends JFrame {
         javax.swing.text.Style style9 = pane.addStyle("W", null);
         javax.swing.text.Style style10 = pane.addStyle("C", null);
         javax.swing.text.Style style11 = pane.addStyle("M", null);
+        javax.swing.text.Style style12 = pane.addStyle("D", null);
 
         //색깔 설정
         StyleConstants.setForeground(style1, Color.RED);
@@ -216,6 +217,7 @@ public class GameUI extends JFrame {
         StyleConstants.setForeground(style9, Color.WHITE);
         StyleConstants.setForeground(style10, Color.CYAN);
         StyleConstants.setForeground(style11, Color.MAGENTA);
+        StyleConstants.setForeground(style12, Color.DARK_GRAY);
     }
 
 }

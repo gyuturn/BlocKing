@@ -8,12 +8,12 @@ public abstract class BlockController extends BlockModel {
 		return shape[row][col];
 	}
 	
-	public Color getColor() {
-		return color;
+	public char getColor() {
+		return color_current;
 	}
 
-	public Color getColor_blindMode() {
-		return color_colorBlindMode;
+	public char getColor_blindMode() {
+		return color_blindMode;
 	}
 	
 	public void rotate() {

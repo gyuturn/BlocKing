@@ -11,8 +11,10 @@ public class SBlock extends BlockController{
 			{' ', 'O', 'O'},
 			{'O', 'O', ' '}
 		};
-		color = Color.GREEN;
-		color_colorBlindMode = Color.BLUE;
+		color_basic = 'G';
+		color_blindMode = 'B';
+
+		color_current = 'G';
 	}
     
 }

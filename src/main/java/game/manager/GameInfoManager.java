@@ -17,7 +17,7 @@ public class GameInfoManager {
     }
 
     private GameInfoManager() {
-
+        initTypeData();
     }
 
 //#endregion
@@ -80,7 +80,7 @@ public class GameInfoManager {
             1
         );
         
-        difficultiesMap.put(GameDifficulty.Easy, hard);
+        difficultiesMap.put(GameDifficulty.Hard, hard);
     }
 
 //#endregion

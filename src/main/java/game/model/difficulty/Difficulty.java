@@ -33,4 +33,19 @@ public class Difficulty {
             this.perTBlock = perTBlock;
             this.perZBlock = perZBlock;
     }
+
+    public double getSum(){
+        return this.perIBlock + this.perJBlock + this.perLBlock + this.perOBlock + this.perSBlock + this.perTBlock
+                + this.perZBlock;
+    }
+
+    public double getPerIBlock() {
+        return perIBlock;
+    }
+
+    public double getPerOBlock() {
+        return perOBlock;
+    }
+
+
 }

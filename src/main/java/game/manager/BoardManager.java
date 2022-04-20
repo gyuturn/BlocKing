@@ -174,46 +174,46 @@ public class BoardManager {
         return true;
     }
 
-    public boolean checkLeftSide(BlockController curBlock) {
-        int[] indexOfLeft = new int[curBlock.height()];
-
-        for(int i=0; i<curBlock.height(); i++) {
-            for(int j=0; j<curBlock.width(); j++) {
-                if(curBlock.shape[i][j] == 'O') {
-                    indexOfLeft[i] = j;
-                    break;
-                }
-            }
-        }
-
-        for(int i=0; i<curBlock.height(); i++) {
-            if(board[curBlock.posRow + i][curBlock.posCol + indexOfLeft[i] - 1] != ' ') {
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    public boolean checkRightSide(BlockController curBlock) {
-        int[] indexOfRight = new int[curBlock.height()];
-
-        for(int i=0; i<curBlock.height(); i++) {
-            for(int j=0; j<curBlock.width(); j++) {
-                if(curBlock.shape[i][j] == 'O') {
-                    indexOfRight[i] = j;
-                }
-            }
-        }
-
-        for(int i=0; i<curBlock.height(); i++) {
-            if(board[curBlock.posRow + i][curBlock.posCol + indexOfRight[i] + 1] != ' ') {
-                return false;
-            }
-        }
-
-        return true;
-    }
+//    public boolean checkLeftSide(BlockController curBlock) {
+//        int[] indexOfLeft = new int[curBlock.height()];
+//
+//        for(int i=0; i<curBlock.height(); i++) {
+//            for(int j=0; j<curBlock.width(); j++) {
+//                if(curBlock.shape[i][j] == 'O') {
+//                    indexOfLeft[i] = j;
+//                    break;
+//                }
+//            }
+//        }
+//
+//        for(int i=0; i<curBlock.height(); i++) {
+//            if(board[curBlock.posRow + i][curBlock.posCol + indexOfLeft[i] - 1] != ' ') {
+//                return false;
+//            }
+//        }
+//
+//        return true;
+//    }
+//
+//    public boolean checkRightSide(BlockController curBlock) {
+//        int[] indexOfRight = new int[curBlock.height()];
+//
+//        for(int i=0; i<curBlock.height(); i++) {
+//            for(int j=0; j<curBlock.width(); j++) {
+//                if(curBlock.shape[i][j] == 'O') {
+//                    indexOfRight[i] = j;
+//                }
+//            }
+//        }
+//
+//        for(int i=0; i<curBlock.height(); i++) {
+//            if(board[curBlock.posRow + i][curBlock.posCol + indexOfRight[i] + 1] != ' ') {
+//                return false;
+//            }
+//        }
+//
+//        return true;
+//    }
 //#endregion
 
 //#region Debug

@@ -10,6 +10,7 @@ import game.manager.GameInfoManager;
 import game.manager.GameManager;
 import game.manager.InGameUIManager;
 import game.model.BlockController;
+import scoreBoard.NoItemScoreBoard.ScoreInputUI;
 
 public class GameManager_BasicMode extends GameManager {
     
@@ -142,10 +143,9 @@ private Step checkGameOver() {
 
 @Override
 protected void gameOver() {
-    timer.stop();
-    while(true) {
-        System.out.println(("!!!!!!!!!!!GAME OVER!!!!!!!!!!!"));
-    }
+    stopGameFramework();
+    new ScoreInputUI(score,GameInfoManager.getInstance().difficultyToString(difficulty) );
+
 }
 
 //#endregion

@@ -17,7 +17,7 @@ public class GameInfoManager {
     }
 
     private GameInfoManager() {
-
+        initTypeData();
     }
 
 //#endregion
@@ -35,11 +35,16 @@ public class GameInfoManager {
         Hard
     }
 
+    public GameMode mode = GameMode.BasicMode;
+    public GameDifficulty difficulty = GameDifficulty.Easy;
+
 //#endregion
 
 //#region Type Data
+
     
     public HashMap<GameDifficulty, Difficulty> difficultiesMap = new HashMap<GameDifficulty, Difficulty>();
+    public HashMap<GameDifficulty, String> difficulty_to_string = new HashMap<GameDifficulty, String>();
 
     private void initTypeData() {
 
@@ -55,6 +60,7 @@ public class GameInfoManager {
         );
         
         difficultiesMap.put(GameDifficulty.Easy, easy);
+        difficulty_to_string.put(GameDifficulty.Easy, "Easy :D");
 
         Difficulty normal = new Difficulty(
             10,
@@ -68,6 +74,7 @@ public class GameInfoManager {
         );
         
         difficultiesMap.put(GameDifficulty.Normal, normal);
+        difficulty_to_string.put(GameDifficulty.Normal, "Normal D:");
 
         Difficulty hard = new Difficulty(
             12,
@@ -80,7 +87,12 @@ public class GameInfoManager {
             1
         );
         
-        difficultiesMap.put(GameDifficulty.Easy, hard);
+        difficultiesMap.put(GameDifficulty.Hard, hard);
+        difficulty_to_string.put(GameDifficulty.Hard, "Hard D;");
+    }
+
+    public String difficultyToString(GameDifficulty difficulty) {
+        return difficulty_to_string.get(difficulty);
     }
 
 //#endregion

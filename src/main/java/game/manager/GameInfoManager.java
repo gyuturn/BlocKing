@@ -35,9 +35,13 @@ public class GameInfoManager {
         Hard
     }
 
+    public GameMode mode = GameMode.BasicMode;
+    public GameDifficulty difficulty = GameDifficulty.Easy;
+
 //#endregion
 
 //#region Type Data
+
     
     public HashMap<GameDifficulty, Difficulty> difficultiesMap = new HashMap<GameDifficulty, Difficulty>();
 

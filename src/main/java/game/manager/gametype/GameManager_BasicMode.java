@@ -6,6 +6,7 @@ import java.awt.event.KeyListener;
 import game.GameUI;
 import game.container.BlockGenerator;
 import game.manager.BoardManager;
+import game.manager.GameInfoManager;
 import game.manager.GameManager;
 import game.manager.InGameUIManager;
 
@@ -31,7 +32,7 @@ public enum Step {
     GameReady,
     
     //while !gameOver
-    CreatNewBlock,
+    CreateNewBlock,
     BlockMove,
     SetGameBalance,
     CheckLineDelete,
@@ -47,7 +48,7 @@ protected void gameFramework() { //전체적인 게임의 동작 흐름
             curStep = gameReady();
             break;
 
-        case CreatNewBlock:
+        case CreateNewBlock:
             curStep = createNewBlock();
             break;
 
@@ -76,15 +77,19 @@ private Step gameReady() {
     //게임을 준비합니다.
     initKeyListener();
     BlockGenerator.getInstance().initBlockQueue();
+    //BlockGenerator.getInstance().initBlockPer();
+    //BoardManager.getInstance().initBoard();
+    initGameStatus();
+    
 
-    return Step.CreatNewBlock;
+    return Step.CreateNewBlock;
 }
 
 public Step createNewBlock() {
     BlockGenerator.getInstance().addBlock();
     curBlock = BlockGenerator.getInstance().createBlock();
     InGameUIManager.getInstance().drawNextBlockInfo(BlockGenerator.getInstance().blockQueue.peek());
-    blockCount++;
+    onBlockCreate();
 
     return Step.BlockMove;
 }
@@ -102,18 +107,17 @@ private Step blockMove() {
 
 private Step checkLineDelete() {
     int curLineCount = BoardManager.getInstance().eraseFullLine();
-    lineCount += curLineCount;
     onLineErase(curLineCount);
 
     return Step.SetGameBalance;
 }
 
 private Step setGameBalance() {
-    curSpeed = basicSpeed + lineCount + blockCount;
+    curSpeed = basicSpeed + addSpeed * (lineCount + blockCount);
     timeScale = maxSpeed / curSpeed;
     setTimeScale(timeScale);
 
-    return Step.CreatNewBlock;
+    return Step.CreateNewBlock;
 }
 
 @Override
@@ -124,6 +128,21 @@ protected void gameOver() {
 
 //#endregion
 
+//#region init
+
+@Override
+protected void initGameStatus() {
+    blockCount = 0;
+    lineCount = 0;
+    score = 0;
+    
+    curBlock = null;
+    
+    difficulty = GameInfoManager.getInstance().difficulty; 
+    addSpeed = GameInfoManager.getInstance().difficultiesMap.get(difficulty).getAddSpeed();
+}
+
+//#endregion
 
 //#region Events
 private int onBlockMove() {
@@ -136,8 +155,18 @@ private int onLineErase(int count) {
     score += curSpeed * count * 10;
 
     if(count > 2) {
-        score += 1000;
+        score += 10000;
     }
+
+    lineCount += count;
+
+    return 0;
+}
+
+private int onBlockCreate() {
+    score += curSpeed;
+    blockCount++;
+
     return 0;
 }
 

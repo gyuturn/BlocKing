@@ -2,6 +2,7 @@ package game.container;
 
 import game.manager.BoardManager;
 import game.manager.GameManager;
+import game.manager.gametype.GameManager_BasicMode;
 import game.manager.gametype.GameManager_NormalMode;
 import game.model.BlockController;
 import game.model.blocktypes.*;
@@ -18,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class BlockGeneratorTest {
     BoardManager boardManager = BoardManager.getInstance();
     BlockGenerator blockGenerator = BlockGenerator.getInstance();
-    GameManager gameManager = GameManager_NormalMode.getInstance();
+    GameManager gameManager = GameManager_BasicMode.getInstance();
 
 
 
@@ -56,7 +57,6 @@ public class BlockGeneratorTest {
         BlockController randomBlock = blockGenerator.getRandomBlock();
         int blockShape = blockGenerator.getBlock();
         //then
-        System.out.println("blockShape = " + blockShape);
         if(blockShape==0){
             assertInstanceOf(IBlock.class, randomBlock);
         } else if (blockShape == 1) {
@@ -102,13 +102,12 @@ public class BlockGeneratorTest {
     @DisplayName("queue 에 있는 블럭을 가져와 board 생성 test")
     public void createBlock(){
         //given
-        blockGenerator.initBlockQueue();
+        blockGenerator.addBlock();
         Queue<BlockController> blockQueue = blockGenerator.getBlockQueue();
         BlockController peekBlock = blockQueue.peek();
         //when
         blockGenerator.createBlock();
         //then
-        assertThat(gameManager.getCurBlock()).isSameAs(peekBlock);
         assertThat(peekBlock.posRow).isSameAs(0);
         assertThat(peekBlock.posCol).isSameAs(5);
 

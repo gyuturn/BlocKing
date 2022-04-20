@@ -1,11 +1,13 @@
 package game;
 import game.container.BlockGenerator;
 import game.manager.BoardManager;
+import game.manager.GameManager;
 import game.manager.InGameUIManager;
 //import setting.FixSize;
 //import setting.MainSetting;
 import game.model.BlockController;
 import setting.SaveAndLoad;
+import game.manager.gametype.GameManager_BasicMode;
 import game.manager.gametype.GameManager_NormalMode;
 import setting.ScreenSize;
 import setting.SettingUI;
@@ -31,10 +33,10 @@ public class GameUI extends JFrame {
     public JTextPane pane;
     private JPanel mainPanel;
 
-    private JTextPane scorePane;
+    public JTextPane scorePane;
 
     public JTextPane nextBlockPane;
-
+    private JLabel label, scoreLabel;
     private JButton btn;
 
     private ScreenSize screenSize=ScreenSize.getInstance();
@@ -67,7 +69,7 @@ public class GameUI extends JFrame {
 
         //보드 UI 부분
         pane = new JTextPane();
-        pane.setText("test");
+        pane.setText("start!");
         pane.setEditable(false);
         f1 = new Font("monospaced", Font.BOLD,this.getHeight()/38);  //폰트 사이즈 화면크기에 맞게 조정
         pane.setBounds(10,10,this.getWidth()/2,this.getHeight()*4/5);      // 변화하는 화면 크기에 맞춰 사이즈 조정
@@ -82,39 +84,56 @@ public class GameUI extends JFrame {
                 BorderFactory.createLineBorder(Color.YELLOW, 2)
         );
 
+        // Next Block 텍스트 출력
+        label = new JLabel();
+        label.setText("Next Block");
+        label.setBackground(Color.BLACK);
+        label.setFont(f1);
+        label.setHorizontalAlignment(JLabel.CENTER);
+        label.setBounds(this.getWidth()*5/8,0,this.getWidth()/4,30);
+        mainPanel.add(label);
 
+        // Next Block 미리보기 UI 부분
         nextBlockPane = new JTextPane();
-        nextBlockPane.setText("Next");
         nextBlockPane.setEditable(false);
         nextBlockPane.setBackground(Color.BLACK);
         nextBlockPane.setForeground(Color.WHITE);
         nextBlockPane.setBorder(border);
         nextBlockPane.setFont(f1);
-        nextBlockPane.setBounds(this.getWidth()*5/8,10,this.getWidth()/4,this.getWidth()/4);
+        nextBlockPane.setBounds(this.getWidth()*5/8,30,this.getWidth()/4,this.getWidth()/8);
         mainPanel.add(nextBlockPane);
 
+        // Score 텍스트 출력
+        scoreLabel = new JLabel();
+        scoreLabel.setText("Score");
+        scoreLabel.setBackground(Color.BLACK);
+        scoreLabel.setFont(f1);
+        scoreLabel.setHorizontalAlignment(JLabel.CENTER);
+        scoreLabel.setBounds(this.getWidth()*5/8,30+this.getWidth()/4,this.getWidth()/4,30);
+        mainPanel.add(scoreLabel);
+
+        // Score UI 부분
         scorePane = new JTextPane();
-        scorePane.setText("점    수");
         scorePane.setEditable(false);
-        scorePane.setBounds(this.getWidth()*5/8,20+this.getWidth()/4,this.getWidth()/4,this.getWidth()/8);
-
-
-
+        scorePane.setFont(f1);
+        scorePane.setBackground(Color.BLACK);
+        scorePane.setForeground(Color.WHITE);
+        scorePane.setBounds(this.getWidth()*5/8,60+this.getWidth()/4,this.getWidth()/4,this.getWidth()/8);
         mainPanel.add(scorePane);
 
 
+        //pause 버튼 --> 다른걸로 변경 예정
+//        btn = new JButton("pause");
+//        btn.setBounds(300,300,100,20);
+//        mainPanel.add(btn);
+//
+//        btn.addActionListener(new ActionListener(){
+//            public void actionPerformed(ActionEvent e) {
+//                    System.out.println("버튼이 클릭되었습니다.");
+//            }
+//        });
 
-        btn = new JButton("pause");
-        btn.setBounds(300,300,100,20);
-        mainPanel.add(btn);
-
-        btn.addActionListener(new ActionListener(){             //다른 키로 변경
-            public void actionPerformed(ActionEvent e) {
-                    System.out.println("버튼이 클릭되었습니다.");
-            }
-        });
-
-        //textpane 글자 가운데 정렬 설정
+        // 글자 가운데 정렬 설정
         StyledDocument doc = pane.getStyledDocument();
         SimpleAttributeSet center = new SimpleAttributeSet();
         StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
@@ -130,6 +149,8 @@ public class GameUI extends JFrame {
         StyleConstants.setAlignment(scoreCenter, StyleConstants.ALIGN_CENTER);
         scoreDoc.setParagraphAttributes(0, scoreDoc.getLength(), center, false);
 
+        //글자 색 정보 저장
+        addCharacterStyle();
 
         setBtn();
 
@@ -137,11 +158,10 @@ public class GameUI extends JFrame {
 
         instance = this;
 
-        GameManager_NormalMode.getInstance().startGameFramework();
+        //게임 시작
+        GameManager_BasicMode.getInstance().startGameFramework();
 
-        //InGameUIManager.getInstance().drawNextBlockInfo(BlockGenerator.getInstance().blockQueue.peek()); //블록 미리보기 가져오기 어떻게??
-
-        //화면크기 유지
+        //Screensize 값 가져오기
         ScreenSize.getInstance().getWidth();
         ScreenSize.getInstance().getHeight();
 
@@ -155,7 +175,7 @@ public class GameUI extends JFrame {
 
     void setBtn(){
         JButton buttons = new JButton("다음으로 넘어가기2");
-        buttons.setBounds(300,300,50,50);
+        buttons.setBounds(this.getWidth()*5/8,this.getHeight()-100,100,50);
         mainPanel.add(buttons);
 
         //다음으로 넘어가는 event
@@ -168,11 +188,36 @@ public class GameUI extends JFrame {
         });
     }
 
-}
 
-/*
-    컴포넌트 위치
-    블록 미리보기와 연결
-    점수와 연결
-    글꼴 더 찾아보기
- */
+    private void addCharacterStyle()
+    {
+        //색깔 종류
+        javax.swing.text.Style style1 = pane.addStyle("R", null);
+        javax.swing.text.Style style2 = pane.addStyle("O", null);
+        javax.swing.text.Style style3 = pane.addStyle("Y", null);
+        javax.swing.text.Style style4 = pane.addStyle("G", null);
+        javax.swing.text.Style style5 = pane.addStyle("B", null);
+        javax.swing.text.Style style6 = pane.addStyle("P", null);
+        javax.swing.text.Style style7 = pane.addStyle("L", null);
+        javax.swing.text.Style style8 = pane.addStyle("A", null);
+        javax.swing.text.Style style9 = pane.addStyle("W", null);
+        javax.swing.text.Style style10 = pane.addStyle("C", null);
+        javax.swing.text.Style style11 = pane.addStyle("M", null);
+        javax.swing.text.Style style12 = pane.addStyle("D", null);
+
+        //색깔 설정
+        StyleConstants.setForeground(style1, Color.RED);
+        StyleConstants.setForeground(style2, Color.ORANGE);
+        StyleConstants.setForeground(style3, Color.YELLOW);
+        StyleConstants.setForeground(style4, Color.GREEN);
+        StyleConstants.setForeground(style5, Color.BLUE);
+        StyleConstants.setForeground(style6, Color.PINK);
+        StyleConstants.setForeground(style7, Color.LIGHT_GRAY);
+        StyleConstants.setForeground(style8, Color.GRAY);
+        StyleConstants.setForeground(style9, Color.WHITE);
+        StyleConstants.setForeground(style10, Color.CYAN);
+        StyleConstants.setForeground(style11, Color.MAGENTA);
+        StyleConstants.setForeground(style12, Color.DARK_GRAY);
+    }
+
+}

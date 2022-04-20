@@ -12,8 +12,13 @@ public class JBlock extends BlockController {
 				{'O', 'O', 'O'},
 				{' ', ' ', 'O'}
 		};
-		color = Color.CYAN;
-		color_colorBlindMode = Color.CYAN;
+		//color = Color.CYAN;
+		//color_colorBlindMode = Color.CYAN;
+
+		color_basic = 'C';
+		color_blindMode = 'C';
+
+		color_current = 'C';
 	}
 
 }

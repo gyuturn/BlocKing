@@ -11,8 +11,10 @@ public class LBlock extends BlockController{
 			{'O', 'O', 'O'},
 			{'O', ' ', ' '}
 		};
-		color = Color.ORANGE;
-		color_colorBlindMode = Color.ORANGE;
+		color_basic = 'O';
+		color_blindMode = 'O';
+
+		color_current = 'O';
 	}
     
 }

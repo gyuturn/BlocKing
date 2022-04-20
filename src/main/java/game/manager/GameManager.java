@@ -8,6 +8,7 @@ import java.awt.event.KeyListener;
 import javax.swing.Timer;
 
 import game.GameUI;
+import game.manager.gametype.GameManager_NormalMode;
 import game.model.BlockController;
 import setting.KeySetting;
 
@@ -113,14 +114,17 @@ public abstract class GameManager {
             }
         });
 
-    timer.start();
-}
+        timer.start();
+    }
+
 
     protected void printStatus() {
         System.out.printf("\n");
         System.out.printf("score : %d \n", score);
         System.out.printf("curSpeed : %d\n\n", curSpeed);
-}
+        InGameUIManager.getInstance().drawScore();
+
+    }
 
 //#endregion
 

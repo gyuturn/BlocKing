@@ -23,12 +23,12 @@ public class GameManager_NormalMode extends GameManager {
 
     private static int maxSpeed = 100000;
     private static int basicSpeed = 100;
-    private static int curSpeed = 100;
+    public static int curSpeed = 100;
     private static int timeScale = 1000;
 
     private int blockCount = 0;
     private int lineCount = 0;
-    private int score = 0;
+    public int score = 0;
 
 
 
@@ -191,11 +191,12 @@ public class GameManager_NormalMode extends GameManager {
         InGameUIManager.getInstance().drawBoard();
     }
 
-    protected void printStatus() {
-        System.out.printf("\n");
-        System.out.printf("score : %d \n", score);
-        System.out.printf("curSpeed : %d\n\n", curSpeed);
-    }
+//    protected void printStatus() {
+//        System.out.printf("\n");
+//        System.out.printf("score : %d \n", score);
+//        System.out.printf("curSpeed : %d\n\n", curSpeed);
+//        InGameUIManager.getInstance().drawScore();
+//    }
 
 //#endregion
 

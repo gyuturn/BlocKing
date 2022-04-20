@@ -83,8 +83,11 @@ public class BoardManager {
     public BlockController setBlockPos(BlockController curBlock, int targetRow, int targetCol) {
         for(int i=0; i<curBlock.height(); i++) {
             for(int j=0; j<curBlock.width(); j++) {
-                if(curBlock.getShape(i, j) == 'O')
-				    board[targetRow+i][targetCol+j] = 'O' ;
+                if(curBlock.getShape(i, j) == 'O') {
+                    board[targetRow+i][targetCol+j] = 'O';
+                    boardColor[targetRow+i][targetCol+j] = curBlock.getColor();
+                }
+				    
             }
         }
         

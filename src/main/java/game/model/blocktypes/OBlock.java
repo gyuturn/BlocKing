@@ -11,8 +11,10 @@ public class OBlock extends BlockController{
 			{'O', 'O'}, 
 			{'O', 'O'}
 		};
-		color = Color.YELLOW;
-		color_colorBlindMode = Color.YELLOW;
+		color_basic = 'Y';
+		color_blindMode = 'Y';
+
+		color_current = 'Y';
 	}
     
 }

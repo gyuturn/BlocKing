@@ -93,7 +93,7 @@ public class GameUI extends JFrame {
         label.setBounds(this.getWidth()*5/8,0,this.getWidth()/4,30);
         mainPanel.add(label);
 
-        // 다음 블럭 미리보기 UI 부분
+        // Next Block 미리보기 UI 부분
         nextBlockPane = new JTextPane();
         nextBlockPane.setEditable(false);
         nextBlockPane.setBackground(Color.BLACK);
@@ -112,7 +112,7 @@ public class GameUI extends JFrame {
         scoreLabel.setBounds(this.getWidth()*5/8,30+this.getWidth()/4,this.getWidth()/4,30);
         mainPanel.add(scoreLabel);
 
-        // 점수 UI 부분
+        // Score UI 부분
         scorePane = new JTextPane();
         scorePane.setEditable(false);
         scorePane.setFont(f1);
@@ -161,7 +161,7 @@ public class GameUI extends JFrame {
         //게임 시작
         GameManager_BasicMode.getInstance().startGameFramework();
 
-        //화면크기 유지
+        //Screensize 값 가져오기
         ScreenSize.getInstance().getWidth();
         ScreenSize.getInstance().getHeight();
 
@@ -221,8 +221,3 @@ public class GameUI extends JFrame {
     }
 
 }
-
-/*
-    점수와 연결
-    블록마다 다른 색깔 설정(적용)
-*/

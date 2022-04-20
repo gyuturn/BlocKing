@@ -191,12 +191,12 @@ public class GameManager_NormalMode extends GameManager {
         InGameUIManager.getInstance().drawBoard();
     }
 
-    protected void printStatus() {
-        System.out.printf("\n");
-        System.out.printf("score : %d \n", score);
-        System.out.printf("curSpeed : %d\n\n", curSpeed);
-        InGameUIManager.getInstance().drawScore();
-    }
+//    protected void printStatus() {
+//        System.out.printf("\n");
+//        System.out.printf("score : %d \n", score);
+//        System.out.printf("curSpeed : %d\n\n", curSpeed);
+//        InGameUIManager.getInstance().drawScore();
+//    }
 
 //#endregion
 

@@ -1,6 +1,7 @@
 package game.manager;
 
 import game.GameUI;
+import game.manager.gametype.GameManager_NormalMode;
 import game.model.BlockController;
 
 import javax.swing.*;
@@ -52,6 +53,12 @@ public class InGameUIManager {
         pane.setStyledDocument(doc);
 
     }
+
+    public void drawScore(){
+        JTextPane scorePane = GameUI.getInstance().scorePane;
+        scorePane.setText("Score :\n" + GameManager_NormalMode.getInstance().score + "\n" + "curSpeed :\n" + GameManager_NormalMode.getInstance().curSpeed);
+    }
+
     public void moveScene(){
 
     }

@@ -9,6 +9,7 @@ import game.manager.BoardManager;
 import game.manager.GameInfoManager;
 import game.manager.GameManager;
 import game.manager.InGameUIManager;
+import game.model.BlockController;
 
 public class GameManager_BasicMode extends GameManager {
     
@@ -36,6 +37,7 @@ public enum Step {
     BlockMove,
     SetGameBalance,
     CheckLineDelete,
+    CheckGameOver,
 
     GameOver
 }
@@ -64,6 +66,11 @@ protected void gameFramework() { //전체적인 게임의 동작 흐름
 
         case SetGameBalance:
             curStep = setGameBalance();
+            gameFramework();
+            break;
+        
+        case CheckGameOver:
+            curStep = checkGameOver();
             gameFramework();
             break;
 
@@ -117,13 +124,28 @@ private Step setGameBalance() {
     timeScale = maxSpeed / curSpeed;
     setTimeScale(timeScale);
 
+    return Step.CheckGameOver;
+}
+
+private Step checkGameOver() {
+    BlockController nextBlock = BlockGenerator.getInstance().blockQueue.peek();
+    for(int i=0; i<nextBlock.height(); i++) {
+        for(int j=0; j<nextBlock.width(); j++) {
+            if(nextBlock.getShape(i, j) != ' ') {
+                if(BoardManager.getInstance().board[i][j + 5] != ' ')
+                    return Step.GameOver;
+            }
+        }
+    }
     return Step.CreateNewBlock;
 }
 
 @Override
 protected void gameOver() {
-    //게임이 종료되면 호출됩니다.
     timer.stop();
+    while(true) {
+        System.out.println(("!!!!!!!!!!!GAME OVER!!!!!!!!!!!"));
+    }
 }
 
 //#endregion

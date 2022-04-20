@@ -5,6 +5,8 @@ import javax.swing.border.CompoundBorder;
 import java.awt.*;
 import java.awt.event.*;
 
+import static javax.swing.JOptionPane.YES_NO_OPTION;
+
 public class KeySettingUI extends JFrame{
     private JPanel mainPanel;
     private ScreenSize screenSize = ScreenSize.getInstance();
@@ -102,7 +104,11 @@ public class KeySettingUI extends JFrame{
                     }
                 }
 
-                keySetting.setKeySetting(left, right, turnBlock, downBlock, stop, onetimeBlock,escape);
+                keySetting.setKeySetting(left, right, turnBlock, downBlock, stop, onetimeBlock, escape);
+                if (keySetting.overLapKeySetting()) {
+                     JOptionPane.showConfirmDialog(null, "중복된 key값이 있습니다.","오류",JOptionPane.WARNING_MESSAGE);
+                     return;
+                }
                 new SettingUI();
                 setVisible(false);
             }
@@ -158,7 +164,7 @@ public class KeySettingUI extends JFrame{
         String stop = KeyEvent.getKeyText(keySetting.getStop());
         keyTextField[5] = new JTextField(stop);
 
-        keyName[6] = new JLabel("시작메뉴로");
+        keyName[6] = new JLabel("게임 중 시작메뉴로");
         String escape = KeyEvent.getKeyText(keySetting.getEscape());
         keyTextField[6] = new JTextField(escape);
 

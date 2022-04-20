@@ -20,9 +20,6 @@ public class User implements Comparable<User>{
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public int getScore() {
         return score;
@@ -35,9 +32,7 @@ public class User implements Comparable<User>{
         return mode;
     }
 
-    public void setMode(String mode) {
-        this.mode = mode;
-    }
+
 
 
 

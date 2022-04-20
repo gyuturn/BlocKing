@@ -76,23 +76,18 @@ public class RouletteWheel {
 
     public static int GenerateBlockByValueTest(GameInfoManager.GameDifficulty gameDifficulty){
             int[] test = new int[blockNum];
-            for (int i = 0; i < 7000; i++) {
+            for (int i = 0; i < 50000; i++) {
                 int blockShape = RouletteWheel.GenerateBlockByValue(gameDifficulty);
                 test[blockShape]++;
-            }
-
-            for (int i = 0; i < 7; i++) {
-                System.out.println(i + "번째" + test[i]);
             }
             int measuredValue = test[0];
 
         return measuredValue;
     }
 
-    public static double ComputeErrorPercent(int measuredValue,int trueValue) {
+    public static double ComputeErrorPercent(int measuredValue,double trueValue) {
         double error = Math.abs(trueValue - measuredValue);
         double errorPercent = error / trueValue * 100;
-        System.out.println("errorPercent = " + errorPercent);
         return errorPercent;
     }
 

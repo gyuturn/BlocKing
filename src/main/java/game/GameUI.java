@@ -7,6 +7,7 @@ import game.manager.InGameUIManager;
 //import setting.MainSetting;
 import game.model.BlockController;
 import setting.SaveAndLoad;
+import game.manager.gametype.GameManager_BasicMode;
 import game.manager.gametype.GameManager_NormalMode;
 import setting.ScreenSize;
 import setting.SettingUI;
@@ -148,6 +149,8 @@ public class GameUI extends JFrame {
         StyleConstants.setAlignment(scoreCenter, StyleConstants.ALIGN_CENTER);
         scoreDoc.setParagraphAttributes(0, scoreDoc.getLength(), center, false);
 
+        //글자 색 정보 저장
+        addCharacterStyle();
 
         setBtn();
 
@@ -155,7 +158,8 @@ public class GameUI extends JFrame {
 
         instance = this;
 
-        GameManager_NormalMode.getInstance().startGameFramework();
+        //게임 시작
+        GameManager_BasicMode.getInstance().startGameFramework();
 
         //화면크기 유지
         ScreenSize.getInstance().getWidth();
@@ -182,6 +186,36 @@ public class GameUI extends JFrame {
                 setVisible(false);
             }
         });
+    }
+
+
+    private void addCharacterStyle()
+    {
+        //색깔 종류
+        javax.swing.text.Style style1 = pane.addStyle("R", null);
+        javax.swing.text.Style style2 = pane.addStyle("O", null);
+        javax.swing.text.Style style3 = pane.addStyle("Y", null);
+        javax.swing.text.Style style4 = pane.addStyle("G", null);
+        javax.swing.text.Style style5 = pane.addStyle("B", null);
+        javax.swing.text.Style style6 = pane.addStyle("P", null);
+        javax.swing.text.Style style7 = pane.addStyle("L", null);
+        javax.swing.text.Style style8 = pane.addStyle("A", null);
+        javax.swing.text.Style style9 = pane.addStyle("W", null);
+        javax.swing.text.Style style10 = pane.addStyle("C", null);
+        javax.swing.text.Style style11 = pane.addStyle("M", null);
+
+        //색깔 설정
+        StyleConstants.setForeground(style1, Color.RED);
+        StyleConstants.setForeground(style2, Color.ORANGE);
+        StyleConstants.setForeground(style3, Color.YELLOW);
+        StyleConstants.setForeground(style4, Color.GREEN);
+        StyleConstants.setForeground(style5, Color.BLUE);
+        StyleConstants.setForeground(style6, Color.PINK);
+        StyleConstants.setForeground(style7, Color.LIGHT_GRAY);
+        StyleConstants.setForeground(style8, Color.GRAY);
+        StyleConstants.setForeground(style9, Color.WHITE);
+        StyleConstants.setForeground(style10, Color.CYAN);
+        StyleConstants.setForeground(style11, Color.MAGENTA);
     }
 
 }

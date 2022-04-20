@@ -57,7 +57,6 @@ public class BlockGeneratorTest {
         BlockController randomBlock = blockGenerator.getRandomBlock();
         int blockShape = blockGenerator.getBlock();
         //then
-        System.out.println("blockShape = " + blockShape);
         if(blockShape==0){
             assertInstanceOf(IBlock.class, randomBlock);
         } else if (blockShape == 1) {

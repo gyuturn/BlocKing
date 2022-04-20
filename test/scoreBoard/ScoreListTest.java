@@ -12,13 +12,13 @@ import static org.assertj.core.api.Assertions.*;
 public class ScoreListTest {
     ScoreList scoreList = ScoreList.getInstance();
     @AfterEach
-    public void deleteAll(){
+    public void afterDeleteAll(){
         scoreList.deleteAll();
     }
 
     @Test
-    @DisplayName("점수 모두 삭제")
-    public void 점수모두삭제(){
+//    @DisplayName("점수 모두 삭제")
+    public void deleteAll(){
         //given
         User test1 = new User("test1", 100,"easy");
         User test2 = new User("test2", 100,"easy");
@@ -30,8 +30,8 @@ public class ScoreListTest {
     }
 
     @Test
-    @DisplayName("점수  push  기능")
-    public void 점수푸쉬(){
+//    @DisplayName("점수  push  기능")
+    public void push(){
         //given
         User test1 = new User("test1", 100,"easy");
         User test2 = new User("test2", 100,"easy");
@@ -45,7 +45,7 @@ public class ScoreListTest {
     }
 
     @Test
-    @DisplayName("점수 오름차순 정렬")
+//    @DisplayName("점수 오름차순 정렬")
     public void ScoreListSortByDescTest() {
         //given
         User user1 = new User("test1", 100,"easy");

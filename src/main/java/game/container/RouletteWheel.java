@@ -36,27 +36,29 @@ public class RouletteWheel {
         inputSum = wheel.get(wheel.size() - 1);
     }
 
-    //easy블럭 생성시 이 함수 사용
-    public static int EasyModeIncludeTest(){
-        boolean testPass=false;
-        while (testPass==false) {
-            int[] test = new int[blockNum];
-            for (int i = 0; i < 7000; i++) {
-                int blockShape = RouletteWheel.EasyMode();
-                test[blockShape]++;
-            }
-            double trueValue = 1200;
-            double measuredValue = test[0];
-            double error = Math.abs(trueValue - measuredValue);
-            double errorPercent = error / trueValue * 100;
-            System.out.println("errorPercent = " + errorPercent);
-
-            if(errorPercent<=5)
-                testPass=true;
-
-        }
-        return RouletteWheel.EasyMode();
-    }
+//    //easy블럭 생성시 이 함수 사용
+//    public static int EasyModeIncludeTest(){
+//        boolean testPass=false;
+//        while (testPass==false) {
+//            int[] test = new int[blockNum];
+//            for (int i = 0; i < 7000; i++) {
+//                int blockShape = RouletteWheel.EasyMode();
+//                test[blockShape]++;
+//            }
+//            for (int i = 0; i < test.length; i++) {
+//                System.out.println(i + "번째" + test[i]);
+//            }
+//            double trueValue = 1200;
+//            double measuredValue = test[0];
+//            double error = Math.abs(trueValue - measuredValue);
+//            double errorPercent = error / trueValue * 100;
+//            System.out.println("errorPercent = " + errorPercent);
+//
+//            if(errorPercent<=5)
+//                testPass=true;
+//        }
+//        return RouletteWheel.EasyMode();
+//    }
 
     public  static int EasyMode(){
         ArrayList<Double> blocks = new ArrayList<Double>();

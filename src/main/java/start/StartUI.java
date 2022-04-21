@@ -1,7 +1,9 @@
 package start;
 
 import game.GameUI;
+import game.SelectGameTypeUI;
 import scoreBoard.NoItemScoreBoard.ScoreBoardUI;
+import scoreBoard.SelectScoreBoardUI;
 import setting.SaveAndLoad;
 import setting.ScreenSize;
 import setting.UI.SettingUI;
@@ -72,8 +74,8 @@ public class StartUI extends JFrame {
         gameButtons.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new GameUI();
-                setVisible(false);
+                new SelectGameTypeUI();
+                dispose();
             }
         });
 
@@ -210,8 +212,8 @@ public class StartUI extends JFrame {
         scbButtons.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new ScoreBoardUI();
-                setVisible(false);
+                new SelectScoreBoardUI();
+                dispose();
             }
         });
 

@@ -176,7 +176,7 @@ public class GameUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new SettingUI();
-                setVisible(false);
+                dispose();
             }
         });
     }

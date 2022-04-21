@@ -81,6 +81,7 @@ public class BlockGenerator {
 	}
 
 	public void initBlockQueue() {
+		blockQueue.clear();
 		addBlock();
 		addBlock();
 	}

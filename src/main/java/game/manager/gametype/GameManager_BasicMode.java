@@ -103,7 +103,10 @@ private Step gameReady() {
 public Step createNewBlock() {
     BlockGenerator.getInstance().addBlock();
     curBlock = BlockGenerator.getInstance().createBlock();
-    InGameUIManager.getInstance().drawNextBlockInfo(BlockGenerator.getInstance().blockQueue.peek());
+
+    BlockController nextBlock = BlockGenerator.getInstance().blockQueue.peek();
+    BoardManager.getInstance().setNextBlockColor(nextBlock);
+    InGameUIManager.getInstance().drawNextBlockInfo(nextBlock);
     onBlockCreate();
 
     return Step.BlockMove;

@@ -141,6 +141,78 @@ public abstract class GameManager {
 
     }
 
+    public KeySetting getKeySetting() {
+        return keySetting;
+    }
+
+    public KeyListener getInteraction_play() {
+        return interaction_play;
+    }
+
+    public KeyListener getInteraction_utils() {
+        return interaction_utils;
+    }
+
+    public boolean isBlockMovable() {
+        return isBlockMovable;
+    }
+
+    public boolean isGameOver() {
+        return isGameOver;
+    }
+
+    public Timer getTimer() {
+        return timer;
+    }
+
+    public static int getMaxSpeed() {
+        return maxSpeed;
+    }
+
+    public static int getBasicSpeed() {
+        return basicSpeed;
+    }
+
+    public static int getCurSpeed() {
+        return curSpeed;
+    }
+
+    public static int getTimeScale() {
+        return timeScale;
+    }
+
+    public static int getAddSpeed() {
+        return addSpeed;
+    }
+
+    public GameMode getMode() {
+        return mode;
+    }
+
+    public GameDifficulty getDifficulty() {
+        return difficulty;
+    }
+
+    public int getBlockCount() {
+        return blockCount;
+    }
+
+    public int getLineCount() {
+        return lineCount;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public static boolean isIsPlaying() {
+        return isPlaying;
+    }
+
+    public static boolean isIsPause() {
+        return isPause;
+    }
+
 //#endregion
 
 }

@@ -4,7 +4,8 @@ import game.GameUI;
 import scoreBoard.NoItemScoreBoard.ScoreBoardUI;
 import setting.SaveAndLoad;
 import setting.ScreenSize;
-import setting.SettingUI;
+import setting.UI.SettingUI;
+
 
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;

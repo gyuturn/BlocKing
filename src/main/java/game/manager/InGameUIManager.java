@@ -101,7 +101,7 @@ public class InGameUIManager {
         {
             for(int j=0; j<nextBlock.width(); j++)
             {
-                offset = 5 * i + j;
+                offset = (nextBlock.width()+1) * i + j;
                 color += BoardManager.getInstance().nextBlockColor[i][j];
                 doc.setCharacterAttributes(offset, 1, pane.getStyle(color), true);
                 System.out.println("color : " + color);

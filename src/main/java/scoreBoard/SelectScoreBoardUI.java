@@ -1,9 +1,13 @@
-package setting.UI;
+package scoreBoard;
 
+import scoreBoard.NoItemScoreBoard.ScoreBoardUI;
+import scoreBoard.NoItemScoreBoard.ScoreInputUI;
+import scoreBoard.scoreBoradItem.ItemScoreBoardUI;
 import setting.ColorBlind;
 import setting.DuplicateKeySettingException;
 import setting.SaveAndLoad;
 import setting.ScreenSize;
+import setting.UI.SettingUI;
 
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
@@ -13,7 +17,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-public class ColorSettingUI extends JFrame {
+public class SelectScoreBoardUI extends JFrame {
     private JPanel colorSettingPanel;
     ButtonGroup btnGroup = new ButtonGroup();
     private JRadioButton[] colorSettingBtns = new JRadioButton[2];
@@ -23,7 +27,7 @@ public class ColorSettingUI extends JFrame {
     ImageIcon titleImg2 = new ImageIcon("./src/main/java/start/img/title2.png");
     ImageIcon titleImg3 = new ImageIcon("./src/main/java/start/img/title3.png");
 
-    public ColorSettingUI() {
+    public SelectScoreBoardUI() {
         //JFrame setting
         super("software-tetris");//제목
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);// 메모리까지 종료
@@ -43,7 +47,6 @@ public class ColorSettingUI extends JFrame {
         this.getContentPane().add(colorSettingPanel,BorderLayout.CENTER);
         setTitle();
         selectSize();
-        selectedBtnShows();
         //종료 시 현재 setting 및 scoreBoard 저장
         this.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent event) {
@@ -80,10 +83,8 @@ public class ColorSettingUI extends JFrame {
         radioPanel.setBackground(Color.BLACK);
         radioPanel.setBorder(BorderFactory.createEmptyBorder(screenSize.getHeight()/4,0,0,0));
 
-        colorSettingBtns[0] = new JRadioButton("기본모드");
-        colorSettingBtns[1] = new JRadioButton("색맹 모드");
-
-
+        colorSettingBtns[0] = new JRadioButton("스코어보드-일반MODE");
+        colorSettingBtns[1] = new JRadioButton("스코어보드-ITEMMODE");
 
         for (int i = 0; i < 2; i++) {
             btnGroup.add(colorSettingBtns[i]);
@@ -105,25 +106,17 @@ public class ColorSettingUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (colorSettingBtns[0].isSelected()) {
-                    colorBlind.setCurColorBlind(ColorBlind.ColorSetting.BASIC);
+                    new ScoreBoardUI();
+                    dispose();
 
                 } else if (colorSettingBtns[1].isSelected()) {
-                    colorBlind.setCurColorBlind(ColorBlind.ColorSetting.ColorBlinded);
+                    new ItemScoreBoardUI();
+                    dispose();
                 }
-
-                new SettingUI();
-                setVisible(false);
 
             }
         });
-    }
 
-    public void selectedBtnShows() {
-        //선택된 기능 먼저 보여주는 기능
-        if (colorBlind.getColorBlind() == ColorBlind.ColorSetting.BASIC) {
-            colorSettingBtns[0].setSelected(true);
-        } else {
-            colorSettingBtns[1].setSelected(true);
-        }
+
     }
 }

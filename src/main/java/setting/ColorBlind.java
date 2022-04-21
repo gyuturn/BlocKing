@@ -7,22 +7,33 @@ import java.awt.*;
 public class ColorBlind {
     //싱글톤
     private static ColorBlind colorBlind = new ColorBlind();
+    
+
+    public enum ColorSetting {
+        BASIC,
+        ColorBlinded,
+    }
 
     public static ColorBlind getInstance() {
         return colorBlind;
     }
 
-    private int curColorBlind=0;
+    private ColorSetting curColorBlind = ColorSetting.BASIC;
 
-    public int getColorBlind() {
+    public ColorSetting getColorBlind() {
         return curColorBlind;
     }
 
-    public void setCurColorBlind(int curColorBlind) {
+    public void setCurColorBlind(ColorSetting curColorBlind) {
         this.curColorBlind = curColorBlind;
     }
 
-    //0:일반 1:적녹색맹 2: 청황색맹
+    public void resetDefault() {
+        curColorBlind = ColorSetting.BASIC;
+    }
+
+    //0:일반 1:색맹모드
+
 
 
 

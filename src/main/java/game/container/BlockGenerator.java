@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Random;
 
+import game.manager.GameInfoManager;
 import game.model.BlockController;
 import game.model.BlockModel;
 import game.model.blocktypes.IBlock;
@@ -16,6 +17,7 @@ import game.model.blocktypes.ZBlock;
 
 import game.manager.BoardManager;
 import game.manager.gametype.GameManager_NormalMode;
+import game.model.difficulty.RouletteWheel;
 
 public class BlockGenerator {
 
@@ -27,6 +29,8 @@ public class BlockGenerator {
         return instance;
     }
 
+	private GameInfoManager gameInfoManager = GameInfoManager.getInstance();
+
 	public static int block;
 
 	public int getBlock(){
@@ -36,9 +40,8 @@ public class BlockGenerator {
 
     
     public BlockController getRandomBlock() {
-		Random rnd = new Random(System.currentTimeMillis());
-		 block = rnd.nextInt(7);
-		switch(block) {
+		block = RouletteWheel.GenerateBlockByValue(gameInfoManager.difficulty);
+		switch(BlockGenerator.block) {
 		case 0:
 			return new IBlock();
 		case 1:

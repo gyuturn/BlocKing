@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 
 import javax.swing.Timer;
 
@@ -61,6 +62,8 @@ public abstract class GameManager {
     public BlockController getCurBlock() {
         return curBlock;
     }
+
+    protected ArrayList<Integer> targetLineIndexList = new ArrayList<Integer>();
 
     protected abstract void initGameStatus();
 

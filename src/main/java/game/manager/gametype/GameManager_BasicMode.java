@@ -37,8 +37,8 @@ public enum Step {
     //while !gameOver
     CreateNewBlock,
     BlockMove,
-    CheckLineDelete,
-    Eraseevent,
+    EraseAnimation,
+    EraseLine,
     SetGameBalance,
     CheckGameOver,
 
@@ -62,12 +62,12 @@ protected void gameFramework() { //전체적인 게임의 동작 흐름
             if(curStep != Step.BlockMove) gameFramework();
             break;
 
-        case Eraseevent:
-            curStep = eraseEvent();
+        case EraseAnimation:
+            curStep = eraseAnimation();
             break;
 
-        case CheckLineDelete:
-            curStep = checkLineDelete();
+        case EraseLine:
+            curStep = eraseLine();
             gameFramework();
             break;
 
@@ -103,7 +103,10 @@ private Step gameReady() {
 public Step createNewBlock() {
     BlockGenerator.getInstance().addBlock();
     curBlock = BlockGenerator.getInstance().createBlock();
-    InGameUIManager.getInstance().drawNextBlockInfo(BlockGenerator.getInstance().blockQueue.peek());
+
+    BlockController nextBlock = BlockGenerator.getInstance().blockQueue.peek();
+    BoardManager.getInstance().setNextBlockColor(nextBlock);
+    InGameUIManager.getInstance().drawNextBlockInfo(nextBlock);
     onBlockCreate();
 
     return Step.BlockMove;
@@ -117,16 +120,20 @@ public Step blockMove() {
         return Step.BlockMove;
     }
     else
-        return Step.Eraseevent;
+        return Step.EraseAnimation;
 }
 
-    private Step eraseEvent() {
+private Step eraseAnimation() {
+    
+    BoardManager.getInstance().eraseEvent(targetLineIndexList);
+    return Step.EraseLine;
+}
 
-        BoardManager.getInstance().eraseEvent();
-        return Step.CheckLineDelete;
-    }
 
 public Step checkLineDelete() {
+
+private Step eraseLine() {
+
     int curLineCount = BoardManager.getInstance().eraseFullLine();
     onLineErase(curLineCount);
 

@@ -109,6 +109,10 @@ public class BoardManager {
                     board[targetRow+i][targetCol+j] = 'O';
                     boardColor[targetRow+i][targetCol+j] = curBlock.getColor();
                 }
+                else if(curBlock.getShape(i, j) != ' ') {
+                    board[targetRow+i][targetCol+j] = curBlock.getShape(i,j);
+                    boardColor[targetRow+i][targetCol+j] = 'W';
+                }
 				    
             }
         }
@@ -123,7 +127,7 @@ public class BoardManager {
     public void eraseBlock(BlockController curBlock) {
         for(int i=0; i<curBlock.height(); i++) {
             for(int j=0; j<curBlock.width(); j++) {
-                if(curBlock.getShape(i, j) == 'O')
+                if(curBlock.getShape(i, j) != ' ')
                     board[curBlock.posRow+i][curBlock.posCol+j] = ' ';
             }
         }
@@ -521,7 +525,7 @@ public class BoardManager {
 
         for(int i=0; i<height; i++) {
             for(int j=0; j<width; j++) {
-                if(targetShape[i][j] == 'O' && board[targetRow+i][targetCol+j] != ' ')
+                if(targetShape[i][j] != ' ' && board[targetRow+i][targetCol+j] != ' ')
                     return false;
             }
         }
@@ -534,7 +538,7 @@ public class BoardManager {
 
         for(int i=0; i<curBlock.width(); i++) {
             for(int j=0; j<curBlock.height(); j++) {
-                if(curBlock.shape[j][i] == 'O')
+                if(curBlock.shape[j][i] != ' ')
                     indexOfBottom[i] = j;
             }
         }

@@ -9,13 +9,41 @@ import java.util.Random;
 
 public class ItemGenerator {
 
-    private static ItemGenerator instance= new ItemGenerator(); //
+    private static ItemGenerator instance= new ItemGenerator();
 
     public static ItemGenerator getInstance() {
         return instance;
     }
 
     public static int block;
+
+    
+    public enum ItemType {
+        Weight,             //custom
+        LineClear,          //L
+        Resurrection,       //R
+        DoubleBonusChance,  //D
+        SmallBlockChance    //S
+    }
+
+    public ItemType SelectRandomItem() {
+        Random random = new Random();
+        int randomNum = random.nextInt(5);
+        switch(randomNum) {
+            case 0:
+                return ItemType.Weight;
+            case 1:
+                return ItemType.LineClear;
+            case 2:
+                return ItemType.Resurrection;
+            case 3:
+                return ItemType.DoubleBonusChance;
+            case 4:
+                return ItemType.SmallBlockChance;
+        }
+        return ItemType.SmallBlockChance;
+    }
+
 
     public void addCharInShape(BlockController curBlock, char itemChar) {
 
@@ -33,10 +61,14 @@ public class ItemGenerator {
         }
 
         //무작위 'O'인덱스를 고름
-        Random random = new Random(System.currentTimeMillis());
+        Random random = new Random();
         int randomIndex = random.nextInt(row.size());
        
         curBlock.shape[row.get(randomIndex)][col.get(randomIndex)] = itemChar;
+        System.out.println("flag");
+        System.out.println(curBlock.shape[row.get(randomIndex)][col.get(randomIndex)]);
+        System.out.println(row.get(randomIndex));
+        System.out.println(col.get(randomIndex));
     }
 
     public BlockController setBlockMugechu(BlockController curBlock) {

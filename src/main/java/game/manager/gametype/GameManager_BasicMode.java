@@ -32,12 +32,13 @@ private Step curStep = Step.GameReady;
 public enum Step {
 
     GameReady,
-    
+
     //while !gameOver
     CreateNewBlock,
     BlockMove,
     SetGameBalance,
     CheckLineDelete,
+    Eraseevent,
     CheckGameOver,
 
     GameOver
@@ -45,7 +46,7 @@ public enum Step {
 
 @Override
 protected void gameFramework() { //전체적인 게임의 동작 흐름
-    
+
     switch(curStep) {
         case GameReady:
             curStep = gameReady();
@@ -60,6 +61,10 @@ protected void gameFramework() { //전체적인 게임의 동작 흐름
             if(curStep != Step.BlockMove) gameFramework();
             break;
 
+        case Eraseevent:
+            curStep = eraseEvent();
+            break;
+
         case CheckLineDelete:
             curStep = checkLineDelete();
             gameFramework();
@@ -69,7 +74,7 @@ protected void gameFramework() { //전체적인 게임의 동작 흐름
             curStep = setGameBalance();
             gameFramework();
             break;
-        
+
         case CheckGameOver:
             curStep = checkGameOver();
             gameFramework();
@@ -110,8 +115,14 @@ private Step blockMove() {
         return Step.BlockMove;
     }
     else
-        return Step.CheckLineDelete;
+        return Step.Eraseevent;
 }
+
+    private Step eraseEvent() {
+
+        BoardManager.getInstance().eraseEvent();
+        return Step.CheckLineDelete;
+    }
 
 private Step checkLineDelete() {
     int curLineCount = BoardManager.getInstance().eraseFullLine();

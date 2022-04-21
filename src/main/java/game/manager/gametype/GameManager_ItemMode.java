@@ -38,6 +38,7 @@ public enum Step {
     SetGameBalance,
     CheckLineDelete,
     CheckItemUse,
+    Eraseevent,
     
     GameOver
 }
@@ -62,6 +63,10 @@ protected void gameFramework() { //전체적인 게임의 동작 흐름
         case BlockMove:
             curStep = blockMove();
             if(curStep != Step.BlockMove) gameFramework();
+            break;
+
+        case Eraseevent:
+            curStep = eraseEvent();
             break;
 
         case CheckLineDelete:
@@ -121,8 +126,14 @@ private Step blockMove() {
         return Step.BlockMove;
     }
     else
-        return Step.CheckLineDelete;
+        return Step.Eraseevent;
 }
+
+    private Step eraseEvent() {
+
+        BoardManager.getInstance().eraseEvent();
+        return Step.CheckLineDelete;
+    }
 
 private Step checkLineDelete() {
     int curLineCount = BoardManager.getInstance().eraseFullLine();

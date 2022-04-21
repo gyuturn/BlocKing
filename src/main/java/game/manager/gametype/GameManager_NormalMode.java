@@ -56,21 +56,22 @@ public class GameManager_NormalMode extends GameManager {
 
     public enum Step {
 
-	    GameReady,
+        GameReady,
         StartTimer,
-        
+
         //while !gameOver
         CreatNewBlock,
         BlockMove,
         SetGameBalance,
         CheckLineDelete,
+        Eraseevent,
 
         GameOver
     }
-    
+
     @Override
     protected void gameFramework() { //전체적인 게임의 동작 흐름
-        
+
         switch(curStep) {
             case GameReady:
                 curStep = gameReady();
@@ -83,6 +84,10 @@ public class GameManager_NormalMode extends GameManager {
             case BlockMove:
                 curStep = blockMove();
                 if(curStep != Step.BlockMove) gameFramework();
+                break;
+
+            case Eraseevent:
+                curStep = eraseEvent();
                 break;
 
             case CheckLineDelete:
@@ -126,7 +131,13 @@ public class GameManager_NormalMode extends GameManager {
             return Step.BlockMove;
         }
         else
-            return Step.CheckLineDelete;
+            return Step.Eraseevent;
+    }
+
+    private Step eraseEvent() {
+
+        BoardManager.getInstance().eraseEvent();
+        return Step.CheckLineDelete;
     }
 
     private Step checkLineDelete() {

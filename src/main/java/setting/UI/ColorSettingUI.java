@@ -42,6 +42,7 @@ public class ColorSettingUI extends JFrame {
         this.getContentPane().add(colorSettingPanel,BorderLayout.CENTER);
         setTitle();
         selectSize();
+        selectedBtnShows();
         //종료 시 현재 setting 및 scoreBoard 저장
         this.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent event) {
@@ -77,6 +78,8 @@ public class ColorSettingUI extends JFrame {
         colorSettingBtns[0] = new JRadioButton("기본모드");
         colorSettingBtns[1] = new JRadioButton("색맹 모드");
 
+
+
         for (int i = 0; i < 2; i++) {
             btnGroup.add(colorSettingBtns[i]);
         }
@@ -108,7 +111,14 @@ public class ColorSettingUI extends JFrame {
 
             }
         });
+    }
 
-
+    public void selectedBtnShows() {
+        //선택된 기능 먼저 보여주는 기능
+        if (colorBlind.getColorBlind() == 0) {
+            colorSettingBtns[0].setSelected(true);
+        } else {
+            colorSettingBtns[1].setSelected(true);
+        }
     }
 }

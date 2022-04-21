@@ -38,6 +38,7 @@ public class FixSizeUI extends JFrame {
         this.getContentPane().add(FixSizePanel,BorderLayout.CENTER);
         setTitle();
         selectSize();
+        selectedBtnShow();
     }
     private void setTitle() {
         JButton titleBtn;
@@ -67,6 +68,8 @@ public class FixSizeUI extends JFrame {
         radioButtons[0] = new JRadioButton("800*600");
         radioButtons[1] = new JRadioButton("1024*768");
         radioButtons[2] = new JRadioButton("1280*720");
+
+
 
         for (int i = 0; i < 3; i++) {
             sizeBtnGroup.add(radioButtons[i]);
@@ -110,5 +113,16 @@ public class FixSizeUI extends JFrame {
         });
 
 
+    }
+
+    public void selectedBtnShow() {
+        //선택된 기능 먼저 상태를 보여줌
+        if (screenSize.getWidth() == 800) {
+            radioButtons[0].setSelected(true);
+        } else if (screenSize.getWidth() == 1024) {
+            radioButtons[1].setSelected(true);
+        }else{
+            radioButtons[2].setSelected(true);
+        }
     }
 }

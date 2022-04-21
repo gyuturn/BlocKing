@@ -80,16 +80,17 @@ protected void gameFramework() { //전체적인 게임의 동작 흐름
             curStep = setGameBalance();
             gameFramework();
             break;
-        
-        case CheckGameOver:
-            curStep = checkGameOver();
-            gameFramework();
-            break;
-        
+
         case CheckItemUse:
             curStep = checkItemUse();
             gameFramework();
             break;
+        
+        case CheckGameOver:
+            curStep = checkGameOver();
+            break;
+        
+        
         
 
         case GameOver :

@@ -30,7 +30,7 @@ public class ItemGenerator {
 
     public ItemType SelectRandomItem() {
         Random random = new Random();
-        int randomNum = random.nextInt(5);
+        int randomNum = random.nextInt(1);
         switch(randomNum) {
             case 0:
                 return ItemType.Weight;
@@ -74,8 +74,6 @@ public class ItemGenerator {
     }
 
     public BlockController setBlockMugechu(BlockController curBlock) {
-        //curBlock 가져옴
-        curBlock = BlockGenerator.getInstance().blockQueue.poll();
         //그 블록을 무게추 블록으로 바꿈
         char[][] mugechuBlock;
         mugechuBlock = new char[][]{
@@ -83,7 +81,6 @@ public class ItemGenerator {
                 {'O', 'O', 'O', 'O'}
         };
         curBlock.shape = mugechuBlock;
-        BlockGenerator.getInstance().initNewBlockPos(curBlock,0,5);
         return curBlock;
 
     }

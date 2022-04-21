@@ -101,7 +101,33 @@ public class BoardManager {
 
         return curBlock;
     }
-    
+
+    public void initBoard(){
+        for(int i=0; i<20; i++){
+            eraseSelectRow(i);
+        }
+    }
+
+
+
+    public void eraseSelectRow(int row){
+        char[] emptyLine = {'X', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'X'};
+
+        board[row] = emptyLine.clone();
+    }
+
+    public void eraseHalfBoard(){
+        for(int i =0; i<10; i++){
+            eraseSelectRow(i);
+        }
+    }
+
+    public void eraseUnderBlock(BlockController curBlock){
+        for(int i = 0; i<curBlock.width(); i++){
+            board[curBlock.posRow + curBlock.height()][curBlock.posCol + i] = ' ';
+        }
+    }
+
     public void eraseBlock(BlockController curBlock) {
         for(int i=0; i<curBlock.height(); i++) {
             for(int j=0; j<curBlock.width(); j++) {

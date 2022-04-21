@@ -17,26 +17,36 @@ public class RouletteWheelTest {
         GameInfoManager.GameDifficulty easy = GameInfoManager.GameDifficulty.Easy;
         //when
         int measuredValue = RouletteWheel.GenerateBlockByValueTest(easy);
-        double errorPercent = RouletteWheel.ComputeErrorPercent(measuredValue, 1200);
+        double errorPercent = RouletteWheel.ComputeErrorPercent(measuredValue, 8571.428571428571);
         //then
         Assertions.assertThat(errorPercent).isLessThan(5);
     }
 
     @Test
-    @DisplayName("EasyMode")
-    public void generateBlockByValueTestEasyMode() {
+    @DisplayName("NorMal Mode")
+    public void generateBlockByValueTestNorMalMode() {
         //given
-        GameInfoManager.GameDifficulty easy = GameInfoManager.GameDifficulty.Easy;
+        GameInfoManager.GameDifficulty normal = GameInfoManager.GameDifficulty.Normal;
         //when
-        int measuredValue = RouletteWheel.GenerateBlockByValueTest(easy);
-        double errorPercent = RouletteWheel.ComputeErrorPercent(measuredValue, 1200);
+        int measuredValue = RouletteWheel.GenerateBlockByValueTest(normal);
+        double errorPercent = RouletteWheel.ComputeErrorPercent(measuredValue, 7142.857142857143);
         //then
         Assertions.assertThat(errorPercent).isLessThan(5);
     }
 
     @Test
-    public void generateBlockByValueTest() {
+    @DisplayName("Hard Mode")
+    public void generateBlockByValueTestHardMode() {
+        //given
+        GameInfoManager.GameDifficulty hard = GameInfoManager.GameDifficulty.Hard;
+        //when
+        int measuredValue = RouletteWheel.GenerateBlockByValueTest(hard);
+        double errorPercent = RouletteWheel.ComputeErrorPercent(measuredValue, 5714.285714285714);
+        //then
+        Assertions.assertThat(errorPercent).isLessThan(5);
     }
+
+
 
 
 }

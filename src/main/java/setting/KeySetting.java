@@ -76,9 +76,6 @@ public class KeySetting {
 
     }
 
-    public static KeySetting getKeySetting() {
-        return keySetting;
-    }
 
     public int getLeft() {
         return left;
@@ -115,35 +112,9 @@ public class KeySetting {
     }
 
 
-    public void setLeft(int left) {
-        this.left = left;
-    }
-
-    public void setRight(int right) {
-        this.right = right;
-    }
-
-    public void setTurnBlock(int turnBlock) {
-        this.turnBlock = turnBlock;
-    }
-
-    public void setDownBlock(int downBlock) {
-        this.downBlock = downBlock;
-    }
-
-    public void setStop(int stop) {
-        this.stop = stop;
-    }
-
-    public void setOneTimeDown(int oneTimeDown) {
-        this.oneTimeDown = oneTimeDown;
-    }
-
     public int getEscape() {
         return escape;
     }
 
-    public void setEscape(int escape) {
-        this.escape = escape;
-    }
+
 }

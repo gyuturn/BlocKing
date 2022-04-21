@@ -20,6 +20,7 @@ public class SettingUI extends JFrame {
     private JButton[] buttons = new JButton[6];
     private ScoreList scoreList = ScoreList.getInstance();
     private KeySetting keySetting = KeySetting.getInstance();
+    private ColorBlind colorBlind = ColorBlind.getInstance();
 
     ImageIcon titleImg1 = new ImageIcon("./src/main/java/start/img/title1.png");
     ImageIcon titleImg2 = new ImageIcon("./src/main/java/start/img/title2.png");
@@ -95,6 +96,15 @@ public class SettingUI extends JFrame {
                 if(result==0){
                     scoreList.deleteAll();
                 }
+            }
+        });
+
+        //색맹모드 UI
+        buttons[3].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new ColorSettingUI();
+                setVisible(false);
             }
         });
 
@@ -276,7 +286,7 @@ public class SettingUI extends JFrame {
                         }
                     }
                     else if(btnClicked.isColorBlindBtnClicked()){
-                        new SettingUI();
+                        new ColorSettingUI();
                         setVisible(false);
                     }
                     else if(btnClicked.isReturnAllBtnClicked()){
@@ -308,7 +318,11 @@ public class SettingUI extends JFrame {
         //종료 시 현재 setting값 저장
         this.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent event) {
-                SaveAndLoad.SaveSetting();
+                try {
+                    SaveAndLoad.SaveSetting();
+                } catch (DuplicateKeySettingException e) {
+                    e.printStackTrace();
+                }
             }
         });
 

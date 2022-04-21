@@ -4,6 +4,7 @@ package game;
 import setting.ColorBlind;
 import setting.DuplicateKeySettingException;
 import setting.SaveAndLoad;
+import game.manager.GameManager;
 import game.manager.gametype.GameManager_BasicMode;
         import setting.ScreenSize;
 import setting.UI.SettingUI;
@@ -156,7 +157,8 @@ public class GameUI extends JFrame {
         instance = this;
 
         //게임 시작
-        GameManager_BasicMode.getInstance().startGameFramework();
+        if(GameManager.isPlaying == false)
+            GameManager_BasicMode.getInstance().startGameFramework();
 
         //Screensize 값 가져오기
         ScreenSize.getInstance().getWidth();
@@ -183,7 +185,7 @@ public class GameUI extends JFrame {
         buttons.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new SettingUI();
+                new SettingUI(SettingUI.Scene.GameUI);
                 dispose();
             }
         });

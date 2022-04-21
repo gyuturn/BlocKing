@@ -93,6 +93,7 @@ private Step gameReady() {
     initGameStatus();
     initBlockGenerator();
     initBoardManage();
+    isPlaying = true;
     
     
 
@@ -222,7 +223,8 @@ private int onBlockCreate() {
 
 private void onGameEnd() {
     stopGameFramework();
-
+    
+    isPlaying = false;
     curStep = Step.GameReady;
 }
 

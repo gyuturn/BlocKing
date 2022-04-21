@@ -78,6 +78,9 @@ public class InGameUIManager {
     }
 
     public void drawNextBlockInfo(BlockController nextBlock) {
+        JTextPane pane = GameUI.getInstance().nextBlockPane;
+        StyledDocument doc = pane.getStyledDocument();
+
         StringBuffer sb = new StringBuffer();
         for(int i=0; i< nextBlock.height(); i++)
         {
@@ -89,10 +92,22 @@ public class InGameUIManager {
             sb.append('\n');
         }
 
-        JTextPane pane = GameUI.getInstance().nextBlockPane;
         pane.setText(sb.toString());
-        StyledDocument doc = pane.getStyledDocument();
-        pane.setStyledDocument(doc);
+
+        int offset;
+        String color ="";
+
+        for(int i=0; i<nextBlock.height(); i++)
+        {
+            for(int j=0; j<nextBlock.width(); j++)
+            {
+                offset = 5 * i + j;
+                color += BoardManager.getInstance().nextBlockColor[i][j];
+                doc.setCharacterAttributes(offset, 1, pane.getStyle(color), true);
+                System.out.println("color : " + color);
+                color = "";
+            }
+        }
 
     }
 

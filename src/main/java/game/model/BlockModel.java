@@ -8,7 +8,6 @@ public abstract class BlockModel {
     //protected Color color;
     //protected Color color_colorBlindMode;
     public char color_basic; //기본 색
-    public char color_blindMode; //색맹 모드 색
     public char color_current; //현재 사용중인 색깔
 
     public int posRow = 0;

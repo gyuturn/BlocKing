@@ -1,11 +1,13 @@
-package setting;
+package setting.UI;
+
+import setting.KeySetting;
+import setting.SaveAndLoad;
+import setting.ScreenSize;
 
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
 import java.awt.*;
 import java.awt.event.*;
-
-import static javax.swing.JOptionPane.YES_NO_OPTION;
 
 public class KeySettingUI extends JFrame{
     private JPanel mainPanel;

@@ -1,7 +1,8 @@
-package setting;
+package setting.UI;
 
 import game.GameUI;
 import scoreBoard.NoItemScoreBoard.ScoreList;
+import setting.*;
 import start.StartUI;
 
 import javax.swing.*;
@@ -21,6 +22,7 @@ public class SettingUI extends JFrame {
     private JButton[] buttons = new JButton[6];
     private ScoreList scoreList = ScoreList.getInstance();
     private KeySetting keySetting = KeySetting.getInstance();
+    private ColorBlind colorBlind = ColorBlind.getInstance();
 
     ImageIcon titleImg1 = new ImageIcon("./src/main/java/start/img/title1.png");
     ImageIcon titleImg2 = new ImageIcon("./src/main/java/start/img/title2.png");
@@ -149,6 +151,15 @@ public class SettingUI extends JFrame {
             }
         });
 
+        //색맹모드 UI
+        buttons[3].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new ColorSettingUI();
+                setVisible(false);
+            }
+        });
+
         //모든 설정 기본으로 돌리기
         buttons[4].addActionListener(new ActionListener() {
             @Override
@@ -158,7 +169,10 @@ public class SettingUI extends JFrame {
                     screenSize.setWidth(800);
                     screenSize.setHeight(600);
 
+                    colorBlind.setCurColorBlind(0);
+
                     keySetting.resetDefault();
+
 
                     setVisible(false);
                     new SettingUI();

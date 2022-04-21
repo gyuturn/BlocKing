@@ -3,6 +3,7 @@ package game.manager;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import game.model.BlockController;
@@ -182,7 +183,7 @@ public class BoardManager {
     //#endregion
 
     //#region animation
-    public void eraseEvent(){
+    public void eraseEvent(ArrayList<Integer> additionalIndex){
         char[] checker = {'X', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'X'};
         int clear[] = new int[22];
         int clearsum = 0;
@@ -193,6 +194,12 @@ public class BoardManager {
                 clear[i]=1;
             }
         }
+
+        for(int i=0; i<additionalIndex.size(); i++) {
+            int index = additionalIndex.get(i);
+            clear[index] = 1;            
+        }
+        
         for(int i=0; i<22; i++) {
             clearsum += clear[i];
         }
@@ -202,9 +209,7 @@ public class BoardManager {
             {
                 int phase = 1;
                 public void actionPerformed (ActionEvent e)
-
                 {
-
                     switch (phase){
                         case 1:  for(int i=0; i<22; i++) {
                             if(clear[i]==1) {

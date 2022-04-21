@@ -174,7 +174,7 @@ public class StartUI extends JFrame {
                     }
                 } else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     if(btnClicked.isGameBtnClicked()){
-                        new GameUI();
+                        new SelectGameTypeUI();
                         setVisible(false);
                     }
                     else if(btnClicked.isSettingBtnClicked()){

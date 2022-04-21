@@ -39,6 +39,20 @@ public class IsButtonClicked {
         this.backStartBtnClicked = false;
     }
 
+    public void resetBtns(){
+        this.gameBtnClicked= false;
+        this.settingBtnClicked = false;
+        this.scbBtnClicked = false;
+        this.exitBtnClicked = false;
+        // 스코어보드
+        this.fixSizeBtnClicked = false;
+        this.ksuBtnClicked = false;
+        this.initialScbBtnClicked = false;
+        this.colorBlindBtnClicked = false;
+        this.returnAllBtnClicked = false;
+        this.backStartBtnClicked = false;
+    }
+
     public static IsButtonClicked getInstance() {
         return btnClicked;
     }

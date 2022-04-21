@@ -2,6 +2,7 @@ package game;
 //import setting.FixSize;
 //import setting.MainSetting;
 import setting.ColorBlind;
+import setting.DuplicateKeySettingException;
 import setting.SaveAndLoad;
 import game.manager.gametype.GameManager_BasicMode;
         import setting.ScreenSize;
@@ -163,7 +164,11 @@ public class GameUI extends JFrame {
         //종료 시 현재 setting값 저장
         this.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent event) {
-                SaveAndLoad.SaveSetting();
+                try {
+                    SaveAndLoad.SaveSetting();
+                } catch (DuplicateKeySettingException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }

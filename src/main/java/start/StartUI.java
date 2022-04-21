@@ -4,6 +4,7 @@ import game.GameUI;
 import game.SelectGameTypeUI;
 import scoreBoard.NoItemScoreBoard.ScoreBoardUI;
 import scoreBoard.SelectScoreBoardUI;
+import setting.DuplicateKeySettingException;
 import setting.SaveAndLoad;
 import setting.ScreenSize;
 import setting.UI.SettingUI;
@@ -229,7 +230,11 @@ public class StartUI extends JFrame {
         //종료 시 현재 setting값 저장
         this.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent event) {
-                SaveAndLoad.SaveSetting();
+                try {
+                    SaveAndLoad.SaveSetting();
+                } catch (DuplicateKeySettingException e) {
+                    e.printStackTrace();
+                }
             }
         });
 

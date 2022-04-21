@@ -19,7 +19,7 @@ public class SaveAndLoad {
     private static ColorBlind colorBlind = ColorBlind.getInstance();
 
 
-    public static void SaveSetting(){
+    public static void SaveSetting() throws DuplicateKeySettingException {
         saveScreenSize();
         saveScoreList();
         saveItemScoreList();
@@ -56,17 +56,12 @@ public class SaveAndLoad {
         return screenSize;
     }
 
-    public static KeySetting saveKeySetting() {
-        try {
-            boolean overLag = keySetting.overLapKeySetting();
-            if (overLag) {
-                Exception e = new Exception("중북된 키값 저장 중 예외 발생");
-                throw e;
+    public static KeySetting saveKeySetting()  throws DuplicateKeySettingException{
+
+            if (keySetting.overLapKeySetting()) {
+                throw new DuplicateKeySettingException();
             }
-        } catch (Exception e) {
-            System.out.println("예외메세지 " + e.getMessage());
-            e.printStackTrace();
-        }
+
         JSONObject keySettingJson = new JSONObject();
         keySettingJson.put("left", keySetting.getLeft());
         keySettingJson.put("right", keySetting.getRight());
@@ -137,7 +132,7 @@ public class SaveAndLoad {
 
     public static ColorBlind saveColorBlind(){
         JSONObject colorBlindJson = new JSONObject();
-        colorBlindJson.put("colorBlind", colorBlind.getColorBlind());
+        colorBlindJson.put("colorBlind", colorBlind.getColorBlind().toString());
         try{
             FileWriter colorBlindFile = new FileWriter("src/main/java/save/ColorBlind.json");
             colorBlindFile.write(colorBlindJson.toJSONString());
@@ -233,7 +228,7 @@ public class SaveAndLoad {
             InputStream getColorBlind = new FileInputStream("src/main/java/save/ColorBlind.json");
             HashMap<String,Object> colorBlindMap = new ObjectMapper().readValue(getColorBlind, HashMap.class);
             String colorBlind = colorBlindMap.get("colorBlind").toString();
-            if (colorBlind == "BASIC") {
+            if (colorBlind.equals("BASIC")) {
                 SaveAndLoad.colorBlind.setCurColorBlind(ColorBlind.ColorSetting.BASIC);
             }else{
                 SaveAndLoad.colorBlind.setCurColorBlind(ColorBlind.ColorSetting.ColorBlinded);

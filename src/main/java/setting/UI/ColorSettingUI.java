@@ -1,6 +1,7 @@
 package setting.UI;
 
 import setting.ColorBlind;
+import setting.DuplicateKeySettingException;
 import setting.SaveAndLoad;
 import setting.ScreenSize;
 
@@ -46,7 +47,11 @@ public class ColorSettingUI extends JFrame {
         //종료 시 현재 setting 및 scoreBoard 저장
         this.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent event) {
-                SaveAndLoad.SaveSetting();
+                try {
+                    SaveAndLoad.SaveSetting();
+                } catch (DuplicateKeySettingException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }

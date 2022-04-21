@@ -5,6 +5,7 @@ package game;
 import game.manager.GameInfoManager;
 import scoreBoard.NoItemScoreBoard.ScoreBoardUI;
 import scoreBoard.scoreBoradItem.ItemScoreBoardUI;
+import setting.DuplicateKeySettingException;
 import setting.SaveAndLoad;
 import setting.ScreenSize;
 
@@ -53,7 +54,11 @@ public class SelectGameTypeUI extends JFrame {
         //종료 시 현재 setting 및 scoreBoard 저장
         this.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent event) {
-                SaveAndLoad.SaveSetting();
+                try {
+                    SaveAndLoad.SaveSetting();
+                } catch (DuplicateKeySettingException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }

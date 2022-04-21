@@ -4,6 +4,7 @@ import scoreBoard.NoItemScoreBoard.ScoreBoardUI;
 import scoreBoard.NoItemScoreBoard.ScoreInputUI;
 import scoreBoard.scoreBoradItem.ItemScoreBoardUI;
 import setting.ColorBlind;
+import setting.DuplicateKeySettingException;
 import setting.SaveAndLoad;
 import setting.ScreenSize;
 import setting.UI.SettingUI;
@@ -49,7 +50,11 @@ public class SelectScoreBoardUI extends JFrame {
         //종료 시 현재 setting 및 scoreBoard 저장
         this.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent event) {
-                SaveAndLoad.SaveSetting();
+                try {
+                    SaveAndLoad.SaveSetting();
+                } catch (DuplicateKeySettingException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }

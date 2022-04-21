@@ -28,6 +28,8 @@ public class BoardManager {
     // 'O' :
     public char[][] board;
     public char[][] boardColor;
+    public char[][] nextBlock;
+    public char[][] nextBlockColor;
     int m =5; int n=6;
 
     public BoardManager() {
@@ -79,6 +81,16 @@ public class BoardManager {
             {'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B'}, //20행
             {'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B'},
             {'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B'},
+        };
+
+        nextBlock = new char [][]{
+                {' ', ' ', ' ', ' '},
+                {' ', ' ', ' ', ' '}
+        };
+
+        nextBlockColor = new char[][]{
+                {'B', 'B', 'B', 'B'},
+                {'B', 'B', 'B', 'B'}
         };
     }
 

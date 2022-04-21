@@ -28,7 +28,7 @@ public class GameManager_BasicMode extends GameManager {
 
 //#region GameFramework
 
-private Step curStep = Step.GameReady;
+protected Step curStep = Step.GameReady;
 
 public enum Step {
 
@@ -109,7 +109,7 @@ public Step createNewBlock() {
     return Step.BlockMove;
 }
 
-private Step blockMove() {
+public Step blockMove() {
     isBlockMovable = BoardManager.getInstance().checkBlockMovable(curBlock);
     if(isBlockMovable) {
         BoardManager.getInstance().translateBlock(curBlock, 1, 0);
@@ -126,7 +126,7 @@ private Step blockMove() {
         return Step.CheckLineDelete;
     }
 
-private Step checkLineDelete() {
+public Step checkLineDelete() {
     int curLineCount = BoardManager.getInstance().eraseFullLine();
     onLineErase(curLineCount);
 
@@ -141,7 +141,7 @@ private Step setGameBalance() {
     return Step.CheckGameOver;
 }
 
-private Step checkGameOver() {
+public Step checkGameOver() {
     BlockController nextBlock = BlockGenerator.getInstance().blockQueue.peek();
     for(int i=0; i<nextBlock.height(); i++) {
         for(int j=0; j<nextBlock.width(); j++) {
@@ -202,7 +202,7 @@ private int onBlockMove() {
     return 0;
 }
 
-private int onLineErase(int count) {
+public int onLineErase(int count) {
     score += curSpeed * count * 10;
 
     if(count > 2) {
@@ -221,7 +221,7 @@ private int onBlockCreate() {
     return 0;
 }
 
-private void onGameEnd() {
+public void onGameEnd() {
     stopGameFramework();
     
     isPlaying = false;

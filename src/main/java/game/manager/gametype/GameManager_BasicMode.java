@@ -11,6 +11,7 @@ import game.manager.GameManager;
 import game.manager.InGameUIManager;
 import game.model.BlockController;
 import scoreBoard.NoItemScoreBoard.ScoreInputUI;
+import start.StartUI;
 
 public class GameManager_BasicMode extends GameManager {
     
@@ -36,9 +37,9 @@ public enum Step {
     //while !gameOver
     CreateNewBlock,
     BlockMove,
-    SetGameBalance,
     CheckLineDelete,
     Eraseevent,
+    SetGameBalance,
     CheckGameOver,
 
     GameOver
@@ -89,10 +90,10 @@ protected void gameFramework() { //전체적인 게임의 동작 흐름
 private Step gameReady() {
     //게임을 준비합니다.
     initKeyListener();
-    BlockGenerator.getInstance().initBlockQueue();
-    //BlockGenerator.getInstance().initBlockPer();
-    //BoardManager.getInstance().initBoard();
     initGameStatus();
+    initBlockGenerator();
+    initBoardManage();
+    
     
 
     return Step.CreateNewBlock;
@@ -154,8 +155,8 @@ private Step checkGameOver() {
 
 @Override
 protected void gameOver() {
-    stopGameFramework();
-    new ScoreInputUI(score,GameInfoManager.getInstance().difficultyToString(difficulty) );
+    onGameEnd();
+    new ScoreInputUI(score,GameInfoManager.getInstance().difficultyToString(difficulty));
 
 }
 
@@ -163,16 +164,32 @@ protected void gameOver() {
 
 //#region init
 
+public void initKeyListener() {
+    interaction_play = new Interaction_Play();
+    interaction_utils = new Interaction_Utils();
+    GameUI.getInstance().pane.addKeyListener(interaction_play);
+    GameUI.getInstance().pane.addKeyListener(interaction_utils);
+}
+
 @Override
 protected void initGameStatus() {
     blockCount = 0;
     lineCount = 0;
     score = 0;
+    curSpeed = basicSpeed;
     
     curBlock = null;
     
     difficulty = GameInfoManager.getInstance().difficulty; 
     addSpeed = GameInfoManager.getInstance().difficultiesMap.get(difficulty).getAddSpeed();
+}
+
+protected void initBoardManage() {
+    BoardManager.getInstance().initBoard();
+}
+
+protected void initBlockGenerator() {
+    BlockGenerator.getInstance().initBlockQueue();
 }
 
 //#endregion
@@ -203,17 +220,16 @@ private int onBlockCreate() {
     return 0;
 }
 
+private void onGameEnd() {
+    stopGameFramework();
+
+    curStep = Step.GameReady;
+}
+
 //#endregion
 
 
 //#region Interaction
-
-public void initKeyListener() {
-    interaction_play = new Interaction_Play();
-    interaction_utils = new Interaction_Utils();
-    GameUI.getInstance().pane.addKeyListener(interaction_play);
-    GameUI.getInstance().pane.addKeyListener(interaction_utils);
-}
 
 public class Interaction_Play implements KeyListener {
     @Override
@@ -281,11 +297,13 @@ public class Interaction_Utils implements KeyListener {
             else
                 restartGameFramework();
         }
-        /*
+        
         if(keySetting.getEscape() == e.getKeyCode()) {
+            onGameEnd();
             new StartUI();
+            GameUI.getInstance().dispose();
         }
-        */
+        
         
     }
 

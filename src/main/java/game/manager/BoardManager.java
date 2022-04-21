@@ -102,6 +102,12 @@ public class BoardManager {
         return curBlock;
     }
 
+    public void initBoard(){
+        for(int i=0; i<20; i++){
+            eraseSelectRow(i);
+        }
+    }
+
 
 
     public void eraseSelectRow(int row){

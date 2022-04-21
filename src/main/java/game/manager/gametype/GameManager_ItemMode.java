@@ -5,10 +5,14 @@ import java.awt.event.KeyListener;
 
 import game.GameUI;
 import game.container.BlockGenerator;
+import game.container.ItemGenerator;
+import game.container.ItemGenerator.ItemType;
 import game.manager.BoardManager;
 import game.manager.GameInfoManager;
 import game.manager.GameManager;
 import game.manager.InGameUIManager;
+import game.model.BlockController;
+import scoreBoard.NoItemScoreBoard.ScoreInputUI;
 
 public class GameManager_ItemMode extends GameManager {
     
@@ -33,12 +37,13 @@ public enum Step {
     
     //while !gameOver
     CreateNewBlock,
-    CheckAddItem,
     BlockMove,
+    EraseAnimation,
+    EraseLine,
     SetGameBalance,
-    CheckLineDelete,
+    CheckGameOver,
+    
     CheckItemUse,
-    Eraseevent,
     
     GameOver
 }
@@ -53,11 +58,6 @@ protected void gameFramework() { //전체적인 게임의 동작 흐름
 
         case CreateNewBlock:
             curStep = createNewBlock();
-            gameFramework();
-            break;
-
-        case CheckAddItem:
-            curStep = checkAddItem();
             break;
 
         case BlockMove:
@@ -65,12 +65,12 @@ protected void gameFramework() { //전체적인 게임의 동작 흐름
             if(curStep != Step.BlockMove) gameFramework();
             break;
 
-        case Eraseevent:
-            curStep = eraseEvent();
+        case EraseAnimation:
+            curStep = eraseAnimation();
             break;
 
-        case CheckLineDelete:
-            curStep = checkLineDelete();
+        case EraseLine:
+            curStep = eraseLine();
             gameFramework();
             break;
 
@@ -79,10 +79,16 @@ protected void gameFramework() { //전체적인 게임의 동작 흐름
             gameFramework();
             break;
         
+        case CheckGameOver:
+            curStep = checkGameOver();
+            gameFramework();
+            break;
+        
         case CheckItemUse:
             curStep = checkItemUse();
             gameFramework();
             break;
+        
 
         case GameOver :
             gameOver();
@@ -93,10 +99,10 @@ protected void gameFramework() { //전체적인 게임의 동작 흐름
 private Step gameReady() {
     //게임을 준비합니다.
     initKeyListener();
-    BlockGenerator.getInstance().initBlockQueue();
-    //BlockGenerator.getInstance().initBlockPer();
-    //BoardManager.getInstance().initBoard();
     initGameStatus();
+    initBlockGenerator();
+    initBoardManage();
+    isPlaying = true;
 
     return Step.CreateNewBlock;
 }
@@ -107,14 +113,6 @@ public Step createNewBlock() {
     InGameUIManager.getInstance().drawNextBlockInfo(BlockGenerator.getInstance().blockQueue.peek());
     onBlockCreate();
 
-    return Step.CheckAddItem;
-}
-
-private Step checkAddItem() {
-    if(blockCount % 10 == 0 && blockCount > 0)
-    {
-        //아이템 생성
-    }
     return Step.BlockMove;
 }
 
@@ -126,16 +124,17 @@ private Step blockMove() {
         return Step.BlockMove;
     }
     else
-        return Step.Eraseevent;
+        return Step.EraseAnimation;
 }
 
-    private Step eraseEvent() {
+private Step eraseAnimation() {
 
-        BoardManager.getInstance().eraseEvent();
-        return Step.CheckLineDelete;
-    }
+    BoardManager.getInstance().eraseEvent(targetLineIndexList);
+    
+    return Step.EraseLine;
+}
 
-private Step checkLineDelete() {
+private Step eraseLine() {
     int curLineCount = BoardManager.getInstance().eraseFullLine();
     onLineErase(curLineCount);
 
@@ -147,33 +146,63 @@ private Step setGameBalance() {
     timeScale = maxSpeed / curSpeed;
     setTimeScale(timeScale);
 
-    return Step.CheckAddItem;
+    return Step.CheckItemUse;
 }
 
 private Step checkItemUse() {
+    return Step.CheckGameOver;
+}
+
+private Step checkGameOver() {
+    BlockController nextBlock = BlockGenerator.getInstance().blockQueue.peek();
+    for(int i=0; i<nextBlock.height(); i++) {
+        for(int j=0; j<nextBlock.width(); j++) {
+            if(nextBlock.getShape(i, j) != ' ') {
+                if(BoardManager.getInstance().board[i][j + 5] != ' ')
+                    return Step.GameOver;
+            }
+        }
+    }
     return Step.CreateNewBlock;
 }
 
 @Override
 protected void gameOver() {
-    //게임이 종료되면 호출됩니다.
-    timer.stop();
+    onGameEnd();
+    new ScoreInputUI(score,GameInfoManager.getInstance().difficultyToString(difficulty));
+
 }
 
 //#endregion
 
 //#region init
 
+public void initKeyListener() {
+    interaction_play = new Interaction_Play();
+    interaction_utils = new Interaction_Utils();
+    GameUI.getInstance().pane.addKeyListener(interaction_play);
+    GameUI.getInstance().pane.addKeyListener(interaction_utils);
+}
+
 @Override
 protected void initGameStatus() {
     blockCount = 0;
     lineCount = 0;
     score = 0;
+    curSpeed = basicSpeed;
     
     curBlock = null;
     
     difficulty = GameInfoManager.getInstance().difficulty; 
     addSpeed = GameInfoManager.getInstance().difficultiesMap.get(difficulty).getAddSpeed();
+}
+
+protected void initBoardManage() {
+    BoardManager.getInstance().initBoard();
+}
+
+protected void initBlockGenerator() {
+    BlockGenerator.getInstance().initBlockQueue();
 }
 
 //#endregion
@@ -182,6 +211,7 @@ protected void initGameStatus() {
 private int onBlockMove() {
     score += curSpeed;
 
+    
     return 0;
 }
 
@@ -194,6 +224,8 @@ private int onLineErase(int count) {
 
     lineCount += count;
 
+    //checkAddItem();
+
     return 0;
 }
 
@@ -201,20 +233,51 @@ private int onBlockCreate() {
     score += curSpeed;
     blockCount++;
 
+    checkAddItem();
     return 0;
+}
+
+private void onGameEnd() {
+    stopGameFramework();
+    
+    isPlaying = false;
+    curStep = Step.GameReady;
 }
 
 //#endregion
 
+//#region Utils
+private void checkAddItem() {
+
+    if(blockCount % 2 == 0) //a-b>10 b -= 10;
+    {
+        BlockController targetBlock = BlockGenerator.getInstance().blockQueue.peek();
+        ItemType itemType = ItemGenerator.getInstance().SelectRandomItem();
+
+        System.out.println(itemType);
+
+        switch(itemType) {
+            case Weight:
+                ItemGenerator.getInstance().setBlockMugechu(targetBlock);
+                break;
+            case LineClear:
+                ItemGenerator.getInstance().addCharInShape(targetBlock, 'L');
+                break;
+            case Resurrection:
+                ItemGenerator.getInstance().addCharInShape(targetBlock, 'R');
+                break;
+            case DoubleBonusChance:
+                ItemGenerator.getInstance().addCharInShape(targetBlock, 'D');
+                break;
+            case SmallBlockChance:
+                ItemGenerator.getInstance().addCharInShape(targetBlock, 'S');
+                break;
+        }
+    }
+}
+//#endregion
 
 //#region Interaction
-
-public void initKeyListener() {
-    interaction_play = new Interaction_Play();
-    interaction_utils = new Interaction_Utils();
-    GameUI.getInstance().pane.addKeyListener(interaction_play);
-    GameUI.getInstance().pane.addKeyListener(interaction_utils);
-}
 
 public class Interaction_Play implements KeyListener {
     @Override
@@ -225,23 +288,24 @@ public class Interaction_Play implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        System.out.println("e.getKeyCode() = " + e.getKeyCode());
+        //System.out.println("e.getKeyCode() = " + e.getKeyCode());
         if (keySetting.getDownBlock() == e.getKeyCode()) {
             blockMove();
             InGameUIManager.getInstance().drawBoard();
-            System.out.println("input down");
+            //System.out.println("input down");
         }
         else if (keySetting.getRight() == e.getKeyCode()) {
             BoardManager.getInstance().translateBlock(curBlock, 0, 1);
             InGameUIManager.getInstance().drawBoard();
-            System.out.println("input right");
+            //System.out.println("input right");
         }
         else if (keySetting.getLeft() == e.getKeyCode()) {
             BoardManager.getInstance().translateBlock(curBlock, 0, -1);
             InGameUIManager.getInstance().drawBoard();
-            System.out.println("input left");
+            //System.out.println("input left");
         }
         else if (keySetting.getTurnBlock() == e.getKeyCode()) {
+            //System.out.println(curStep);
             BoardManager.getInstance().eraseBlock(curBlock);
             curBlock.rotate();
             if(!BoardManager.getInstance().checkDrawable(curBlock.shape, curBlock.posRow, curBlock.posCol)) {
@@ -251,7 +315,7 @@ public class Interaction_Play implements KeyListener {
             }
             BoardManager.getInstance().setBlockPos(curBlock, curBlock.posRow, curBlock.posCol);
             InGameUIManager.getInstance().drawBoard();
-            System.out.println("input up");
+            //System.out.println("input up");
         } else if (keySetting.getOneTimeDown() == e.getKeyCode()) {
             while(BoardManager.getInstance().checkBlockMovable(curBlock)) {
                 BoardManager.getInstance().translateBlock(curBlock, 1, 0);

@@ -129,9 +129,6 @@ private Step eraseAnimation() {
     return Step.EraseLine;
 }
 
-
-public Step checkLineDelete() {
-
 private Step eraseLine() {
 
     int curLineCount = BoardManager.getInstance().eraseFullLine();

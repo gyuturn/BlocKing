@@ -106,7 +106,7 @@ public abstract class GameManager {
     protected void oneFrame() {
         gameFramework();
         InGameUIManager.getInstance().drawBoard();
-        printStatus();
+        //printStatus();
     }
 
     protected abstract void gameOver();

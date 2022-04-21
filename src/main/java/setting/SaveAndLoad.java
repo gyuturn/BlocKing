@@ -16,6 +16,7 @@ public class SaveAndLoad {
     private static ScoreList scoreList = ScoreList.getInstance();
     private static ItemScoreList itemScoreList = ItemScoreList.getInstance();
     private static KeySetting keySetting = KeySetting.getInstance();
+    private static ColorBlind colorBlind = ColorBlind.getInstance();
 
 
     public static void SaveSetting(){
@@ -52,7 +53,6 @@ public class SaveAndLoad {
         //스코어보드(item모드)
         List<User> listForItem = itemScoreList.getList();
         JSONObject scoreBoardItemJson = new JSONObject();
-        System.out.println("itemScoreList = " + itemScoreList);
         int sizeForItemList = listForItem.size();
         //10개 까지만 저장
         if(sizeForItemList>=10){
@@ -63,6 +63,10 @@ public class SaveAndLoad {
             scoreBoardItemJson.put("score"+i, listForItem.get(i).getScore());
             scoreBoardItemJson.put("mode"+i, listForItem.get(i).getMode());
         }
+
+        //색맹모드
+        JSONObject colorBlindJson = new JSONObject();
+        colorBlindJson.put("colorBlind", colorBlind.getColorBlind());
 
         try{
             //스크린 사이즈 저장
@@ -88,6 +92,12 @@ public class SaveAndLoad {
             ItemScoreListFile.write(scoreBoardItemJson.toJSONString());
             ItemScoreListFile.flush();
             ItemScoreListFile.close();
+
+            //색맹모드 저장
+            FileWriter colorBlindFile = new FileWriter("src/main/java/save/ColorBlind.json");
+            colorBlindFile.write(colorBlindJson.toJSONString());
+            colorBlindFile.flush();
+            colorBlindFile.close();
 
 
 
@@ -146,6 +156,11 @@ public class SaveAndLoad {
             int escape = (Integer)getKeySettingMap.get("escape");
             keySetting.setKeySetting(left,right,turnBlock,downBlock,stop,oneTimeDown,escape);
 
+
+            //색맹모드 load
+            InputStream getColorBlind = new FileInputStream("src/main/java/save/ColorBlind.json");
+            HashMap<String,Object> colorBlindMap = new ObjectMapper().readValue(getColorBlind, HashMap.class);
+            colorBlind.setCurColorBlind((Integer) colorBlindMap.get("colorBlind"));
 
 
         } catch (FileNotFoundException e) {

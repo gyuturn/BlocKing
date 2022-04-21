@@ -1,7 +1,9 @@
 package game.manager;
 
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import game.model.BlockController;
@@ -97,6 +99,9 @@ public class BoardManager {
 //#endregion
 
 //#region Board Controll
+
+    //#region 블럭 이동 관련
+
     public BlockController setBlockPos(BlockController curBlock, int targetRow, int targetCol) {
         for(int i=0; i<curBlock.height(); i++) {
             for(int j=0; j<curBlock.width(); j++) {
@@ -114,31 +119,6 @@ public class BoardManager {
         return curBlock;
     }
 
-    public void initBoard(){
-        for(int i=0; i<20; i++){
-            eraseSelectRow(i);
-        }
-    }
-
-
-
-    public void eraseSelectRow(int row){
-        char[] emptyLine = {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'};
-
-        board[row] = emptyLine.clone();
-    }
-
-    public void eraseHalfBoard(){
-        for(int i =0; i<10; i++){
-            eraseSelectRow(i);
-        }
-    }
-
-    public void eraseUnderBlock(BlockController curBlock){
-        for(int i = 0; i<curBlock.width(); i++){
-            board[curBlock.posRow + curBlock.height()][curBlock.posCol + i] = ' ';
-        }
-    }
 
     public void eraseBlock(BlockController curBlock) {
         for(int i=0; i<curBlock.height(); i++) {
@@ -156,7 +136,9 @@ public class BoardManager {
         else
             setBlockPos(curBlock, curBlock.posRow, curBlock.posCol);
     }
+    //#endregion
 
+    //#region 행 삭제 관련
     public int eraseFullLine() {
         int lineCount = 0;
         char[] checker = {'X', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'X'};
@@ -175,7 +157,33 @@ public class BoardManager {
         return lineCount;
     }
 
-    public void eraseEvent(){
+    public void initBoard(){
+        for(int i=0; i<20; i++){
+            eraseSelectRow(i);
+        }
+    }
+
+    public void eraseSelectRow(int row){
+        char[] emptyLine = {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'};
+
+        board[row] = emptyLine.clone();
+    }
+
+    public void eraseHalfBoard(){
+        for(int i =0; i<10; i++){
+            eraseSelectRow(i);
+        }
+    }
+
+    public void eraseUnderBlock(BlockController curBlock){
+        for(int i = 0; i<curBlock.width(); i++){
+            board[curBlock.posRow + curBlock.height()][curBlock.posCol + i] = ' ';
+        }
+    }
+    //#endregion
+
+    //#region animation
+    public void eraseEvent(ArrayList<Integer> additionalIndex){
         char[] checker = {'X', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'X'};
         int clear[] = new int[22];
         int clearsum = 0;
@@ -186,6 +194,12 @@ public class BoardManager {
                 clear[i]=1;
             }
         }
+
+        for(int i=0; i<additionalIndex.size(); i++) {
+            int index = additionalIndex.get(i);
+            clear[index] = 1;            
+        }
+        
         for(int i=0; i<22; i++) {
             clearsum += clear[i];
         }
@@ -193,13 +207,9 @@ public class BoardManager {
         if(clearsum > 0) {
             Timer timers = new Timer(1, new ActionListener()
             {
-
-
                 int phase = 1;
                 public void actionPerformed (ActionEvent e)
-
                 {
-
                     switch (phase){
                         case 1:  for(int i=0; i<22; i++) {
                             if(clear[i]==1) {
@@ -486,33 +496,16 @@ public class BoardManager {
                                         board[i][11] = 'X';
                                     }
                                 }
-
-
-
                                 System.out.println("블록 제거 완료" + m);
                             }
                             break;
-
-
                     }
-
-
-
-
-
                 }
-
             });
             timers.start();
-
-
         }
-
-
     }
-
-
-
+//#endregion
 
 //#endregion
 
@@ -595,6 +588,22 @@ public class BoardManager {
 //
 //        return true;
 //    }
+//#endregion
+
+//#region nextBlock Board
+public BlockController setNextBlockColor(BlockController nextBlock) {
+    for (int i = 0; i < nextBlock.height(); i++) {
+        for (int j = 0; j < nextBlock.width(); j++) {
+            if(nextBlock.getShape(i,j) == 'O') {
+                nextBlockColor[i][j] = nextBlock.getColor();
+            }
+            else{
+                nextBlockColor[i][j] = 'W';
+            }
+        }
+    }
+     return nextBlock;
+}
 //#endregion
 
 //#region Debug

@@ -136,7 +136,7 @@ public class GameManager_NormalMode extends GameManager {
 
     private Step eraseEvent() {
 
-        BoardManager.getInstance().eraseEvent();
+        BoardManager.getInstance().eraseEvent(targetLineIndexList);
         return Step.CheckLineDelete;
     }
 

@@ -1,5 +1,6 @@
 package game.manager;
 
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Arrays;
@@ -114,16 +115,20 @@ public class BoardManager {
         return curBlock;
     }
 
-//    public BlockController setBlockColor(BlockController nextBlock) {
-//        for (int i = 0; i < nextBlock.height(); i++) {
-//            for (int j = 0; j < nextBlock.width(); j++) {
-//                if(nextBlock.getShape(i,j) == 'O') {
-//                    nextBlockColor[i][j] = nextBlock.getColor();
-//                }
-//            }
-//        }
-//         return nextBlock;
-//    }
+    public BlockController setNextBlockColor(BlockController nextBlock) {
+        for (int i = 0; i < nextBlock.height(); i++) {
+            for (int j = 0; j < nextBlock.width(); j++) {
+                if(nextBlock.getShape(i,j) == 'O') {
+                    nextBlockColor[i][j] = nextBlock.getColor();
+                }
+                else{
+                    nextBlockColor[i][j] = 'W';
+                }
+            }
+        }
+         return nextBlock;
+    }
+
     public void initBoard(){
         for(int i=0; i<20; i++){
             eraseSelectRow(i);

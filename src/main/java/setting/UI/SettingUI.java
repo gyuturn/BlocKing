@@ -8,12 +8,10 @@ import start.StartUI;
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 
 import static javax.swing.JOptionPane.YES_NO_OPTION;
+import static start.IsButtonClicked.btnClicked;
 
 public class SettingUI extends JFrame {
 
@@ -22,7 +20,6 @@ public class SettingUI extends JFrame {
     private JButton[] buttons = new JButton[6];
     private ScoreList scoreList = ScoreList.getInstance();
     private KeySetting keySetting = KeySetting.getInstance();
-    private ColorBlind colorBlind = ColorBlind.getInstance();
 
     ImageIcon titleImg1 = new ImageIcon("./src/main/java/start/img/title1.png");
     ImageIcon titleImg2 = new ImageIcon("./src/main/java/start/img/title2.png");
@@ -50,7 +47,259 @@ public class SettingUI extends JFrame {
 
         this.getContentPane().add(mainPanel,BorderLayout.CENTER);
         setTitle();
-        setBtn();
+
+        //btnPanel setting
+        JPanel btnPanel = new JPanel();
+        GridLayout gridLayout=new GridLayout( 6,1);
+        btnPanel.setLayout(gridLayout);
+        btnPanel.setBackground(Color.BLACK);
+        btnPanel.setBorder(BorderFactory.createEmptyBorder(screenSize.getHeight()/4,0,0,0));
+
+
+
+        for (int i = 0; i < settingList.length; i++) {
+            buttons[i] = new JButton(settingList[i]);
+            btnPanel.add(buttons[i]);
+
+        }
+        mainPanel.add(btnPanel, "Center");
+
+        btnClicked.setFixSizeBtnClicked();
+        if(btnClicked.isFixSizeBtnClicked()){
+            buttons[0].setForeground(Color.red);
+        }
+
+        //화면사이즈 조절 event
+        buttons[0].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new FixSizeUI();
+                setVisible(false);
+            }
+        });
+
+        //화면사이즈 조절 event
+        buttons[1].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new KeySettingUI();
+                setVisible(false);
+            }
+        });
+
+        //스코어 보드 기록 초기화
+        buttons[2].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int result = JOptionPane.showConfirmDialog(null, "정말로 삭제하시겠습니까?","스코어 보드 기록 초기화",YES_NO_OPTION);
+                if(result==0){
+                    scoreList.deleteAll();
+                }
+            }
+        });
+
+        //모든 설정 기본으로 돌리기
+        buttons[4].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int result = JOptionPane.showConfirmDialog(null, "모든 설정을 초기화 하시겠습니까??","설정 초기화",YES_NO_OPTION);
+                if(result==0){
+
+
+                    screenSize.setWidth(800);
+                    screenSize.setHeight(600);
+
+                    colorBlind.setCurColorBlind(ColorBlind.ColorSetting.BASIC);
+
+
+                    keySetting.resetDefault();
+
+                    setVisible(false);
+                    new SettingUI();
+                }
+            }
+        });
+
+
+
+        //시작메뉴로
+        buttons[5].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new StartUI();
+                setVisible(false);
+            }
+        });
+
+        //메뉴 방향키 조작
+        buttons[5].addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_UP) {
+                    if(btnClicked.isFixSizeBtnClicked()){
+                        btnClicked.setBackStartBtnClicked();
+                        buttons[5].setForeground(Color.red);
+                        buttons[0].setForeground(Color.black);
+                    }
+                    else if(btnClicked.isKsuBtnClicked()){
+                        btnClicked.setFixSizeBtnClicked();
+                        buttons[0].setForeground(Color.red);
+                        buttons[1].setForeground(Color.black);
+                    }
+                    else if(btnClicked.isInitialScbBtnClicked()){
+                        btnClicked.setKsuBtnClicked();
+                        buttons[1].setForeground(Color.red);
+                        buttons[2].setForeground(Color.black);
+                    }
+                    else if(btnClicked.isColorBlindBtnClicked()){
+                        btnClicked.setInitialScbBtnClicked();
+                        buttons[2].setForeground(Color.red);
+                        buttons[3].setForeground(Color.black);
+                    }
+                    else if(btnClicked.isReturnAllBtnClicked()){
+                        btnClicked.setColorBlindBtnClicked();
+                        buttons[3].setForeground(Color.red);
+                        buttons[4].setForeground(Color.black);
+                    }
+                    else if(btnClicked.isBackStartBtnClicked()){
+                        btnClicked.setReturnAllBtnClicked();
+                        buttons[4].setForeground(Color.red);
+                        buttons[5].setForeground(Color.black);
+                    }
+
+                } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+                    if(btnClicked.isFixSizeBtnClicked()){
+                        btnClicked.setKsuBtnClicked();
+                        buttons[1].setForeground(Color.red);
+                        buttons[0].setForeground(Color.black);
+                    }
+                    else if(btnClicked.isKsuBtnClicked()){
+                        btnClicked.setInitialScbBtnClicked();
+                        buttons[2].setForeground(Color.red);
+                        buttons[1].setForeground(Color.black);
+                    }
+                    else if(btnClicked.isInitialScbBtnClicked()){
+                        btnClicked.setColorBlindBtnClicked();
+                        buttons[3].setForeground(Color.red);
+                        buttons[2].setForeground(Color.black);
+                    }
+                    else if(btnClicked.isColorBlindBtnClicked()){
+                        btnClicked.setReturnAllBtnClicked();
+                        buttons[4].setForeground(Color.red);
+                        buttons[3].setForeground(Color.black);
+                    }
+                    else if(btnClicked.isReturnAllBtnClicked()){
+                        btnClicked.setBackStartBtnClicked();
+                        buttons[5].setForeground(Color.red);
+                        buttons[4].setForeground(Color.black);
+                    }
+                    else if(btnClicked.isBackStartBtnClicked()){
+                        btnClicked.setFixSizeBtnClicked();
+                        buttons[0].setForeground(Color.red);
+                        buttons[5].setForeground(Color.black);
+                    }
+                } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+                    if(btnClicked.isFixSizeBtnClicked()){
+                        btnClicked.setBackStartBtnClicked();
+                        buttons[5].setForeground(Color.red);
+                        buttons[0].setForeground(Color.black);
+                    }
+                    else if(btnClicked.isKsuBtnClicked()){
+                        btnClicked.setFixSizeBtnClicked();
+                        buttons[0].setForeground(Color.red);
+                        buttons[1].setForeground(Color.black);
+                    }
+                    else if(btnClicked.isInitialScbBtnClicked()){
+                        btnClicked.setKsuBtnClicked();
+                        buttons[1].setForeground(Color.red);
+                        buttons[2].setForeground(Color.black);
+                    }
+                    else if(btnClicked.isColorBlindBtnClicked()){
+                        btnClicked.setInitialScbBtnClicked();
+                        buttons[2].setForeground(Color.red);
+                        buttons[3].setForeground(Color.black);
+                    }
+                    else if(btnClicked.isReturnAllBtnClicked()){
+                        btnClicked.setColorBlindBtnClicked();
+                        buttons[3].setForeground(Color.red);
+                        buttons[4].setForeground(Color.black);
+                    }
+                    else if(btnClicked.isBackStartBtnClicked()){
+                        btnClicked.setReturnAllBtnClicked();
+                        buttons[4].setForeground(Color.red);
+                        buttons[5].setForeground(Color.black);
+                    }
+                } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+                    if(btnClicked.isFixSizeBtnClicked()){
+                        btnClicked.setKsuBtnClicked();
+                        buttons[1].setForeground(Color.red);
+                        buttons[0].setForeground(Color.black);
+                    }
+                    else if(btnClicked.isKsuBtnClicked()){
+                        btnClicked.setInitialScbBtnClicked();
+                        buttons[2].setForeground(Color.red);
+                        buttons[1].setForeground(Color.black);
+                    }
+                    else if(btnClicked.isInitialScbBtnClicked()){
+                        btnClicked.setColorBlindBtnClicked();
+                        buttons[3].setForeground(Color.red);
+                        buttons[2].setForeground(Color.black);
+                    }
+                    else if(btnClicked.isColorBlindBtnClicked()){
+                        btnClicked.setReturnAllBtnClicked();
+                        buttons[4].setForeground(Color.red);
+                        buttons[3].setForeground(Color.black);
+                    }
+                    else if(btnClicked.isReturnAllBtnClicked()){
+                        btnClicked.setBackStartBtnClicked();
+                        buttons[5].setForeground(Color.red);
+                        buttons[4].setForeground(Color.black);
+                    }
+                    else if(btnClicked.isBackStartBtnClicked()){
+                        btnClicked.setFixSizeBtnClicked();
+                        buttons[0].setForeground(Color.red);
+                        buttons[5].setForeground(Color.black);
+                    }
+                } else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    if(btnClicked.isFixSizeBtnClicked()){
+                        new FixSizeUI();
+                        setVisible(false);
+                    }
+                    else if(btnClicked.isKsuBtnClicked()){
+                        new KeySettingUI();
+                        setVisible(false);
+                    }
+                    else if(btnClicked.isInitialScbBtnClicked()){
+                        int result = JOptionPane.showConfirmDialog(null, "정말로 삭제하시겠습니까?","스코어 보드 기록 초기화",YES_NO_OPTION);
+                        if(result==0){
+                            scoreList.deleteAll();
+                        }
+                    }
+                    else if(btnClicked.isColorBlindBtnClicked()){
+                        new SettingUI();
+                        setVisible(false);
+                    }
+                    else if(btnClicked.isReturnAllBtnClicked()){
+                        int result = JOptionPane.showConfirmDialog(null, "모든 설정을 초기화 하시겠습니까??","설정 초기화",YES_NO_OPTION);
+                        if(result==0){
+                            screenSize.setWidth(800);
+                            screenSize.setHeight(600);
+
+                            keySetting.resetDefault();
+
+                            setVisible(false);
+                            new SettingUI();
+                        }
+                    }
+                    else if(btnClicked.isBackStartBtnClicked()){
+                        new StartUI();
+                        setVisible(false);
+                    }
+                }
+
+            }
+        });
+        buttons[5].requestFocus();
 
 
 //        setLabel();
@@ -59,11 +308,7 @@ public class SettingUI extends JFrame {
         //종료 시 현재 setting값 저장
         this.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent event) {
-                try {
-                    SaveAndLoad.SaveSetting();
-                } catch (DuplicateKeySettingException e) {
-                    e.printStackTrace();
-                }
+                SaveAndLoad.SaveSetting();
             }
         });
 
@@ -109,91 +354,8 @@ public class SettingUI extends JFrame {
 //        mainPanel.add(settingLabel,"North");
 //    }
 
-    public void setBtn(){
-        //btnPanel setting
-        JPanel btnPanel = new JPanel();
-        GridLayout gridLayout=new GridLayout( 6,1);
-        btnPanel.setLayout(gridLayout);
-        btnPanel.setBackground(Color.BLACK);
-        btnPanel.setBorder(BorderFactory.createEmptyBorder(screenSize.getHeight()/4,0,0,0));
-
-
-
-        for (int i = 0; i < settingList.length; i++) {
-            buttons[i] = new JButton(settingList[i]);
-            btnPanel.add(buttons[i]);
-
-        }
-        mainPanel.add(btnPanel, "Center");
-
-        //화면사이즈 조절 event
-        buttons[0].addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new FixSizeUI();
-                setVisible(false);
-            }
-        });
-
-        //화면사이즈 조절 event
-        buttons[1].addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new KeySettingUI();
-                setVisible(false);
-            }
-        });
-
-        //스코어 보드 기록 초기화
-        buttons[2].addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int result = JOptionPane.showConfirmDialog(null, "정말로 삭제하시겠습니까?","스코어 보드 기록 초기화",YES_NO_OPTION);
-                if(result==0){
-                    scoreList.deleteAll();
-                }
-            }
-        });
-
-        //색맹모드 UI
-        buttons[3].addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new ColorSettingUI();
-                setVisible(false);
-            }
-        });
-
-        //모든 설정 기본으로 돌리기
-        buttons[4].addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                int result = JOptionPane.showConfirmDialog(null, "모든 설정을 초기화 하시겠습니까??","설정 초기화",YES_NO_OPTION);
-                if(result==0){
-                    screenSize.setWidth(800);
-                    screenSize.setHeight(600);
-
-                    colorBlind.setCurColorBlind(ColorBlind.ColorSetting.BASIC);
-
-                    keySetting.resetDefault();
-
-
-                    setVisible(false);
-                    new SettingUI();
-                }
-            }
-        });
-
-
-
-        //시작메뉴로
-        buttons[5].addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new StartUI();
-                setVisible(false);
-            }
-        });
-    }
+    //public void setBtn(){
+    //
+    //}
 
 }

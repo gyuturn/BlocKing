@@ -129,7 +129,7 @@ private Step blockMove() {
         onBlockMove();
         return Step.BlockMove;
     }
-    else
+    else //무게추 검사 -> 맞으면 아이템 사용, 아니면 Erase animation
         return Step.EraseAnimation;
 }
 
@@ -165,7 +165,7 @@ private Step checkGameOver() {
         for(int j=0; j<nextBlock.width(); j++) {
             if(nextBlock.getShape(i, j) != ' ') {
                 if(BoardManager.getInstance().board[i][j + 5] != ' ')
-                    return Step.GameOver;
+                    return checkResurrectionUse();
             }
         }
     }
@@ -215,6 +215,10 @@ protected void initBlockGenerator() {
 
 //#region Events
 private int onBlockMove() {
+    
+    if(curItem == ItemType.DoubleBonusChance) {
+        score += curSpeed;
+    }
     score += curSpeed;
 
     
@@ -222,9 +226,15 @@ private int onBlockMove() {
 }
 
 private int onLineErase(int count) {
+    if(curItem == ItemType.DoubleBonusChance) {
+        score += curSpeed * count * 10;
+    }
     score += curSpeed * count * 10;
 
     if(count > 2) {
+        if(curItem == ItemType.DoubleBonusChance) {
+            score += 10000;
+        }
         score += 10000;
     }
 
@@ -236,6 +246,10 @@ private int onLineErase(int count) {
 }
 
 private int onBlockCreate() {
+
+    if(curItem == ItemType.DoubleBonusChance) {
+        score += curSpeed;
+    }
     score += curSpeed;
     blockCount++;
 
@@ -252,6 +266,34 @@ private void onGameEnd() {
 
 //#endregion
 
+//#region item logic
+private Step checkResurrectionUse() { //
+    if(curItem == ItemType.Resurrection) {
+        BoardManager.getInstance().eraseHalfBoard();
+        curItem = ItemType.None;
+        return Step.CreateNewBlock;
+    }
+    else {
+        return Step.GameOver;
+    }
+
+}
+
+private void checkDoubleBonusChance() { //
+    
+}
+
+
+private void checkSmallBlockChance() {
+
+}
+
+private void checkWeightUse() {
+
+}
+
+
+
 //#region Utils
 private void checkAddItem() {
 
@@ -262,21 +304,33 @@ private void checkAddItem() {
 
         System.out.println(itemType);
 
+        if(curItem == ItemType.SmallBlockChance) {
+
+            ItemGenerator.getInstance().setOneBlock(targetBlock);
+            curItem = ItemType.None;
+            return;
+        }
+
         switch(itemType) {
             case Weight:
                 ItemGenerator.getInstance().setBlockMugechu(targetBlock);
+                curItem = ItemType.Weight;
                 break;
             case LineClear:
                 ItemGenerator.getInstance().addCharInShape(targetBlock, 'L');
+                curItem = ItemType.LineClear;
                 break;
             case Resurrection:
                 ItemGenerator.getInstance().addCharInShape(targetBlock, 'R');
+                curItem = ItemType.Resurrection;
                 break;
             case DoubleBonusChance:
                 ItemGenerator.getInstance().addCharInShape(targetBlock, 'D');
+                curItem = ItemType.DoubleBonusChance;
                 break;
             case SmallBlockChance:
                 ItemGenerator.getInstance().addCharInShape(targetBlock, 'S');
+                curItem = ItemType.SmallBlockChance;
                 break;
         }
         BlockController nextBlock = BlockGenerator.getInstance().blockQueue.peek();

@@ -30,7 +30,7 @@ public class ItemGenerator {
 
     public ItemType SelectRandomItem() {
         Random random = new Random();
-        int randomNum = random.nextInt(1);
+        int randomNum = random.nextInt(5);
         switch(randomNum) {
             case 0:
                 return ItemType.Weight;
@@ -86,19 +86,14 @@ public class ItemGenerator {
     }
 
 
-    public BlockController setOneBlock(BlockController curBlock, char charactor) {
-        //curBlock 가져옴
-        curBlock = BlockGenerator.getInstance().blockQueue.poll();
+    public BlockController setOneBlock(BlockController curBlock) {
         //그 블록을 한개짜리 블록으로 바꿈
         char[][] dotBlock;
         dotBlock = new char[][]{
                 {'O'}
         };
         curBlock.shape = dotBlock;
-        BlockGenerator.getInstance().initNewBlockPos(curBlock,0,5);
         return curBlock;
     }
-
-    //다음 아이템이 어떤건지 정하는 함수 - 열거형 Random
 
 }

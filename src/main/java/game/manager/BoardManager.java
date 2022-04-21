@@ -123,7 +123,7 @@ public class BoardManager {
 
 
     public void eraseSelectRow(int row){
-        char[] emptyLine = {'X', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'X'};
+        char[] emptyLine = {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'};
 
         board[row] = emptyLine.clone();
     }

@@ -2,6 +2,7 @@ package game.manager;
 
 import game.GameUI;
 import game.manager.gametype.GameManager_BasicMode;
+import game.manager.gametype.GameManager_ItemMode;
 import game.manager.gametype.GameManager_NormalMode;
 import game.model.BlockController;
 
@@ -113,7 +114,11 @@ public class InGameUIManager {
 
     public void drawScore(){
         JTextPane scorePane = GameUI.getInstance().scorePane;
-        scorePane.setText("Score :\n" + GameManager_BasicMode.getInstance().score + "\n" + "curSpeed :\n" + GameManager_BasicMode.getInstance().curSpeed);
+        if(GameInfoManager.getInstance().mode == GameInfoManager.GameMode.BasicMode) {
+            scorePane.setText("Score :\n" + GameManager_BasicMode.getInstance().score + "\n" + "curSpeed :\n" + GameManager_BasicMode.getInstance().curSpeed);
+        } else if (GameInfoManager.getInstance().mode == GameInfoManager.GameMode.ItemMode) {
+            scorePane.setText("Score :\n" + GameManager_ItemMode.getInstance().score + "\n" + "curSpeed :\n" + GameManager_ItemMode.getInstance().curSpeed);
+        }
     }
 
     public void moveScene(){

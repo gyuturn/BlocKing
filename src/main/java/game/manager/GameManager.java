@@ -65,6 +65,7 @@ public abstract class GameManager {
     protected abstract void initGameStatus();
 
     public static boolean isPlaying = false;
+    public static boolean isPause = false;
     
 //#endregion
 

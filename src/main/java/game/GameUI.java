@@ -157,8 +157,7 @@ public class GameUI extends JFrame {
         instance = this;
 
         //게임 시작
-        if(GameManager.isPlaying == false)
-            GameManager_BasicMode.getInstance().startGameFramework();
+        GameManager_BasicMode.getInstance().startGameFramework();
 
         //Screensize 값 가져오기
         ScreenSize.getInstance().getWidth();

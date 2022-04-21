@@ -100,10 +100,10 @@ public class ColorSettingUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (colorSettingBtns[0].isSelected()) {
-                    colorBlind.setCurColorBlind(0);
+                    colorBlind.setCurColorBlind(ColorBlind.ColorSetting.BASIC);
 
                 } else if (colorSettingBtns[1].isSelected()) {
-                    colorBlind.setCurColorBlind(1);
+                    colorBlind.setCurColorBlind(ColorBlind.ColorSetting.ColorBlinded);
                 }
 
                 new SettingUI();
@@ -115,7 +115,7 @@ public class ColorSettingUI extends JFrame {
 
     public void selectedBtnShows() {
         //선택된 기능 먼저 보여주는 기능
-        if (colorBlind.getColorBlind() == 0) {
+        if (colorBlind.getColorBlind() == ColorBlind.ColorSetting.BASIC) {
             colorSettingBtns[0].setSelected(true);
         } else {
             colorSettingBtns[1].setSelected(true);

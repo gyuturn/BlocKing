@@ -169,7 +169,7 @@ public class SettingUI extends JFrame {
                     screenSize.setWidth(800);
                     screenSize.setHeight(600);
 
-                    colorBlind.setCurColorBlind(0);
+                    colorBlind.setCurColorBlind(ColorBlind.ColorSetting.BASIC);
 
                     keySetting.resetDefault();
 

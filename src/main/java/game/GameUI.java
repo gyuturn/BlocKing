@@ -18,6 +18,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+import static setting.ColorBlind.ColorSetting.ColorBlinded;
+
 
 public class GameUI extends JFrame {
 
@@ -202,7 +204,6 @@ public class GameUI extends JFrame {
 
 
         //색깔 설정
-
             StyleConstants.setForeground(IBlock, Color.RED);
             StyleConstants.setForeground(JBlock, Color.ORANGE);
             StyleConstants.setForeground(SBlock, Color.YELLOW);
@@ -216,7 +217,7 @@ public class GameUI extends JFrame {
             StyleConstants.setForeground(ZBlock, Color.MAGENTA);
             StyleConstants.setForeground(style12, Color.DARK_GRAY);
 
-            if(colorBlind.getColorBlind()==1){
+            if(colorBlind.getColorBlind()== ColorBlinded){
             StyleConstants.setForeground(IBlock, new Color(255, 194, 10));
             StyleConstants.setForeground(JBlock, new Color(12,123,220));
             StyleConstants.setForeground(SBlock,new Color(153,79,0));

@@ -16,6 +16,10 @@ public class ScreenSize {
         this.width = 800;
         this.height=600;
     }
+    public void resetDefault(){
+        this.width = 800;
+        this.height=600;
+    }
 
     public static ScreenSize getInstance() {
         return screenSize;

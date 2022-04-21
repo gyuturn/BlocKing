@@ -14,7 +14,7 @@ public class LBlock extends BlockController{
 		color_basic = 'O';
 		color_blindMode = 'O';
 
-		color_current = 'O';
+		color_current = 'W';
 	}
     
 }

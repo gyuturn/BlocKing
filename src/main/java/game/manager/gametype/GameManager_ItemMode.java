@@ -29,6 +29,8 @@ public class GameManager_ItemMode extends GameManager {
 
 //#region GameFramework
 
+private ItemType curItem = ItemType.None;
+
 private Step curStep = Step.GameReady;
 
 public enum Step {
@@ -110,7 +112,10 @@ private Step gameReady() {
 public Step createNewBlock() {
     BlockGenerator.getInstance().addBlock();
     curBlock = BlockGenerator.getInstance().createBlock();
-    InGameUIManager.getInstance().drawNextBlockInfo(BlockGenerator.getInstance().blockQueue.peek());
+
+    BlockController nextBlock = BlockGenerator.getInstance().blockQueue.peek();
+    BoardManager.getInstance().setNextBlockColor(nextBlock);
+    InGameUIManager.getInstance().drawNextBlockInfo(nextBlock);
     onBlockCreate();
 
     return Step.BlockMove;
@@ -273,6 +278,9 @@ private void checkAddItem() {
                 ItemGenerator.getInstance().addCharInShape(targetBlock, 'S');
                 break;
         }
+        BlockController nextBlock = BlockGenerator.getInstance().blockQueue.peek();
+        BoardManager.getInstance().setNextBlockColor(nextBlock);
+        InGameUIManager.getInstance().drawNextBlockInfo(nextBlock);
     }
 }
 //#endregion

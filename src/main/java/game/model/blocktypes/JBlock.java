@@ -18,7 +18,7 @@ public class JBlock extends BlockController {
 		color_basic = 'C';
 		color_blindMode = 'C';
 
-		color_current = 'C';
+		color_current = 'O';
 	}
 
 }

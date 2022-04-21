@@ -4,6 +4,7 @@ package game;
 import setting.ColorBlind;
 import setting.DuplicateKeySettingException;
 import setting.SaveAndLoad;
+import game.manager.GameManager;
 import game.manager.gametype.GameManager_BasicMode;
         import setting.ScreenSize;
 import setting.UI.SettingUI;
@@ -183,7 +184,7 @@ public class GameUI extends JFrame {
         buttons.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new SettingUI();
+                new SettingUI(SettingUI.Scene.GameUI);
                 dispose();
             }
         });

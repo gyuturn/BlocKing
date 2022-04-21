@@ -28,10 +28,26 @@ public class SettingUI extends JFrame {
 
     private final String settingList[] = {"화면사이즈 조절", "게임 조작 키 설정", "스코어보드 초기화", "색맹모드", "모든 설정 기본으로 돌리기","시작메뉴"};  //스코어 보드는 테스트용 -> 실제는 게임 시작화면에 있어야함
 
+    public enum Scene {
+        StartUI,
+        GameUI
+    }
+
+    public Scene prevScene = Scene.StartUI;
 
     public SettingUI(){
-        //JFrame setting
         super("software-tetris");//제목
+        init();
+    }
+
+    public SettingUI(Scene scene) {
+        super("software-tetris");//제목
+        prevScene = scene;
+        init();
+    }
+
+    public void init() {
+                //JFrame setting
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);// 메모리까지 종료
         this.setSize(screenSize.getWidth(),screenSize.getHeight());
         this.setVisible(true);
@@ -136,8 +152,16 @@ public class SettingUI extends JFrame {
         buttons[5].addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new StartUI();
-                setVisible(false);
+                switch(prevScene) {
+                    case StartUI:
+                        new StartUI();
+                        dispose();
+                        break;
+                    case GameUI:
+                        new GameUI();
+                        dispose();
+                        break;
+                }
             }
         });
 
@@ -325,8 +349,6 @@ public class SettingUI extends JFrame {
                 }
             }
         });
-
-
     }
 
     private void setTitle() {

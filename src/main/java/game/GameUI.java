@@ -2,6 +2,7 @@ package game;
 //import setting.FixSize;
 //import setting.MainSetting;
 import setting.ColorBlind;
+import setting.DuplicateKeySettingException;
 import setting.SaveAndLoad;
 import game.manager.gametype.GameManager_BasicMode;
         import setting.ScreenSize;
@@ -17,6 +18,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+
+import static setting.ColorBlind.ColorSetting.ColorBlinded;
 
 
 public class GameUI extends JFrame {
@@ -143,7 +146,8 @@ public class GameUI extends JFrame {
         scoreDoc.setParagraphAttributes(0, scoreDoc.getLength(), center, false);
 
         //글자 색 정보 저장
-        addCharacterStyle();
+        addCharacterPaneStyle();
+        addCharacternextBlockPaneStyle();
 
         setBtn();
 
@@ -161,7 +165,11 @@ public class GameUI extends JFrame {
         //종료 시 현재 setting값 저장
         this.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent event) {
-                SaveAndLoad.SaveSetting();
+                try {
+                    SaveAndLoad.SaveSetting();
+                } catch (DuplicateKeySettingException e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
@@ -176,33 +184,31 @@ public class GameUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new SettingUI();
-                setVisible(false);
+                dispose();
             }
         });
     }
 
 
-    private void addCharacterStyle()
+    private void addCharacternextBlockPaneStyle()
     {
         //색깔 종류
-        javax.swing.text.Style style5 = pane.addStyle("B", null);
-        javax.swing.text.Style style6 = pane.addStyle("P", null);
-        javax.swing.text.Style style7 = pane.addStyle("L", null);
-        javax.swing.text.Style style8 = pane.addStyle("A", null);
-        javax.swing.text.Style style12 = pane.addStyle("D", null);
+        javax.swing.text.Style style5 = nextBlockPane.addStyle("B", null);
+        javax.swing.text.Style style6 = nextBlockPane.addStyle("P", null);
+        javax.swing.text.Style style7 = nextBlockPane.addStyle("L", null);
+        javax.swing.text.Style style8 = nextBlockPane.addStyle("A", null);
+        javax.swing.text.Style style12 = nextBlockPane.addStyle("D", null);
            //블록에 대한 색깔들
-        javax.swing.text.Style IBlock = pane.addStyle("R", null);
-        javax.swing.text.Style JBlock = pane.addStyle("O", null);
-        javax.swing.text.Style LBlock = pane.addStyle("W", null);
-        javax.swing.text.Style OBlock = pane.addStyle("C", null);
-        javax.swing.text.Style SBlock = pane.addStyle("Y", null);
-        javax.swing.text.Style TBlock = pane.addStyle("G", null);
-        javax.swing.text.Style ZBlock = pane.addStyle("M", null);
-
+        javax.swing.text.Style IBlock = nextBlockPane.addStyle("R", null);
+        javax.swing.text.Style JBlock = nextBlockPane.addStyle("O", null);
+        javax.swing.text.Style LBlock = nextBlockPane.addStyle("W", null);
+        javax.swing.text.Style OBlock = nextBlockPane.addStyle("C", null);
+        javax.swing.text.Style SBlock = nextBlockPane.addStyle("Y", null);
+        javax.swing.text.Style TBlock = nextBlockPane.addStyle("G", null);
+        javax.swing.text.Style ZBlock = nextBlockPane.addStyle("M", null);
 
 
         //색깔 설정
-
             StyleConstants.setForeground(IBlock, Color.RED);
             StyleConstants.setForeground(JBlock, Color.ORANGE);
             StyleConstants.setForeground(SBlock, Color.YELLOW);
@@ -216,7 +222,50 @@ public class GameUI extends JFrame {
             StyleConstants.setForeground(ZBlock, Color.MAGENTA);
             StyleConstants.setForeground(style12, Color.DARK_GRAY);
 
-            if(colorBlind.getColorBlind()==1){
+            if(colorBlind.getColorBlind()== ColorBlinded){
+            StyleConstants.setForeground(IBlock, new Color(255, 194, 10));
+            StyleConstants.setForeground(JBlock, new Color(12,123,220));
+            StyleConstants.setForeground(SBlock, new Color(153,79,0));
+            StyleConstants.setForeground(TBlock, new Color(254,254,98));
+            StyleConstants.setForeground(LBlock, new Color(211,95,183));
+            StyleConstants.setForeground(OBlock,  new Color(225,190,160));
+            StyleConstants.setForeground(ZBlock,  new Color(212,17,89));
+        }
+    }
+
+    private void addCharacterPaneStyle()
+    {
+        //색깔 종류
+        javax.swing.text.Style style5 = pane.addStyle("B", null);
+        javax.swing.text.Style style6 = pane.addStyle("P", null);
+        javax.swing.text.Style style7 = pane.addStyle("L", null);
+        javax.swing.text.Style style8 = pane.addStyle("A", null);
+        javax.swing.text.Style style12 = pane.addStyle("D", null);
+        //블록에 대한 색깔들
+        javax.swing.text.Style IBlock = pane.addStyle("R", null);
+        javax.swing.text.Style JBlock = pane.addStyle("O", null);
+        javax.swing.text.Style LBlock = pane.addStyle("W", null);
+        javax.swing.text.Style OBlock = pane.addStyle("C", null);
+        javax.swing.text.Style SBlock = pane.addStyle("Y", null);
+        javax.swing.text.Style TBlock = pane.addStyle("G", null);
+        javax.swing.text.Style ZBlock = pane.addStyle("M", null);
+
+
+        //색깔 설정
+        StyleConstants.setForeground(IBlock, Color.RED);
+        StyleConstants.setForeground(JBlock, Color.ORANGE);
+        StyleConstants.setForeground(SBlock, Color.YELLOW);
+        StyleConstants.setForeground(TBlock, Color.GREEN);
+        StyleConstants.setForeground(style5, Color.BLUE);
+        StyleConstants.setForeground(style6, Color.PINK);
+        StyleConstants.setForeground(style7, Color.LIGHT_GRAY);
+        StyleConstants.setForeground(style8, Color.GRAY);
+        StyleConstants.setForeground(LBlock, Color.WHITE);
+        StyleConstants.setForeground(OBlock, Color.CYAN);
+        StyleConstants.setForeground(ZBlock, Color.MAGENTA);
+        StyleConstants.setForeground(style12, Color.DARK_GRAY);
+
+        if(colorBlind.getColorBlind()== ColorBlinded){
             StyleConstants.setForeground(IBlock, new Color(255, 194, 10));
             StyleConstants.setForeground(JBlock, new Color(12,123,220));
             StyleConstants.setForeground(SBlock,new Color(153,79,0));

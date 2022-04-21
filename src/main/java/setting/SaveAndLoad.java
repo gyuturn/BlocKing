@@ -19,14 +19,49 @@ public class SaveAndLoad {
     private static ColorBlind colorBlind = ColorBlind.getInstance();
 
 
-    public static void SaveSetting(){
+    public static void SaveSetting() throws DuplicateKeySettingException {
+        saveScreenSize();
+        saveScoreList();
+        saveItemScoreList();
+        saveColorBlind();
+        saveKeySetting();
+    }
 
-        //화면
+    public static void LoadSetting() {
+        //화면 크기 load
+        readFileScreenSize();
+        //스코어 보드 load
+        readFileScoreList();
+        //Item스코어 보드 load
+        readFileItemScoreList();
+        //keySetting Load
+        readFileKeySetting();
+        //색맹모드 load
+        readFileColorBlind();
+    }
+
+    public static ScreenSize saveScreenSize() {
         JSONObject screenSizeJson = new JSONObject();
         screenSizeJson.put("width", screenSize.getWidth());
         screenSizeJson.put("height", screenSize.getHeight());
 
-        //keySetting 저장
+        try{
+            FileWriter screenSizeFile = new FileWriter("src/main/java/save/ScreenSize.json");
+            screenSizeFile.write(screenSizeJson.toJSONString());
+            screenSizeFile.flush();
+            screenSizeFile.close();
+        }catch (IOException e) {
+            e.printStackTrace();
+        }
+        return screenSize;
+    }
+
+    public static KeySetting saveKeySetting()  throws DuplicateKeySettingException{
+
+            if (keySetting.overLapKeySetting()) {
+                throw new DuplicateKeySettingException();
+            }
+
         JSONObject keySettingJson = new JSONObject();
         keySettingJson.put("left", keySetting.getLeft());
         keySettingJson.put("right", keySetting.getRight());
@@ -36,7 +71,18 @@ public class SaveAndLoad {
         keySettingJson.put("stop", keySetting.getStop());
         keySettingJson.put("escape", keySetting.getEscape());
 
-        //스코어보드(item모드 없음)
+        try{
+            FileWriter keySettingFile = new FileWriter("src/main/java/save/KeySetting.json");
+            keySettingFile.write(keySettingJson.toJSONString());
+            keySettingFile.flush();
+            keySettingFile.close();
+        }catch (IOException e) {
+            e.printStackTrace();
+        }
+        return keySetting;
+    }
+
+    public static ScoreList saveScoreList() {
         List<User> list = scoreList.getList();
         JSONObject scoreBoardJson = new JSONObject();
         int size = list.size();
@@ -49,8 +95,18 @@ public class SaveAndLoad {
             scoreBoardJson.put("score"+i, list.get(i).getScore());
             scoreBoardJson.put("mode"+i, list.get(i).getMode());
         }
+        try {
+            FileWriter scoreListFile = new FileWriter("src/main/java/save/NoItemScoreList.json");
+            scoreListFile.write(scoreBoardJson.toJSONString());
+            scoreListFile.flush();
+            scoreListFile.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return scoreList;
+    }
 
-        //스코어보드(item모드)
+    public static ItemScoreList saveItemScoreList() {
         List<User> listForItem = itemScoreList.getList();
         JSONObject scoreBoardItemJson = new JSONObject();
         int sizeForItemList = listForItem.size();
@@ -63,63 +119,50 @@ public class SaveAndLoad {
             scoreBoardItemJson.put("score"+i, listForItem.get(i).getScore());
             scoreBoardItemJson.put("mode"+i, listForItem.get(i).getMode());
         }
-
-        //색맹모드
-        JSONObject colorBlindJson = new JSONObject();
-        colorBlindJson.put("colorBlind", colorBlind.getColorBlind());
-
         try{
-            //스크린 사이즈 저장
-            FileWriter screenSizeFile = new FileWriter("src/main/java/save/ScreenSize.json");
-            screenSizeFile.write(screenSizeJson.toJSONString());
-            screenSizeFile.flush();
-            screenSizeFile.close();
-
-            //keySetting json 파일에 저장
-            FileWriter keySettingFile = new FileWriter("src/main/java/save/KeySetting.json");
-            keySettingFile.write(keySettingJson.toJSONString());
-            keySettingFile.flush();
-            keySettingFile.close();
-
-            //스코어리스트 10개까지 저장
-            FileWriter scoreListFile = new FileWriter("src/main/java/save/NoItemScoreList.json");
-            scoreListFile.write(scoreBoardJson.toJSONString());
-            scoreListFile.flush();
-            scoreListFile.close();
-
-            //Item스코어리스트 10개까지 저장
             FileWriter ItemScoreListFile = new FileWriter("src/main/java/save/ItemScoreList.json");
             ItemScoreListFile.write(scoreBoardItemJson.toJSONString());
             ItemScoreListFile.flush();
             ItemScoreListFile.close();
+        }catch (IOException e) {
+            e.printStackTrace();
+        }
+        return itemScoreList;
+    }
 
-            //색맹모드 저장
+    public static ColorBlind saveColorBlind(){
+        JSONObject colorBlindJson = new JSONObject();
+        colorBlindJson.put("colorBlind", colorBlind.getColorBlind().toString());
+        try{
             FileWriter colorBlindFile = new FileWriter("src/main/java/save/ColorBlind.json");
             colorBlindFile.write(colorBlindJson.toJSONString());
             colorBlindFile.flush();
             colorBlindFile.close();
+        }catch (IOException e) {
+            e.printStackTrace();
+        }
+        return colorBlind;
+    }
 
-
-
+    public static ScreenSize readFileScreenSize() {
+        try {
+            //화면 크기 load
+            InputStream getScreenSize = new FileInputStream("src/main/java/save/ScreenSize.json");
+            HashMap<String, Object> screenSizeMap = new ObjectMapper().readValue(getScreenSize, HashMap.class);
+            screenSize.setWidth((Integer) screenSizeMap.get("width"));
+            screenSize.setHeight((Integer) screenSizeMap.get("height"));
+        }catch (FileNotFoundException e) {
+            e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return screenSize;
     }
 
-    public static void LoadSetting() {
-        JSONParser parser = new JSONParser();
-
-        try{
-            //화면 크기 load
-            InputStream getScreenSize = new FileInputStream("src/main/java/save/ScreenSize.json");
-            HashMap<String,Object> screenSizeMap = new ObjectMapper().readValue(getScreenSize, HashMap.class);
-            screenSize.setWidth((Integer) screenSizeMap.get("width"));
-            screenSize.setHeight((Integer) screenSizeMap.get("height"));
-
-            //스코어 보드 load
+    public static ScoreList readFileScoreList() {
+        try {
             InputStream getScoreBoard = new FileInputStream("src/main/java/save/NoItemScoreList.json");
             HashMap<String,Object> scoreBoardMap = new ObjectMapper().readValue(getScoreBoard, HashMap.class);
-            System.out.println("scoreBoardMap = " + scoreBoardMap.size());
             int size = scoreBoardMap.size()/3;
             if (size >= 10) {
                 size=10;
@@ -129,22 +172,37 @@ public class SaveAndLoad {
 
             }
             scoreList.sortDescByScore();
+        }catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-            //Item스코어 보드 load
+        return scoreList;
+    }
+
+    public static ItemScoreList readFileItemScoreList() {
+        try {
             InputStream getItemScoreBoard = new FileInputStream("src/main/java/save/ItemScoreList.json");
-            HashMap<String,Object> ItemscoreBoardMap = new ObjectMapper().readValue(getItemScoreBoard, HashMap.class);
-            System.out.println("scoreBoardMap = " + ItemscoreBoardMap.size());
-            int ItemListSize = ItemscoreBoardMap.size()/3;
+            HashMap<String, Object> ItemscoreBoardMap = new ObjectMapper().readValue(getItemScoreBoard, HashMap.class);
+            int ItemListSize = ItemscoreBoardMap.size() / 3;
             if (ItemListSize >= 10) {
-                ItemListSize=10;
+                ItemListSize = 10;
             }
             for (int i = 0; i < ItemListSize; i++) {
-                itemScoreList.push(new User((String) ItemscoreBoardMap.get("name" + i), (Integer) ItemscoreBoardMap.get("score" + i), (String)ItemscoreBoardMap.get("mode" + i)));
-
+                itemScoreList.push(new User((String) ItemscoreBoardMap.get("name" + i), (Integer) ItemscoreBoardMap.get("score" + i), (String) ItemscoreBoardMap.get("mode" + i)));
             }
             itemScoreList.sortDescByScore();
+        }catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return itemScoreList;
+    }
 
-            //keySetting Load
+    public static KeySetting readFileKeySetting() {
+        try{
             InputStream getKeySetting = new FileInputStream("src/main/java/save/KeySetting.json");
             HashMap<String,Object> getKeySettingMap = new ObjectMapper().readValue(getKeySetting, HashMap.class);
             int left = (Integer)getKeySettingMap.get("left");
@@ -154,19 +212,34 @@ public class SaveAndLoad {
             int stop = (Integer)getKeySettingMap.get("stop");
             int oneTimeDown = (Integer)getKeySettingMap.get("oneTimeDown");
             int escape = (Integer)getKeySettingMap.get("escape");
-            keySetting.setKeySetting(left,right,turnBlock,downBlock,stop,oneTimeDown,escape);
+            keySetting.setKeySetting(left, right, turnBlock, downBlock, stop, oneTimeDown, escape);
 
-
-            //색맹모드 load
-            InputStream getColorBlind = new FileInputStream("src/main/java/save/ColorBlind.json");
-            HashMap<String,Object> colorBlindMap = new ObjectMapper().readValue(getColorBlind, HashMap.class);
-            colorBlind.setCurColorBlind((Integer) colorBlindMap.get("colorBlind"));
-
-
-        } catch (FileNotFoundException e) {
+        }
+        catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return keySetting;
+    }
+
+    public static ColorBlind readFileColorBlind(){
+        try{
+            InputStream getColorBlind = new FileInputStream("src/main/java/save/ColorBlind.json");
+            HashMap<String,Object> colorBlindMap = new ObjectMapper().readValue(getColorBlind, HashMap.class);
+            String colorBlind = colorBlindMap.get("colorBlind").toString();
+            if (colorBlind.equals("BASIC")) {
+                SaveAndLoad.colorBlind.setCurColorBlind(ColorBlind.ColorSetting.BASIC);
+            }else{
+                SaveAndLoad.colorBlind.setCurColorBlind(ColorBlind.ColorSetting.ColorBlinded);
+            }
+
+
+        }catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return colorBlind;
     }
 }

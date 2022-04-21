@@ -1,7 +1,10 @@
 package start;
 
 import game.GameUI;
+import game.SelectGameTypeUI;
 import scoreBoard.NoItemScoreBoard.ScoreBoardUI;
+import scoreBoard.SelectScoreBoardUI;
+import setting.DuplicateKeySettingException;
 import setting.SaveAndLoad;
 import setting.ScreenSize;
 import setting.UI.SettingUI;
@@ -72,8 +75,8 @@ public class StartUI extends JFrame {
         gameButtons.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new GameUI();
-                setVisible(false);
+                new SelectGameTypeUI();
+                dispose();
             }
         });
 
@@ -210,8 +213,8 @@ public class StartUI extends JFrame {
         scbButtons.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new ScoreBoardUI();
-                setVisible(false);
+                new SelectScoreBoardUI();
+                dispose();
             }
         });
 
@@ -227,7 +230,11 @@ public class StartUI extends JFrame {
         //종료 시 현재 setting값 저장
         this.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent event) {
-                SaveAndLoad.SaveSetting();
+                try {
+                    SaveAndLoad.SaveSetting();
+                } catch (DuplicateKeySettingException e) {
+                    e.printStackTrace();
+                }
             }
         });
 

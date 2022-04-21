@@ -20,6 +20,7 @@ public class SettingUI extends JFrame {
     private JButton[] buttons = new JButton[6];
     private ScoreList scoreList = ScoreList.getInstance();
     private KeySetting keySetting = KeySetting.getInstance();
+    private ColorBlind colorBlind = ColorBlind.getInstance();
 
     ImageIcon titleImg1 = new ImageIcon("./src/main/java/start/img/title1.png");
     ImageIcon titleImg2 = new ImageIcon("./src/main/java/start/img/title2.png");
@@ -47,6 +48,7 @@ public class SettingUI extends JFrame {
 
         this.getContentPane().add(mainPanel,BorderLayout.CENTER);
         setTitle();
+
         //btnPanel setting
         JPanel btnPanel = new JPanel();
         GridLayout gridLayout=new GridLayout( 6,1);
@@ -97,14 +99,28 @@ public class SettingUI extends JFrame {
             }
         });
 
+        //색맹모드 UI
+        buttons[3].addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new ColorSettingUI();
+                setVisible(false);
+            }
+        });
+
         //모든 설정 기본으로 돌리기
         buttons[4].addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int result = JOptionPane.showConfirmDialog(null, "모든 설정을 초기화 하시겠습니까??","설정 초기화",YES_NO_OPTION);
                 if(result==0){
-                    screenSize.setWidth(400);
-                    screenSize.setHeight(500);
+
+
+                    screenSize.setWidth(800);
+                    screenSize.setHeight(600);
+
+                    colorBlind.setCurColorBlind(ColorBlind.ColorSetting.BASIC);
+
 
                     keySetting.resetDefault();
 
@@ -270,7 +286,7 @@ public class SettingUI extends JFrame {
                         }
                     }
                     else if(btnClicked.isColorBlindBtnClicked()){
-                        new SettingUI();
+                        new ColorSettingUI();
                         setVisible(false);
                     }
                     else if(btnClicked.isReturnAllBtnClicked()){
@@ -302,7 +318,11 @@ public class SettingUI extends JFrame {
         //종료 시 현재 setting값 저장
         this.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent event) {
-                SaveAndLoad.SaveSetting();
+                try {
+                    SaveAndLoad.SaveSetting();
+                } catch (DuplicateKeySettingException e) {
+                    e.printStackTrace();
+                }
             }
         });
 

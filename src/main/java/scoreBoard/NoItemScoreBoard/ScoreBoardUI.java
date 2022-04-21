@@ -1,5 +1,6 @@
 package scoreBoard.NoItemScoreBoard;
 
+import setting.DuplicateKeySettingException;
 import setting.SaveAndLoad;
 import setting.ScreenSize;
 import start.StartUI;
@@ -52,7 +53,11 @@ public class ScoreBoardUI extends JFrame{
         //종료 시 현재 setting값 저장
         this.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent event) {
-                SaveAndLoad.SaveSetting();
+                try {
+                    SaveAndLoad.SaveSetting();
+                } catch (DuplicateKeySettingException e) {
+                    e.printStackTrace();
+                }
             }
         });
 

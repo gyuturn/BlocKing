@@ -10,19 +10,12 @@ public class KeySetting {
     }
 
     private int left;
-
     private int right;
-
     private int turnBlock;
-
     private int downBlock;
-
     private int stop;
-
     private int oneTimeDown;
-
     private int escape;
-
     private int keyNum=7;
 
     public KeySetting() {

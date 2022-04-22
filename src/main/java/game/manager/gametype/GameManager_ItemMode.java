@@ -220,7 +220,7 @@ private int onBlockMove() {
         score += curSpeed;
     }
     score += curSpeed;
-
+    InGameUIManager.getInstance().drawScore();
     
     return 0;
 }
@@ -237,6 +237,7 @@ private int onLineErase(int count) {
         }
         score += 10000;
     }
+    InGameUIManager.getInstance().drawScore();
 
     lineCount += count;
 
@@ -252,7 +253,7 @@ private int onBlockCreate() {
     }
     score += curSpeed;
     blockCount++;
-
+    InGameUIManager.getInstance().drawScore();
     checkAddItem();
     return 0;
 }
@@ -297,7 +298,7 @@ private void checkWeightUse() {
 //#region Utils
 private void checkAddItem() {
 
-    if(blockCount % 2 == 0) //a-b>10 b -= 10;
+    if(lineCount % 10 == 0 && lineCount > 0) //a-b>10 b -= 10;
     {
         BlockController targetBlock = BlockGenerator.getInstance().blockQueue.peek();
         ItemType itemType = ItemGenerator.getInstance().SelectRandomItem();

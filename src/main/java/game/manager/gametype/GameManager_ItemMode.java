@@ -355,6 +355,7 @@ public class Interaction_Play implements KeyListener {
         //System.out.println("e.getKeyCode() = " + e.getKeyCode());
         if (keySetting.getDownBlock() == e.getKeyCode()) {
             blockMove();
+            InGameUIManager.getInstance().drawScore();
             InGameUIManager.getInstance().drawBoard();
             //System.out.println("input down");
         }
@@ -383,6 +384,8 @@ public class Interaction_Play implements KeyListener {
         } else if (keySetting.getOneTimeDown() == e.getKeyCode()) {
             while(BoardManager.getInstance().checkBlockMovable(curBlock)) {
                 BoardManager.getInstance().translateBlock(curBlock, 1, 0);
+                onBlockMove();
+                InGameUIManager.getInstance().drawScore();
             }
             timer.restart();
             InGameUIManager.getInstance().drawBoard();

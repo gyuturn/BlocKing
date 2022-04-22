@@ -14,7 +14,7 @@ public class OBlock extends BlockController{
 		color_basic = 'Y';
 		color_blindMode = 'Y';
 
-		color_current = 'Y';
+		color_current = 'C';
 	}
     
 }

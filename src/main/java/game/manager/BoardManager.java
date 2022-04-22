@@ -145,10 +145,15 @@ public class BoardManager {
     //#region 행 삭제 관련
     public int eraseFullLine() {
         int lineCount = 0;
-        char[] checker = {'X', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'X'};
 
-        for(int i=0; i<22; i++) {
-            if(Arrays.equals(board[i], checker)) {
+        for(int i=0; i<20; i++) {
+            boolean isFull = true;
+            for(int j = 1; j<11; j++ ) {
+                if(board[i][j] == ' ') {
+                    isFull = false;
+                } 
+            }
+            if(isFull) {
                 for(int j=i; j>0; j--)
                 {
                     board[j] = board[j-1].clone();
@@ -188,14 +193,20 @@ public class BoardManager {
 
     //#region animation
     public void eraseEvent(ArrayList<Integer> additionalIndex){
-        char[] checker = {'X', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'X'};
         int clear[] = new int[22];
         int clearsum = 0;
         m=5; n=6;
         Arrays.fill(clear,0);
-        for(int i=0; i<22; i++) {
-            if(Arrays.equals(board[i], checker)) {
-                clear[i]=1;
+
+        for(int i=0; i<20; i++) {
+            boolean isFull = true;
+            for(int j = 1; j<11; j++ ) {
+                if(board[i][j] == ' ') {
+                    isFull = false;
+                } 
+            }
+            if(isFull) {
+                clear[i] = 1;
             }
         }
 
@@ -204,7 +215,7 @@ public class BoardManager {
             clear[index] = 1;            
         }
         
-        for(int i=0; i<22; i++) {
+        for(int i=0; i<20; i++) {
             clearsum += clear[i];
         }
 

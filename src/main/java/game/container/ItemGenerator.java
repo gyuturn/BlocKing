@@ -19,6 +19,8 @@ public class ItemGenerator {
 
     
     public enum ItemType {
+        None,
+        
         Weight,             //custom
         LineClear,          //L
         Resurrection,       //R
@@ -72,8 +74,6 @@ public class ItemGenerator {
     }
 
     public BlockController setBlockMugechu(BlockController curBlock) {
-        //curBlock 가져옴
-        curBlock = BlockGenerator.getInstance().blockQueue.poll();
         //그 블록을 무게추 블록으로 바꿈
         char[][] mugechuBlock;
         mugechuBlock = new char[][]{
@@ -81,25 +81,19 @@ public class ItemGenerator {
                 {'O', 'O', 'O', 'O'}
         };
         curBlock.shape = mugechuBlock;
-        BlockGenerator.getInstance().initNewBlockPos(curBlock,0,5);
         return curBlock;
 
     }
 
 
-    public BlockController setOneBlock(BlockController curBlock, char charactor) {
-        //curBlock 가져옴
-        curBlock = BlockGenerator.getInstance().blockQueue.poll();
+    public BlockController setOneBlock(BlockController curBlock) {
         //그 블록을 한개짜리 블록으로 바꿈
         char[][] dotBlock;
         dotBlock = new char[][]{
                 {'O'}
         };
         curBlock.shape = dotBlock;
-        BlockGenerator.getInstance().initNewBlockPos(curBlock,0,5);
         return curBlock;
     }
-
-    //다음 아이템이 어떤건지 정하는 함수 - 열거형 Random
 
 }

@@ -106,6 +106,7 @@ public abstract class GameManager {
     protected void oneFrame() {
         gameFramework();
         InGameUIManager.getInstance().drawBoard();
+        InGameUIManager.getInstance().drawScore();
         //printStatus();
     }
 

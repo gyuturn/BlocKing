@@ -15,6 +15,6 @@ public class IBlock extends BlockController{
         color_basic = 'W';
         color_blindMode = 'W';
 
-        color_current = 'W';
+        color_current = 'R';
 	}
 }

@@ -130,9 +130,11 @@ private Step eraseAnimation() {
 }
 
 
-public Step eraseLine() {
 
-public Step checkLineDelete() {
+
+
+private Step eraseLine() {
+
 
     int curLineCount = BoardManager.getInstance().eraseFullLine();
     onLineErase(curLineCount);
@@ -205,7 +207,7 @@ protected void initBlockGenerator() {
 //#region Events
 private int onBlockMove() {
     score += curSpeed;
-
+    InGameUIManager.getInstance().drawScore();
     return 0;
 }
 
@@ -217,6 +219,7 @@ public int onLineErase(int count) {
     }
 
     lineCount += count;
+    InGameUIManager.getInstance().drawScore();
 
     return 0;
 }
@@ -224,6 +227,7 @@ public int onLineErase(int count) {
 private int onBlockCreate() {
     score += curSpeed;
     blockCount++;
+    InGameUIManager.getInstance().drawScore();
 
     return 0;
 }

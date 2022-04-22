@@ -14,7 +14,7 @@ public class TBlock extends BlockController{
 		color_basic = 'M';
 		color_blindMode = 'A';
 
-		color_current = 'M';
+		color_current = 'G';
 	}
     
 }

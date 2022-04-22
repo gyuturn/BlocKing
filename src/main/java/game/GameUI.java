@@ -1,6 +1,7 @@
 package game;
 //import setting.FixSize;
 //import setting.MainSetting;
+import game.manager.BoardManager;
 import setting.ColorBlind;
 import setting.DuplicateKeySettingException;
 import setting.SaveAndLoad;
@@ -152,7 +153,7 @@ public class GameUI extends JFrame {
         addCharacterPaneStyle();
         addCharacternextBlockPaneStyle();
 
-        setBtn();
+        //setBtn();
 
         this.getContentPane().add(mainPanel);
 
@@ -184,20 +185,20 @@ public class GameUI extends JFrame {
         });
     }
 
-    void setBtn(){
-        JButton buttons = new JButton("다음으로 넘어가기2");
-        buttons.setBounds(this.getWidth()*5/8,this.getHeight()-100,100,50);
-        mainPanel.add(buttons);
-
-        //다음으로 넘어가는 event
-        buttons.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new SettingUI(SettingUI.Scene.GameUI);
-                dispose();
-            }
-        });
-    }
+//    void setBtn(){
+//        JButton buttons = new JButton("다음으로 넘어가기2");
+//        buttons.setBounds(this.getWidth()*5/8,this.getHeight()-100,100,50);
+//        mainPanel.add(buttons);
+//
+//        //다음으로 넘어가는 event
+//        buttons.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                new SettingUI(SettingUI.Scene.GameUI);
+//                dispose();
+//            }
+//        });
+//    }
 
 
     private void addCharacternextBlockPaneStyle()

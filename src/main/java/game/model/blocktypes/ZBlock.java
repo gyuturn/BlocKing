@@ -15,7 +15,7 @@ public class ZBlock extends BlockController{
 		color_basic = 'R';
 		color_blindMode = 'R';
 
-		color_current = 'R';
+		color_current = 'M';
 	}
     
 }

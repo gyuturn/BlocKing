@@ -15,6 +15,8 @@ import javax.swing.border.CompoundBorder;
 import java.awt.*;
 import java.awt.event.*;
 
+
+
 import static start.IsButtonClicked.btnClicked;
 
 public class StartUI extends JFrame {
@@ -26,6 +28,16 @@ public class StartUI extends JFrame {
     ImageIcon titleImg2 = new ImageIcon("./src/main/java/start/img/title2.png");
     ImageIcon titleImg3 = new ImageIcon("./src/main/java/start/img/title3.png");
 
+    private static StartUI instance;
+    public static StartUI getInstance() {
+        if(instance != null)
+            return instance;
+        else
+        {
+            System.out.println("Error : GameUI Instance == null ");
+            return null;
+        }
+    }
 
 
     public StartUI(){
@@ -37,6 +49,7 @@ public class StartUI extends JFrame {
 
         //board display setting
         mainPanel = new JPanel();
+        mainPanel.setLayout(null);
         mainPanel.setBackground(Color.BLACK);
 
         CompoundBorder border = BorderFactory.createCompoundBorder(
@@ -47,22 +60,30 @@ public class StartUI extends JFrame {
 
 
 
+        instance = this;
 
-        this.getContentPane().add(mainPanel,BorderLayout.CENTER);
+        this.getContentPane().add(mainPanel);
 
 
         titleBtn();
 
         JButton gameButtons = new JButton("게임 시작");
+        gameButtons.setBounds(this.getWidth()/2-this.getWidth()/12,this.getHeight()/3,this.getWidth()/6,this.getHeight()/16);
         mainPanel.add(gameButtons);
 
         JButton settingButtons = new JButton("설정 메뉴");
+        settingButtons.setBounds(this.getWidth()/2-this.getWidth()/12,this.getHeight()/3+this.getHeight()/16,this.getWidth()/6,this.getHeight()/16);
+
         mainPanel.add(settingButtons);
 
         JButton scbButtons = new JButton("스코어보드");
+        scbButtons.setBounds(this.getWidth()/2-this.getWidth()/12,this.getHeight()/3+this.getHeight()/8,this.getWidth()/6,this.getHeight()/16);
+
         mainPanel.add(scbButtons);
 
         JButton exitButtons = new JButton("게임 종료");
+        exitButtons.setBounds(this.getWidth()/2-this.getWidth()/12,this.getHeight()/3+this.getHeight()*3/16,this.getWidth()/6,this.getHeight()/16);
+
         mainPanel.add(exitButtons);
 
 
@@ -251,10 +272,10 @@ public class StartUI extends JFrame {
     public void titleBtn(){
         JButton settingTitles = new JButton(titleImg1);
         //설정에서 이미지 크기를 변경하면 타이틀 이미지 크기도 조정됨
-        if(screenSize.getWidth() == 400){
+        if(screenSize.getWidth() == 800){
             settingTitles = new JButton(titleImg1);
         }
-        else if(screenSize.getWidth() == 600){
+        else if(screenSize.getWidth() == 1024){
             settingTitles = new JButton(titleImg2);
         }
         else{
@@ -263,6 +284,9 @@ public class StartUI extends JFrame {
         settingTitles.setBorderPainted(false);
         settingTitles.setFocusPainted(false);
         settingTitles.setContentAreaFilled(false);
+        settingTitles.setBounds(0,30,this.getWidth(),this.getHeight()/8);
+
+
 
         settingTitles.setPreferredSize(new Dimension((int)(screenSize.getWidth()*0.8), (int)(screenSize.getWidth()*0.17))); // 버튼 크기 지정
         mainPanel.add(settingTitles);

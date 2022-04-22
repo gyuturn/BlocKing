@@ -14,7 +14,7 @@ public class SBlock extends BlockController{
 		color_basic = 'G';
 		color_blindMode = 'B';
 
-		color_current = 'G';
+		color_current = 'Y';
 	}
     
 }

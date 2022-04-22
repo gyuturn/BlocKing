@@ -202,7 +202,7 @@ protected void initBlockGenerator() {
 //#region Events
 private int onBlockMove() {
     score += curSpeed;
-
+    InGameUIManager.getInstance().drawScore();
     return 0;
 }
 
@@ -214,6 +214,7 @@ public int onLineErase(int count) {
     }
 
     lineCount += count;
+    InGameUIManager.getInstance().drawScore();
 
     return 0;
 }
@@ -221,6 +222,7 @@ public int onLineErase(int count) {
 private int onBlockCreate() {
     score += curSpeed;
     blockCount++;
+    InGameUIManager.getInstance().drawScore();
 
     return 0;
 }

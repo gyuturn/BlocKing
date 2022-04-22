@@ -384,7 +384,6 @@ public class Interaction_Play implements KeyListener {
         } else if (keySetting.getOneTimeDown() == e.getKeyCode()) {
             while(BoardManager.getInstance().checkBlockMovable(curBlock)) {
                 BoardManager.getInstance().translateBlock(curBlock, 1, 0);
-                onBlockMove();
                 InGameUIManager.getInstance().drawScore();
             }
             timer.restart();

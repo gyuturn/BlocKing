@@ -26,7 +26,9 @@ public class GameInfoManager {
 
     public enum GameMode {
         BasicMode,
-        ItemMode
+        ItemMode,
+        BattleMode_Basic,
+        BattleMode_Item
     }
 
     public enum GameDifficulty {

@@ -1,6 +1,7 @@
 package start;
 
 import game.GameUI;
+import game.GameUI;
 import game.SelectGameTypeUI;
 import scoreBoard.NoItemScoreBoard.ScoreBoardUI;
 import scoreBoard.SelectScoreBoardUI;
@@ -195,6 +196,8 @@ public class StartUI extends JFrame {
                     }
                 } else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     if(btnClicked.isGameBtnClicked()){
+                        //new GameUI();
+                        System.out.printf("asfd");
                         new GameUI();
                         setVisible(false);
                     }
@@ -296,6 +299,7 @@ public class StartUI extends JFrame {
         settingTitles.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                //new GameUI();
                 new GameUI();
                 setVisible(false);
             }

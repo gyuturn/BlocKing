@@ -3,8 +3,10 @@ package game.manager.gametype;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-import game.GameUI;
-import game.container.BlockGenerator;
+import game.Controller;
+import game.GameDualModeUI;
+import game.UserNumber;
+import game.container.Block;
 import game.manager.BoardManager;
 import game.manager.GameInfoManager;
 import game.manager.GameManager;
@@ -14,23 +16,32 @@ import scoreBoard.NoItemScoreBoard.ScoreInputUI;
 import start.StartUI;
 
 public class GameManager_BasicMode extends GameManager {
-    
-//#region Singleton
 
-    private static GameManager_BasicMode instance = new GameManager_BasicMode();
-    
-    public static GameManager_BasicMode getInstance() {
-        return instance;
-    }
+    private BoardManager boardManager;
+    private Block block;
+    private int user;
 
-//#endregion
+
+
+
 
 
 //#region GameFramework
 
 private Step curStep = Step.GameReady;
 
-public enum Step {
+    public GameManager_BasicMode(InGameUIManager inGameUIManager, BoardManager boardManager, Block block,int user) {
+        super(inGameUIManager);
+        this.boardManager = boardManager;
+        this.block = block;
+        this.user=user;
+    }
+
+    public GameManager_BasicMode() {
+    }
+
+
+    public enum Step {
 
     GameReady,
 
@@ -101,18 +112,18 @@ private Step gameReady() {
 }
 
 public Step createNewBlock() {
-    BlockGenerator.getInstance().addBlock();
-    curBlock = BlockGenerator.getInstance().createBlock();
-    InGameUIManager.getInstance().drawNextBlockInfo(BlockGenerator.getInstance().blockQueue.peek());
+    block.addBlock();
+    curBlock = block.createBlock(this);
+    super.inGameUIManager.drawNextBlockInfo(block.blockQueue.peek());
     onBlockCreate();
 
     return Step.BlockMove;
 }
 
 private Step blockMove() {
-    isBlockMovable = BoardManager.getInstance().checkBlockMovable(curBlock);
+    isBlockMovable = boardManager.checkBlockMovable(curBlock);
     if(isBlockMovable) {
-        BoardManager.getInstance().translateBlock(curBlock, 1, 0);
+        boardManager.translateBlock(curBlock, 1, 0);
         onBlockMove();
         return Step.BlockMove;
     }
@@ -122,12 +133,12 @@ private Step blockMove() {
 
     private Step eraseEvent() {
 
-        BoardManager.getInstance().eraseEvent();
+        boardManager.eraseEvent();
         return Step.CheckLineDelete;
     }
 
 private Step checkLineDelete() {
-    int curLineCount = BoardManager.getInstance().eraseFullLine();
+    int curLineCount = boardManager.eraseFullLine();
     onLineErase(curLineCount);
 
     return Step.SetGameBalance;
@@ -142,11 +153,11 @@ private Step setGameBalance() {
 }
 
 private Step checkGameOver() {
-    BlockController nextBlock = BlockGenerator.getInstance().blockQueue.peek();
+    BlockController nextBlock = block.blockQueue.peek();
     for(int i=0; i<nextBlock.height(); i++) {
         for(int j=0; j<nextBlock.width(); j++) {
             if(nextBlock.getShape(i, j) != ' ') {
-                if(BoardManager.getInstance().board[i][j + 5] != ' ')
+                if(boardManager.board[i][j + 5] != ' ')
                     return Step.GameOver;
             }
         }
@@ -168,8 +179,12 @@ protected void gameOver() {
 public void initKeyListener() {
     interaction_play = new Interaction_Play();
     interaction_utils = new Interaction_Utils();
-    GameUI.getInstance().pane.addKeyListener(interaction_play);
-    GameUI.getInstance().pane.addKeyListener(interaction_utils);
+//    GameUI.getInstance().pane.addKeyListener(interaction_play);
+//    GameUI.getInstance().pane.addKeyListener(interaction_utils);
+    GameDualModeUI.getInstance().pane[0].addKeyListener(interaction_play);
+    GameDualModeUI.getInstance().pane[0].addKeyListener(interaction_utils);
+    GameDualModeUI.getInstance().pane[1].addKeyListener(interaction_play);
+    GameDualModeUI.getInstance().pane[1].addKeyListener(interaction_utils);
 }
 
 @Override
@@ -186,11 +201,11 @@ protected void initGameStatus() {
 }
 
 protected void initBoardManage() {
-    BoardManager.getInstance().initBoard();
+    boardManager.initBoard();
 }
 
 protected void initBlockGenerator() {
-    BlockGenerator.getInstance().initBlockQueue();
+    block.initBlockQueue();
 }
 
 //#endregion
@@ -242,39 +257,71 @@ public class Interaction_Play implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        System.out.println("e.getKeyCode() = " + e.getKeyCode());
-        if (keySetting.getDownBlock() == e.getKeyCode()) {
-            blockMove();
-            InGameUIManager.getInstance().drawBoard();
-            System.out.println("input down");
-        }
-        else if (keySetting.getRight() == e.getKeyCode()) {
-            BoardManager.getInstance().translateBlock(curBlock, 0, 1);
-            InGameUIManager.getInstance().drawBoard();
-            System.out.println("input right");
-        }
-        else if (keySetting.getLeft() == e.getKeyCode()) {
-            BoardManager.getInstance().translateBlock(curBlock, 0, -1);
-            InGameUIManager.getInstance().drawBoard();
-            System.out.println("input left");
-        }
-        else if (keySetting.getTurnBlock() == e.getKeyCode()) {
-            BoardManager.getInstance().eraseBlock(curBlock);
-            curBlock.rotate();
-            if(!BoardManager.getInstance().checkDrawable(curBlock.shape, curBlock.posRow, curBlock.posCol)) {
+        if(user==0) {
+            if (keySetting.getDownBlock() == e.getKeyCode()) {
+                blockMove();
+                inGameUIManager.drawBoard();
+                System.out.println("input down");
+            } else if (keySetting.getRight() == e.getKeyCode()) {
+                boardManager.translateBlock(curBlock, 0, 1);
+                inGameUIManager.drawBoard();
+                System.out.println("input right");
+            } else if (keySetting.getLeft() == e.getKeyCode()) {
+                boardManager.translateBlock(curBlock, 0, -1);
+                inGameUIManager.drawBoard();
+                System.out.println("input left");
+            } else if (keySetting.getTurnBlock() == e.getKeyCode()) {
+                boardManager.eraseBlock(curBlock);
                 curBlock.rotate();
-                curBlock.rotate();
-                curBlock.rotate();
+                if (!boardManager.checkDrawable(curBlock.shape, curBlock.posRow, curBlock.posCol)) {
+                    curBlock.rotate();
+                    curBlock.rotate();
+                    curBlock.rotate();
+                }
+                boardManager.setBlockPos(curBlock, curBlock.posRow, curBlock.posCol);
+                inGameUIManager.drawBoard();
+                System.out.println("input up");
+            } else if (keySetting.getOneTimeDown() == e.getKeyCode()) {
+                while (boardManager.checkBlockMovable(curBlock)) {
+                    boardManager.translateBlock(curBlock, 1, 0);
+                }
+                timer.restart();
+                inGameUIManager.drawBoard();
             }
-            BoardManager.getInstance().setBlockPos(curBlock, curBlock.posRow, curBlock.posCol);
-            InGameUIManager.getInstance().drawBoard();
-            System.out.println("input up");
-        } else if (keySetting.getOneTimeDown() == e.getKeyCode()) {
-            while(BoardManager.getInstance().checkBlockMovable(curBlock)) {
-                BoardManager.getInstance().translateBlock(curBlock, 1, 0);
+        }
+
+        // 2인 키
+        else if(user==1) {
+            if (83 == e.getKeyCode()) {
+                blockMove();
+                inGameUIManager.drawBoard();
+                System.out.println("input down");
+            } else if (68 == e.getKeyCode()) {
+                boardManager.translateBlock(curBlock, 0, 1);
+                inGameUIManager.drawBoard();
+                System.out.println("input right 2p");
+            } else if (65 == e.getKeyCode()) {
+                boardManager.translateBlock(curBlock, 0, -1);
+                inGameUIManager.drawBoard();
+                System.out.println("input left");
+            } else if (87 == e.getKeyCode()) {
+                boardManager.eraseBlock(curBlock);
+                curBlock.rotate();
+                if (!boardManager.checkDrawable(curBlock.shape, curBlock.posRow, curBlock.posCol)) {
+                    curBlock.rotate();
+                    curBlock.rotate();
+                    curBlock.rotate();
+                }
+                boardManager.setBlockPos(curBlock, curBlock.posRow, curBlock.posCol);
+                inGameUIManager.drawBoard();
+                System.out.println("input up");
+            } else if (keySetting.getOneTimeDown() == e.getKeyCode()) {
+                while (boardManager.checkBlockMovable(curBlock)) {
+                    boardManager.translateBlock(curBlock, 1, 0);
+                }
+                timer.restart();
+                inGameUIManager.drawBoard();
             }
-            timer.restart();
-            InGameUIManager.getInstance().drawBoard();
         }
     }
 
@@ -293,7 +340,7 @@ public class Interaction_Utils implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         if(keySetting.getStop() == e.getKeyCode()) {
-            BoardManager.getInstance().printBoard();
+            boardManager.printBoard();
             if(timer.isRunning())
                 stopGameFramework();
             else
@@ -303,7 +350,7 @@ public class Interaction_Utils implements KeyListener {
         if(keySetting.getEscape() == e.getKeyCode()) {
             onGameEnd();
             new StartUI();
-            GameUI.getInstance().dispose();
+            GameDualModeUI.getInstance().dispose();
         }
         
         

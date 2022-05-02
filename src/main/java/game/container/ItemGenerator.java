@@ -1,5 +1,7 @@
 package game.container;
 
+import game.Controller;
+import game.UserNumber;
 import game.model.BlockController;
 
 import java.util.Arrays;
@@ -14,8 +16,13 @@ public class ItemGenerator {
 
     public static int block;
 
+    Controller[] controller=Controller.getInstance();
+    UserNumber userNumber = UserNumber.getInstance();
+
+
+
     public void addCharInShape(BlockController curBlock, char charactor) {
-        curBlock = BlockGenerator.getInstance().blockQueue.poll();
+        curBlock = controller[0].block.blockQueue.poll();
         int[] arr = new int [5];
         for(int i=0;i<5;i++){
             //if()
@@ -28,7 +35,7 @@ public class ItemGenerator {
 
     public BlockController setBlockMugechu(BlockController curBlock, char charactor) {
         //curBlock 가져옴
-        curBlock = BlockGenerator.getInstance().blockQueue.poll();
+        curBlock = controller[0].block.blockQueue.poll();
         //그 블록을 무게추 블록으로 바꿈
         char[][] mugechuBlock;
         mugechuBlock = new char[][]{
@@ -36,7 +43,7 @@ public class ItemGenerator {
                 {'O', 'O', 'O', 'O'}
         };
         curBlock.shape = mugechuBlock;
-        BlockGenerator.getInstance().initNewBlockPos(curBlock,0,5);
+        controller[0].block.initNewBlockPos(curBlock,0,5);
         return curBlock;
 
     }
@@ -44,14 +51,14 @@ public class ItemGenerator {
 
     public BlockController setOneBlock(BlockController curBlock, char charactor) {
         //curBlock 가져옴
-        curBlock = BlockGenerator.getInstance().blockQueue.poll();
+        curBlock = controller[0].block.blockQueue.poll();
         //그 블록을 한개짜리 블록으로 바꿈
         char[][] dotBlock;
         dotBlock = new char[][]{
                 {'O'}
         };
         curBlock.shape = dotBlock;
-        BlockGenerator.getInstance().initNewBlockPos(curBlock,0,5);
+        controller[0].block.initNewBlockPos(curBlock,0,5);
         return curBlock;
     }
 

@@ -152,7 +152,7 @@ public class SelectGameTypeUI extends JFrame {
                         gameInfoManager.difficulty = GameInfoManager.GameDifficulty.Hard;
                     }
                 }
-                new GameUI();
+                new GameDualModeUI();
                 dispose();
 
             }

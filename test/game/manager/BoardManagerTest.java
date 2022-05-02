@@ -1,6 +1,6 @@
 package game.manager;
 
-import game.container.BlockGenerator;
+import game.container.Block;
 import game.model.BlockController;
 import game.model.blocktypes.IBlock;
 import game.model.blocktypes.JBlock;
@@ -16,7 +16,7 @@ import static org.junit.Assert.*;
 public class BoardManagerTest {
     //dependencies
     BoardManager boardManager = BoardManager.getInstance();
-    BlockGenerator blockGenerator = BlockGenerator.getInstance();
+    Block blockGenerator = Block.getInstance();
 
     @After
     public void resetBoard() {
@@ -253,9 +253,9 @@ public class BoardManagerTest {
     public void eraseBlock() {
         //given
         blockGenerator.addBlock();
-        BlockController block = blockGenerator.createBlock();//board에 그려진 상태 0행 5열에 생성되어 있음
+//        BlockController block = blockGenerator.createBlock();//board에 그려진 상태 0행 5열에 생성되어 있음
         //when
-        boardManager.eraseBlock(block);
+        boardManager.eraseBlock(Block);
         //then
         boolean flag = true;
         for (int i = 0; i < boardManager.board.length; i++) {
@@ -272,16 +272,16 @@ public class BoardManagerTest {
     public void translateBlock() {
         //given
         blockGenerator.addBlock();
-        BlockController block = blockGenerator.createBlock();//board에 그려진 상태 0행 5열에 생성되어 있음
-        int beforeCol = block.posCol;
-        int beforeRow = block.posRow;
+//        BlockController block = blockGenerator.createBlock();//board에 그려진 상태 0행 5열에 생성되어 있음
+        int beforeCol = Block.posCol;
+        int beforeRow = Block.posRow;
         //when
         int addRow = 0;
         int addCol = 1;// 오른쪽으로 한칸 이동
-        boardManager.translateBlock(block, addRow, addCol);
+        boardManager.translateBlock(Block, addRow, addCol);
         //then
-        Assertions.assertThat(block.posCol).isEqualTo(beforeCol + addCol);
-        Assertions.assertThat(block.posRow).isEqualTo(beforeRow + addRow);
+        Assertions.assertThat(Block.posCol).isEqualTo(beforeCol + addCol);
+        Assertions.assertThat(Block.posRow).isEqualTo(beforeRow + addRow);
     }
 
 

@@ -1,20 +1,37 @@
 package game.manager;
 
-import game.GameUI;
+import game.GameDualModeUI;
+import game.UserNumber;
 import game.manager.gametype.GameManager_BasicMode;
-import game.manager.gametype.GameManager_NormalMode;
 import game.model.BlockController;
 
-import java.awt.*;
 import javax.swing.*;
-import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
 public class InGameUIManager {
 
-    private static InGameUIManager instance = new InGameUIManager();
-    public static InGameUIManager getInstance() { return instance; }
+    UserNumber userNumber = UserNumber.getInstance();
+    private BoardManager boardManager;
+    private GameManager_BasicMode gameManager_basicMode;
+    private int user;
+
+
+
+//    private static InGameUIManager instance = new InGameUIManager();
+//
+//    public static InGameUIManager getInstance() {
+//        return instance;
+//    }
+
+
     private static final int WIDTH = 10;
+
+    public InGameUIManager(BoardManager boardManager, GameManager_BasicMode gameManager_basicMode, int user) {
+        this.boardManager = boardManager;
+        this.gameManager_basicMode = gameManager_basicMode;
+        this.user=user;
+    }
+
 
     /*
     public void drawBoard() {
@@ -42,78 +59,84 @@ public class InGameUIManager {
     }
     */
 
+
+
     public void drawBoard() {
 
-        JTextPane pane = GameUI.getInstance().pane;
-        StyledDocument doc = pane.getStyledDocument();
+            JTextPane pane = GameDualModeUI.getInstance().pane[user];
+            StyledDocument doc = pane.getStyledDocument();
 
-        //Set Text
-        StringBuffer sb = new StringBuffer();
+            //Set Text
+            StringBuffer sb = new StringBuffer();
 
-        for(int i=0; i<22; i++)
-        {
-            for(int j=0; j<12; j++)
-            {
-                char curText = BoardManager.getInstance().board[i][j];
-                sb.append(curText);
+            for (int i = 0; i < 22; i++) {
+                for (int j = 0; j < 12; j++) {
+                    char curText = boardManager.board[i][j];
+                    sb.append(curText);
+                }
+                sb.append('\n');
             }
-            sb.append('\n');
-        }
-        pane.setText(sb.toString());
+            pane.setText(sb.toString());
 
-        //Set Color
-        int offset;
-        String color ="";
 
-        for(int i=0; i<22; i++)
-        {
-            for(int j=0; j<12; j++)
-            {
-                offset = 13 * i + j;
-                color += BoardManager.getInstance().boardColor[i][j];
-                doc.setCharacterAttributes(offset, 1, pane.getStyle(color), true);
-                color = "";
+            //Set Color
+            int offset;
+            String color = "";
+
+            for (int i = 0; i < 22; i++) {
+                for (int j = 0; j < 12; j++) {
+                    offset = 13 * i + j;
+                    color += boardManager.boardColor[i][j];
+                    doc.setCharacterAttributes(offset, 1, pane.getStyle(color), true);
+                    color = "";
+                }
             }
-        }
+
+
+
     }
 
+
+
     public void drawNextBlockInfo(BlockController nextBlock) {
-        JTextPane pane = GameUI.getInstance().nextBlockPane;
-        StyledDocument doc = pane.getStyledDocument();
 
-        StringBuffer sb = new StringBuffer();
-        for(int i=0; i< nextBlock.height(); i++)
-        {
-            for(int j=0; j< nextBlock.width(); j++)
+            JTextPane pane = GameDualModeUI.getInstance().nextBlockPane[user];
+            StyledDocument doc = pane.getStyledDocument();
+
+            StringBuffer sb = new StringBuffer();
+            for(int i=0; i< nextBlock.height(); i++)
             {
-                char curText = nextBlock.shape[i][j];
-                sb.append(curText);
+                for(int j=0; j< nextBlock.width(); j++)
+                {
+                    char curText = nextBlock.shape[i][j];
+                    sb.append(curText);
+                }
+                sb.append('\n');
             }
-            sb.append('\n');
-        }
 
-        pane.setText(sb.toString());
+            pane.setText(sb.toString());
 
-        int offset;
-        String color ="";
+            int offset;
+            String color ="";
 
-        for(int i=0; i<nextBlock.height(); i++)
-        {
-            for(int j=0; j<nextBlock.width(); j++)
+            for(int i=0; i<nextBlock.height(); i++)
             {
-                offset = (nextBlock.width()+1) * i + j;
-                color += BoardManager.getInstance().nextBlockColor[i][j];
-                doc.setCharacterAttributes(offset, 1, pane.getStyle(color), true);
-                System.out.println("color : " + color);
-                color = "";
+                for(int j=0; j<nextBlock.width(); j++)
+                {
+                    offset = (nextBlock.width()+1) * i + j;
+                    color += boardManager.nextBlockColor[i][j];
+                    doc.setCharacterAttributes(offset, 1, pane.getStyle(color), true);
+                    color = "";
+                }
             }
-        }
+
+
 
     }
 
     public void drawScore(){
-        JTextPane scorePane = GameUI.getInstance().scorePane;
-        scorePane.setText("Score :\n" + GameManager_BasicMode.getInstance().score + "\n" + "curSpeed :\n" + GameManager_BasicMode.getInstance().curSpeed);
+            JTextPane scorePane = GameDualModeUI.getInstance().scorePane[user];
+            scorePane.setText("Score :\n" + gameManager_basicMode.score + "\n" + "curSpeed :\n" + gameManager_basicMode.curSpeed);
     }
 
     public void moveScene(){

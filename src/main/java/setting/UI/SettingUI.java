@@ -1,6 +1,6 @@
 package setting.UI;
 
-import game.GameUI;
+import game.GameDualModeUI;
 import scoreBoard.NoItemScoreBoard.ScoreList;
 import setting.*;
 import start.StartUI;
@@ -158,7 +158,7 @@ public class SettingUI extends JFrame {
                         dispose();
                         break;
                     case GameUI:
-                        new GameUI();
+                        new GameDualModeUI();
                         dispose();
                         break;
                 }
@@ -373,7 +373,7 @@ public class SettingUI extends JFrame {
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new GameUI();
+                new GameDualModeUI();
                 setVisible(false);
             }
         });

@@ -1,6 +1,6 @@
 package start;
 
-import game.GameUI;
+import game.GameDualModeUI;
 import game.SelectGameTypeUI;
 import scoreBoard.NoItemScoreBoard.ScoreBoardUI;
 import scoreBoard.SelectScoreBoardUI;
@@ -174,7 +174,7 @@ public class StartUI extends JFrame {
                     }
                 } else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     if(btnClicked.isGameBtnClicked()){
-                        new GameUI();
+                        new GameDualModeUI();
                         setVisible(false);
                     }
                     else if(btnClicked.isSettingBtnClicked()){
@@ -272,7 +272,7 @@ public class StartUI extends JFrame {
         settingTitles.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new GameUI();
+                new GameDualModeUI();
                 setVisible(false);
             }
         });

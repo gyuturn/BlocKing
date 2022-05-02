@@ -2,11 +2,12 @@ package game.container;
 
 import java.util.LinkedList;
 import java.util.Queue;
-import java.util.Random;
 
+import game.Controller;
+import game.UserNumber;
 import game.manager.GameInfoManager;
+import game.manager.GameManager;
 import game.model.BlockController;
-import game.model.BlockModel;
 import game.model.blocktypes.IBlock;
 import game.model.blocktypes.JBlock;
 import game.model.blocktypes.LBlock;
@@ -16,18 +17,19 @@ import game.model.blocktypes.TBlock;
 import game.model.blocktypes.ZBlock;
 
 import game.manager.BoardManager;
-import game.manager.gametype.GameManager_NormalMode;
+
 import game.model.difficulty.RouletteWheel;
 
-public class BlockGenerator {
+public class Block {
 
 	public Queue<BlockController> blockQueue = new LinkedList<>(); //앞으로 생성할 블록들
 
-    private static BlockGenerator instance = new BlockGenerator();
-    
-    public static BlockGenerator getInstance() {
-        return instance;
-    }
+
+	public Block(BoardManager boardManager) {
+		this.boardManager = boardManager;
+	}
+
+
 
 	private GameInfoManager gameInfoManager = GameInfoManager.getInstance();
 
@@ -37,11 +39,18 @@ public class BlockGenerator {
 		return block;
 	}
 
+	public BoardManager boardManager;
+
+
+
+
+
+
 
     
     public BlockController getRandomBlock() {
 		block = RouletteWheel.GenerateBlockByValue(gameInfoManager.difficulty);
-		switch(BlockGenerator.block) {
+		switch(Block.block) {
 		case 0:
 			return new IBlock();
 		case 1:
@@ -62,7 +71,7 @@ public class BlockGenerator {
 
     public void initNewBlockPos(BlockController curBlock, int row, int col)
     {
-        BoardManager.getInstance().setBlockPos(curBlock, row, col);
+        boardManager.setBlockPos(curBlock, row, col);
     }
 
 
@@ -73,10 +82,10 @@ public class BlockGenerator {
 
 
 
-	public BlockController createBlock() {
+	public BlockController createBlock(GameManager gameManager) {
 		BlockController curBlock = blockQueue.poll();
 		initNewBlockPos(curBlock, 0, 5);
-		GameManager_NormalMode.getInstance().curBlock = curBlock;
+		gameManager.curBlock = curBlock;
 		return curBlock;
 	}
 

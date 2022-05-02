@@ -1,7 +1,6 @@
 package start;
 
-import game.GameUI;
-import game.manager.gametype.GameManager_NormalMode;
+
 import setting.ScreenSize;
 
 import java.awt.event.KeyEvent;

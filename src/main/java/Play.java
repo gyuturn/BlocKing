@@ -1,3 +1,5 @@
+import game.GameDualModeUI;
+import game.manager.gametype.GameManager_BasicMode;
 import scoreBoard.NoItemScoreBoard.ScoreInputUI;
 import scoreBoard.scoreBoradItem.ItemScoreInputUI;
 import setting.SaveAndLoad;
@@ -30,7 +32,8 @@ public class Play {
             public void run() {
                 //저장 값 불러오기
                 SaveAndLoad.LoadSetting();
-                new StartUI();
+
+                new GameDualModeUI();
             }
         });
 

@@ -16,7 +16,6 @@ import game.model.blocktypes.TBlock;
 import game.model.blocktypes.ZBlock;
 
 import game.manager.BoardManager;
-import game.manager.gametype.GameManager_NormalMode;
 import game.model.difficulty.RouletteWheel;
 
 public class BlockGenerator {
@@ -60,9 +59,9 @@ public class BlockGenerator {
 		return new LBlock();
 	}
 
-    public void initNewBlockPos(BlockController curBlock, int row, int col)
+    public void initNewBlockPos(BlockController curBlock, int row, int col, int index)
     {
-        BoardManager.getInstance().setBlockPos(curBlock, row, col);
+        BoardManager.getInstance(index).setBlockPos(curBlock, row, col);
     }
 
 
@@ -72,11 +71,9 @@ public class BlockGenerator {
 	}
 
 
-
-	public BlockController createBlock() {
+	public BlockController createBlock(int index) {
 		BlockController curBlock = blockQueue.poll();
-		initNewBlockPos(curBlock, 0, 5);
-		GameManager_NormalMode.getInstance().curBlock = curBlock;
+		initNewBlockPos(curBlock, 0, 5, index);
 		return curBlock;
 	}
 

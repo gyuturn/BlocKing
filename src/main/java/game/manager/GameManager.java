@@ -11,7 +11,7 @@ import javax.swing.Timer;
 import game.GameUI;
 import game.manager.GameInfoManager.GameDifficulty;
 import game.manager.GameInfoManager.GameMode;
-import game.manager.gametype.GameManager_NormalMode;
+
 import game.model.BlockController;
 import setting.KeySetting;
 
@@ -58,6 +58,8 @@ public abstract class GameManager {
     protected int lineCount = 0;
     protected int score = 0;
 
+    protected int index;
+
     public BlockController curBlock;
     public BlockController getCurBlock() {
         return curBlock;
@@ -93,20 +95,20 @@ public abstract class GameManager {
 
     public void stopGameFramework() {
         timer.stop();
-        GameUI.getInstance().pane.removeKeyListener(interaction_play);
+        GameUI.getInstance().pane[index].removeKeyListener(interaction_play);
     }
 
     public void restartGameFramework() {
         timer.restart();
-        GameUI.getInstance().pane.addKeyListener(interaction_play);
+        GameUI.getInstance().pane[index].addKeyListener(interaction_play);
     }
 
     
 
     protected void oneFrame() {
         gameFramework();
-        InGameUIManager.getInstance().drawBoard();
-        InGameUIManager.getInstance().drawScore();
+        InGameUIManager.getInstance().drawBoard(index);
+        InGameUIManager.getInstance().drawScore(index);
         //printStatus();
     }
 
@@ -138,7 +140,7 @@ public abstract class GameManager {
         System.out.printf("\n");
         System.out.printf("score : %d \n", score);
         System.out.printf("curSpeed : %d\n\n", curSpeed);
-        InGameUIManager.getInstance().drawScore();
+        InGameUIManager.getInstance().drawScore(index);
 
     }
 

@@ -16,10 +16,20 @@ public class BoardManager {
 //#region Singleton
     
     private static BoardManager instance = new BoardManager();
+    private static BoardManager instance2 = new BoardManager();
 
+    private static ArrayList<BoardManager> boardManagerList =
+        new ArrayList<BoardManager>(Arrays.asList(instance, instance2));
+
+    public static BoardManager getInstance(int i) {
+        return boardManagerList.get(i);
+    }
+
+    /*
     public static BoardManager getInstance() {
         return instance;
     }
+    */
     
 //#endregion
 
@@ -192,7 +202,7 @@ public class BoardManager {
     //#endregion
 
     //#region animation
-    public void eraseEvent(ArrayList<Integer> additionalIndex){
+    public void eraseEvent(ArrayList<Integer> additionalIndex, int boardIndex){
         int clear[] = new int[22];
         int clearsum = 0;
         m=5; n=6;
@@ -235,7 +245,7 @@ public class BoardManager {
                                 }
                             }
                         }
-                            InGameUIManager.getInstance().drawBoard();
+                            InGameUIManager.getInstance().drawBoard(boardIndex);
                             phase++;
                             break;
                         case 2:  for(int i=0; i<22; i++) {
@@ -248,7 +258,7 @@ public class BoardManager {
                                 }
                             }
                         }
-                            InGameUIManager.getInstance().drawBoard();
+                            InGameUIManager.getInstance().drawBoard(boardIndex);
                             phase++;
                             break;
                         case 3:  for(int i=0; i<22; i++) {
@@ -261,7 +271,7 @@ public class BoardManager {
                                 }
                             }
                         }
-                            InGameUIManager.getInstance().drawBoard();
+                            InGameUIManager.getInstance().drawBoard(boardIndex);
                             phase++;
                             break;
                         case 4:  for(int i=0; i<22; i++) {
@@ -275,7 +285,7 @@ public class BoardManager {
                                 }
                             }
                         }
-                            InGameUIManager.getInstance().drawBoard();
+                            InGameUIManager.getInstance().drawBoard(boardIndex);
                             phase++;
                             break;
                         case 5:  for(int i=0; i<22; i++) {
@@ -289,7 +299,7 @@ public class BoardManager {
                                 }
                             }
                         }
-                            InGameUIManager.getInstance().drawBoard();
+                            InGameUIManager.getInstance().drawBoard(boardIndex);
                             phase++;
                             break;
                         case 6:  for(int i=0; i<22; i++) {
@@ -303,7 +313,7 @@ public class BoardManager {
                                 }
                             }
                         }
-                            InGameUIManager.getInstance().drawBoard();
+                            InGameUIManager.getInstance().drawBoard(boardIndex);
                             phase++;
                             break;
                         case 7:  for(int i=0; i<22; i++) {
@@ -317,7 +327,7 @@ public class BoardManager {
                                 }
                             }
                         }
-                            InGameUIManager.getInstance().drawBoard();
+                            InGameUIManager.getInstance().drawBoard(boardIndex);
                             phase++;
                             break;
                         case 8:  for(int i=0; i<22; i++) {
@@ -331,7 +341,7 @@ public class BoardManager {
                                 }
                             }
                         }
-                            InGameUIManager.getInstance().drawBoard();
+                            InGameUIManager.getInstance().drawBoard(boardIndex);
                             phase++;
                             break;
                         case 9:  for(int i=0; i<22; i++) {
@@ -343,7 +353,7 @@ public class BoardManager {
                                 board[i][10] = ' ';
                             }
                         }
-                            InGameUIManager.getInstance().drawBoard();
+                            InGameUIManager.getInstance().drawBoard(boardIndex);
                             phase++;
                             break;
                         case 10: for(int i=0; i<22; i++) {
@@ -354,7 +364,7 @@ public class BoardManager {
                                 board[i][10] = '┓';
                             }
                         }
-                            InGameUIManager.getInstance().drawBoard();
+                            InGameUIManager.getInstance().drawBoard(boardIndex);
                             phase++;
                             break;
                         case 11: for(int i=0; i<22; i++) {
@@ -365,7 +375,7 @@ public class BoardManager {
                                 board[i][10] = '┛';
                             }
                         }
-                            InGameUIManager.getInstance().drawBoard();
+                            InGameUIManager.getInstance().drawBoard(boardIndex);
                             phase++;
                             break;
                         case 12: for(int i=0; i<22; i++) {
@@ -377,7 +387,7 @@ public class BoardManager {
                                 board[i][10] = ' ';
                             }
                         }
-                            InGameUIManager.getInstance().drawBoard();
+                            InGameUIManager.getInstance().drawBoard(boardIndex);
                             phase++;
                             break;
                         case 13:  for(int i=0; i<22; i++) {
@@ -391,7 +401,7 @@ public class BoardManager {
                                 }
                             }
                         }
-                            InGameUIManager.getInstance().drawBoard();
+                            InGameUIManager.getInstance().drawBoard(boardIndex);
                             phase++;
                             break;
                         case 14:  for(int i=0; i<22; i++) {
@@ -405,7 +415,7 @@ public class BoardManager {
                                 }
                             }
                         }
-                            InGameUIManager.getInstance().drawBoard();
+                            InGameUIManager.getInstance().drawBoard(boardIndex);
                             phase++;
                             break;
                         case 15:  for(int i=0; i<22; i++) {
@@ -419,7 +429,7 @@ public class BoardManager {
                                 }
                             }
                         }
-                            InGameUIManager.getInstance().drawBoard();
+                            InGameUIManager.getInstance().drawBoard(boardIndex);
                             phase++;
                             break;
                         case 16:  for(int i=0; i<22; i++) {
@@ -433,7 +443,7 @@ public class BoardManager {
                                 }
                             }
                         }
-                            InGameUIManager.getInstance().drawBoard();
+                            InGameUIManager.getInstance().drawBoard(boardIndex);
                             phase++;
                             break;
                         case 17:  for(int i=0; i<22; i++) {
@@ -447,7 +457,7 @@ public class BoardManager {
                                 }
                             }
                         }
-                            InGameUIManager.getInstance().drawBoard();
+                            InGameUIManager.getInstance().drawBoard(boardIndex);
                             phase++;
                             break;
                         case 18:  for(int i=0; i<22; i++) {
@@ -460,7 +470,7 @@ public class BoardManager {
                                 }
                             }
                         }
-                            InGameUIManager.getInstance().drawBoard();
+                            InGameUIManager.getInstance().drawBoard(boardIndex);
                             phase++;
                             break;
                         case 19:  for(int i=0; i<22; i++) {
@@ -473,7 +483,7 @@ public class BoardManager {
                                 }
                             }
                         }
-                            InGameUIManager.getInstance().drawBoard();
+                            InGameUIManager.getInstance().drawBoard(boardIndex);
                             phase++;
                             break;
                         case 20:  for(int i=0; i<22; i++) {
@@ -485,7 +495,7 @@ public class BoardManager {
                                 }
                             }
                         }
-                            InGameUIManager.getInstance().drawBoard();
+                            InGameUIManager.getInstance().drawBoard(boardIndex);
                             phase++;
                             break;
                         case 21: for(int i=0; i<22; i++) {
@@ -497,7 +507,7 @@ public class BoardManager {
                             if(m>0) {
                                 m--; n++;
                             }
-                            InGameUIManager.getInstance().drawBoard();
+                            InGameUIManager.getInstance().drawBoard(boardIndex);
                             System.out.println("블록 제거중" + m);
                             if(m ==0){
                                 ((Timer)e.getSource()).stop();
@@ -627,7 +637,7 @@ public BlockController setNextBlockColor(BlockController nextBlock) {
         {
             for(int j=0; j<12; j++)
             {
-                char curText = BoardManager.getInstance().board[i][j];
+                char curText = board[i][j];
                 if(curText == 0)
                     System.out.print(" ");
                 else

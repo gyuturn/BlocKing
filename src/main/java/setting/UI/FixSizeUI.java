@@ -67,7 +67,7 @@ public class FixSizeUI extends JFrame {
 
         radioButtons[0] = new JRadioButton("800*600");
         radioButtons[1] = new JRadioButton("1024*768");
-        radioButtons[2] = new JRadioButton("1280*720");
+        radioButtons[2] = new JRadioButton("1600*900");
 
 
 
@@ -101,8 +101,8 @@ public class FixSizeUI extends JFrame {
 
                 }
                 else{
-                    screenSize.setWidth(1280);
-                    screenSize.setHeight(720);
+                    screenSize.setWidth(1600);
+                    screenSize.setHeight(900);
 
                 }
 

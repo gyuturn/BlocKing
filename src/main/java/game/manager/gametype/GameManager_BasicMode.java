@@ -140,7 +140,12 @@ private Step eraseAnimation() {
     return Step.EraseLine;
 }
 
+
+
+
+
 private Step eraseLine() {
+
 
     int curLineCount = BoardManager.getInstance(index).eraseFullLine();
     onLineErase(curLineCount);

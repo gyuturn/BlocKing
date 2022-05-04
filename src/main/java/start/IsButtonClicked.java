@@ -10,6 +10,7 @@ public class IsButtonClicked {
 
 
     private  boolean gameBtnClicked;
+    private boolean  dualGameBtnClicked;
     private  boolean settingBtnClicked;
     private  boolean scbBtnClicked;
     private  boolean exitBtnClicked;
@@ -26,6 +27,7 @@ public class IsButtonClicked {
 
     private IsButtonClicked() {
         this.gameBtnClicked= false;
+        this.dualGameBtnClicked=false;
         this.settingBtnClicked = false;
         this.scbBtnClicked = false;
         this.exitBtnClicked = false;
@@ -44,6 +46,10 @@ public class IsButtonClicked {
 
     public  boolean isGameBtnClicked() {
         if(gameBtnClicked) return true;
+        else return false;
+    }
+    public  boolean isDualGameBtnClicked() {
+        if(dualGameBtnClicked) return true;
         else return false;
     }
     public  boolean isSettingBtnClicked() {
@@ -96,13 +102,23 @@ public class IsButtonClicked {
 
     public void setGameBtnClicked() {
         gameBtnClicked= true;
+        dualGameBtnClicked=false;
         settingBtnClicked= false;
         scbBtnClicked= false;
         exitBtnClicked= false;
         System.out.println("game");
     }
+    public void setDualGameBtnClicked() {
+        gameBtnClicked= false;
+        dualGameBtnClicked=true;
+        settingBtnClicked= false;
+        scbBtnClicked= false;
+        exitBtnClicked= false;
+        System.out.println("Dualgame");
+    }
     public void setSettingBtnClicked() {
         gameBtnClicked= false;
+        dualGameBtnClicked=false;
         settingBtnClicked= true;
         scbBtnClicked= false;
         exitBtnClicked= false;
@@ -110,6 +126,7 @@ public class IsButtonClicked {
     }
     public void setScbBtnClicked() {
         gameBtnClicked= false;
+        dualGameBtnClicked=false;
         settingBtnClicked= false;
         scbBtnClicked= true;
         exitBtnClicked= false;
@@ -117,6 +134,7 @@ public class IsButtonClicked {
     }
     public void setExitBtnClicked() {
         gameBtnClicked= false;
+        dualGameBtnClicked=false;
         settingBtnClicked= false;
         scbBtnClicked= false;
         exitBtnClicked= true;

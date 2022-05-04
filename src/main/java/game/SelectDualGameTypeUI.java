@@ -1,24 +1,32 @@
-package setting.UI;
+package game;
 
+
+
+import game.manager.GameInfoManager;
+import setting.DuplicateKeySettingException;
+import setting.SaveAndLoad;
 import setting.ScreenSize;
-
 
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
-public class FixSizeUI extends JFrame {
-    private JPanel FixSizePanel;
-    ButtonGroup sizeBtnGroup = new ButtonGroup();
-    private JRadioButton[] radioButtons = new JRadioButton[3];
+public class SelectDualGameTypeUI extends JFrame {
+    private JPanel gameSelectPanel;
+    ButtonGroup gameModeGroup = new ButtonGroup();
+    private GameInfoManager gameInfoManager = GameInfoManager.getInstance();
+
+    private JRadioButton[] gameModeBtns = new JRadioButton[3];
     private ScreenSize screenSize =ScreenSize.getInstance();
     ImageIcon titleImg1 = new ImageIcon("./src/main/java/start/img/title1.png");
     ImageIcon titleImg2 = new ImageIcon("./src/main/java/start/img/title2.png");
     ImageIcon titleImg3 = new ImageIcon("./src/main/java/start/img/title3.png");
 
-    public FixSizeUI() {
+    public SelectDualGameTypeUI() {
         //JFrame setting
         super("software-tetris");//제목
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);// 메모리까지 종료
@@ -26,19 +34,28 @@ public class FixSizeUI extends JFrame {
         this.setVisible(true);
 
         //board display setting
-        FixSizePanel = new JPanel();
-        FixSizePanel.setBackground(Color.BLACK);
+        gameSelectPanel = new JPanel();
+        gameSelectPanel.setBackground(Color.BLACK);
 
         CompoundBorder border = BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(Color.GRAY, 10),
                 BorderFactory.createLineBorder(Color.DARK_GRAY, 5)
         );
-        FixSizePanel.setBorder(border);
+        gameSelectPanel.setBorder(border);
 
-        this.getContentPane().add(FixSizePanel,BorderLayout.CENTER);
+        this.getContentPane().add(gameSelectPanel,BorderLayout.CENTER);
         setTitle();
-        selectSize();
-        selectedBtnShow();
+        selectMode();
+        //종료 시 현재 setting 및 scoreBoard 저장
+        this.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent event) {
+                try {
+                    SaveAndLoad.SaveSetting();
+                } catch (DuplicateKeySettingException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
     private void setTitle() {
         JButton titleBtn;
@@ -53,76 +70,48 @@ public class FixSizeUI extends JFrame {
         }
         titleBtn.setBackground(Color.BLACK);
 
-        FixSizePanel.add(titleBtn);
+        gameSelectPanel.add(titleBtn);
     }
 
-
-
-    public void selectSize() {
+    public void selectMode(){
         JPanel radioPanel = new JPanel();
         GridLayout gridLayout=new GridLayout( 3,1);
         radioPanel.setLayout(gridLayout);
         radioPanel.setBackground(Color.BLACK);
         radioPanel.setBorder(BorderFactory.createEmptyBorder(screenSize.getHeight()/4,0,0,0));
 
-        radioButtons[0] = new JRadioButton("800*600");
-        radioButtons[1] = new JRadioButton("1024*768");
-        radioButtons[2] = new JRadioButton("1600*900");
-
-
+        gameModeBtns[0] = new JRadioButton("Basic-Mode");
+        gameModeBtns[1] = new JRadioButton("Item-Mode");
+        gameModeBtns[2] = new JRadioButton("Timer-Mode");
 
         for (int i = 0; i < 3; i++) {
-            sizeBtnGroup.add(radioButtons[i]);
+            gameModeGroup.add(gameModeBtns[i]);
         }
 
         for (int i = 0; i < 3; i++) {
-            radioPanel.add(radioButtons[i]);
+            radioPanel.add(gameModeBtns[i]);
         }
 
-        FixSizePanel.add(radioPanel, "Center");
+        gameSelectPanel.add(radioPanel, "Center");
 
         JPanel checkPanel = new JPanel();
         JButton btn = new JButton("완료");
         checkPanel.add(btn);
         checkPanel.setBorder((BorderFactory.createEmptyBorder(screenSize.getHeight() / 4, 0, 0, 0)));
         checkPanel.setBackground(Color.black);
-        FixSizePanel.add(checkPanel, "South");
+        gameSelectPanel.add(checkPanel, "South");
         btn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (radioButtons[0].isSelected()) {
-                    //400*500
-                    screenSize.setWidth(800);
-                    screenSize.setHeight(600);
-
-                } else if (radioButtons[1].isSelected()) {
-                    screenSize.setWidth(1024);
-                    screenSize.setHeight(768);
-
-                }
-                else{
-                    screenSize.setWidth(1600);
-                    screenSize.setHeight(900);
-
+                if (gameModeBtns[0].isSelected()) {
+                    gameInfoManager.difficulty = GameInfoManager.GameDifficulty.Easy;
+                    new GameUI();
+                    dispose();
                 }
 
-                new SettingUI();
-                setVisible(false);
+
 
             }
         });
-
-
-    }
-
-    public void selectedBtnShow() {
-        //선택된 기능 먼저 상태를 보여줌
-        if (screenSize.getWidth() == 800) {
-            radioButtons[0].setSelected(true);
-        } else if (screenSize.getWidth() == 1024) {
-            radioButtons[1].setSelected(true);
-        }else{
-            radioButtons[2].setSelected(true);
-        }
     }
 }

@@ -1,7 +1,7 @@
 package game.manager.DualModeUtils;
 
 public class UserNumber {
-    public int user=2;
+    public int user=1;
 
     private static UserNumber instance = new UserNumber();
 

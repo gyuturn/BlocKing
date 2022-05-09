@@ -1,13 +1,11 @@
 package game.manager;
 
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import game.model.BlockController;
-import game.model.BlockModel;
 
 import javax.swing.*;
 
@@ -646,6 +644,25 @@ public BlockController setNextBlockColor(BlockController nextBlock) {
             System.out.print("\n");
         }
     }
-//#endregion
+
+    public void useWeight(BlockController curBlock) {
+        int weightBlockWidth=4;
+
+        for (int i = 0; i < weightBlockWidth; i++) {
+            board[curBlock.posRow+1][curBlock.posCol+i]=' ';
+        }
+    }
+
+    public boolean checkWeightMovable(BlockController curBlock) {
+        int row = curBlock.posRow+1;
+        if(row<19){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+
 }
 

@@ -11,6 +11,7 @@ import game.container.BlockGenerator;
 import game.container.ItemGenerator;
 import game.container.ItemGenerator.ItemType;
 import game.manager.BoardManager;
+import game.manager.DualModeUtils.UserNumber;
 import game.manager.GameInfoManager;
 import game.manager.GameManager;
 import game.manager.InGameUIManager;
@@ -57,7 +58,6 @@ public enum Step {
     CheckGameOver,
     
     CheckItemUse,
-    
     GameOver
 }
 
@@ -100,18 +100,17 @@ protected void gameFramework() { //전체적인 게임의 동작 흐름
         case CheckGameOver:
             curStep = checkGameOver();
             break;
-        
-        
-        
 
         case GameOver :
             gameOver();
             break;
+
     }
 }
 
 private Step gameReady() {
     //게임을 준비합니다.
+    System.out.println("아이템모드");
     initKeyListener();
     initGameStatus();
     initBlockGenerator();
@@ -135,13 +134,67 @@ public Step createNewBlock() {
 
 private Step blockMove() {
     isBlockMovable = BoardManager.getInstance(index).checkBlockMovable(curBlock);
-    if(isBlockMovable) {
+
+    if (isBlockMovable) {
         BoardManager.getInstance(index).translateBlock(curBlock, 1, 0);
         onBlockMove();
         return Step.BlockMove;
-    }
-    else //무게추 검사 -> 맞으면 아이템 사용, 아니면 Erase animation
+    } else {
+        //무게추 검사 -> 맞으면 아이템 사용, 아니면 Erase animation
+        if (curItem == ItemType.Weight) {
+            if (checkCurBlockIsWeight()) {
+                if (UserNumber.getInstance().user == 2) {
+                    GameUI.getInstance().pane[0].removeKeyListener(interaction_play);  //땅에 닿은경우 블록 이동 제한
+                    GameUI.getInstance().pane[1].removeKeyListener(interaction_play);  //땅에 닿은경우 블록 이동 제한
+                } else {
+                    GameUI.getInstance().pane[0].removeKeyListener(interaction_play);  //땅에 닿은경우 블록 이동 제한
+                }
+                return WeightBlockMove();
+            }
+        }
         return Step.EraseAnimation;
+    }
+}
+
+
+private boolean checkCurBlockIsWeight(){
+    char[][] mugechuBlock;
+    mugechuBlock = new char[][]{
+            {' ', 'O', 'O', ' '},
+            {'O', 'O', 'O', 'O'}
+    };
+
+    for (int i = 0; i < curBlock.shape.length; i++) {
+        for (int j = 0; j < curBlock.shape[i].length; j++) {
+            if (curBlock.shape[i][j]!=mugechuBlock[i][j]) {
+                return false;
+            }
+        }
+    }
+    return true;
+
+}
+
+private Step WeightBlockMove(){
+    boolean isWeightMovable = BoardManager.getInstance(index).checkWeightMovable(curBlock);
+    if(isWeightMovable){
+        BoardManager.getInstance(index).useWeight(curBlock);
+        BoardManager.getInstance(index).eraseBlock(curBlock);
+        BoardManager.getInstance(index).setBlockPos(curBlock, curBlock.posRow+1, curBlock.posCol);
+        return Step.BlockMove;
+    }
+    else{
+        //이동제한 다시 풀기
+        if(UserNumber.getInstance().user==2) {
+            GameUI.getInstance().pane[0].addKeyListener(interaction_play);
+            GameUI.getInstance().pane[1].addKeyListener(interaction_play);
+        }else {
+            GameUI.getInstance().pane[0].addKeyListener(interaction_play);
+        }
+
+        return Step.EraseAnimation;
+    }
+
 }
 
 private Step eraseAnimation() {
@@ -200,10 +253,16 @@ public void initKeyListener() {
     //GameUI.getInstance().pane[index].addKeyListener(interaction_play);
     //GameUI.getInstance().pane[index].addKeyListener(interaction_utils);
 
-    GameUI.getInstance().pane[0].addKeyListener(interaction_play);
-    GameUI.getInstance().pane[0].addKeyListener(interaction_utils);
-    GameUI.getInstance().pane[1].addKeyListener(interaction_play);
-    GameUI.getInstance().pane[1].addKeyListener(interaction_utils);
+    if(UserNumber.getInstance().user==2) {
+        GameUI.getInstance().pane[0].addKeyListener(interaction_play);
+        GameUI.getInstance().pane[0].addKeyListener(interaction_utils);
+        GameUI.getInstance().pane[1].addKeyListener(interaction_play);
+        GameUI.getInstance().pane[1].addKeyListener(interaction_utils);
+    }
+    else{
+        GameUI.getInstance().pane[0].addKeyListener(interaction_play);
+        GameUI.getInstance().pane[0].addKeyListener(interaction_utils);
+    }
 }
 
 @Override
@@ -215,7 +274,7 @@ protected void initGameStatus() {
     
     curBlock = null;
     
-    difficulty = GameInfoManager.getInstance().difficulty; 
+    difficulty = GameInfoManager.getInstance().difficulty;
     addSpeed = GameInfoManager.getInstance().difficultiesMap.get(difficulty).getAddSpeed();
 }
 
@@ -314,7 +373,7 @@ private void checkWeightUse() {
 //#region Utils
 private void checkAddItem() {
 
-    if(lineCount % 10 == 0 && lineCount > 0) //a-b>10 b -= 10;
+    if( lineCount > 0) //a-b>10 b -= 10;
     {
         BlockController targetBlock = BlockGenerator.getInstance().blockQueue.peek();
         ItemType itemType = ItemGenerator.getInstance().SelectRandomItem();
@@ -327,6 +386,9 @@ private void checkAddItem() {
             curItem = ItemType.None;
             return;
         }
+
+        //무게추아이템 test
+        itemType = ItemType.Weight;
 
         switch(itemType) {
             case Weight:

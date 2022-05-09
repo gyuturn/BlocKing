@@ -7,9 +7,11 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="software-project" />
+        <module name="BlocKing111" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="BlocKing111" target="8" />
       <module name="software-project" target="8" />
     </bytecodeTargetLevel>
   </component>

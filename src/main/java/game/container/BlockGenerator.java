@@ -37,24 +37,24 @@ public class BlockGenerator {
 	}
 
 
-    
-    public BlockController getRandomBlock() {
+
+	public BlockController getRandomBlock() {
 		block = RouletteWheel.GenerateBlockByValue(gameInfoManager.difficulty);
 		switch(BlockGenerator.block) {
-		case 0:
-			return new IBlock();
-		case 1:
-			return new JBlock();
-		case 2:
-			return new LBlock();
-		case 3:
-			return new ZBlock();
-		case 4:
-			return new SBlock();
-		case 5:
-			return new TBlock();
-		case 6:
-			return new OBlock();			
+			case 0:
+				return new IBlock();
+			case 1:
+				return new JBlock();
+			case 2:
+				return new LBlock();
+			case 3:
+				return new ZBlock();
+			case 4:
+				return new SBlock();
+			case 5:
+				return new TBlock();
+			case 6:
+				return new OBlock();
 		}
 		return new LBlock();
 	}

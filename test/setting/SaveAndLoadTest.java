@@ -68,7 +68,7 @@ public class SaveAndLoadTest {
         itemScoreList.push(new User("test10", 70, "normal"));
         itemScoreList.push(new User("test11", 60, "easy"));
 
-        keySetting.setKeySetting(1, 2, 3, 4, 5, 6, 7);
+        keySetting.setKeySetting(1, 2, 3, 4, 5, 6, 7,8,9,10,11,12);
 
         //when
         SaveAndLoad.SaveSetting();
@@ -113,8 +113,7 @@ public class SaveAndLoadTest {
         itemScoreList.push(new User("test9", 80, "easy"));
         itemScoreList.push(new User("test10", 70, "normal"));
         itemScoreList.push(new User("test11", 60, "easy"));
-
-        keySetting.setKeySetting(1, 2, 3, 4, 5, 6, 7);
+        keySetting.setKeySetting(1, 2, 3, 4, 5, 6, 7,8,9,10,11,12);
 
         //when
         SaveAndLoad.SaveSetting();
@@ -162,7 +161,7 @@ public class SaveAndLoadTest {
         itemScoreList.push(new User("test10", 70, "normal"));
         itemScoreList.push(new User("test11", 60, "easy"));
 
-        keySetting.setKeySetting(1, 2, 3, 3, 5, 6, 7); //중복된 키 값 세팅
+        keySetting.setKeySetting(1, 2, 3, 3, 5, 6, 7,8,9,10,11,12);
 
         //when
         SaveAndLoad.saveKeySetting();

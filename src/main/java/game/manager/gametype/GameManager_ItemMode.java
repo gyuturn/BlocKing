@@ -138,17 +138,17 @@ private Step blockMove() {
     if (isBlockMovable) {
         BoardManager.getInstance(index).translateBlock(curBlock, 1, 0);
         onBlockMove();
+
+        //무게추 아이템이 블록에 닿으면 키 제거
+        if(checkCurBlockIsWeight()&&!BoardManager.getInstance(index).checkBlockMovable(curBlock)){
+            removeKeyControl();
+        }
         return Step.BlockMove;
     } else {
         //무게추 검사 -> 맞으면 아이템 사용, 아니면 Erase animation
         if (curItem == ItemType.Weight) {
             if (checkCurBlockIsWeight()) {
-                if (UserNumber.getInstance().user == 2) {
-                    GameUI.getInstance().pane[0].removeKeyListener(interaction_play);  //땅에 닿은경우 블록 이동 제한
-                    GameUI.getInstance().pane[1].removeKeyListener(interaction_play);  //땅에 닿은경우 블록 이동 제한
-                } else {
-                    GameUI.getInstance().pane[0].removeKeyListener(interaction_play);  //땅에 닿은경우 블록 이동 제한
-                }
+                removeKeyControl();
                 return WeightBlockMove();
             }
         }
@@ -161,7 +161,8 @@ private boolean checkCurBlockIsWeight(){
     char[][] mugechuBlock;
     mugechuBlock = new char[][]{
             {' ', 'O', 'O', ' '},
-            {'O', 'O', 'O', 'O'}
+            {'O', 'O', 'O', 'O'},
+            {' ', ' ', ' ', ' '},
     };
 
     for (int i = 0; i < curBlock.shape.length; i++) {
@@ -417,6 +418,15 @@ private void checkAddItem() {
         InGameUIManager.getInstance().drawNextBlockInfo(nextBlock, index);
     }
 }
+
+public void removeKeyControl(){
+    if(UserNumber.getInstance().user==2) {
+        GameUI.getInstance().pane[0].removeKeyListener(interaction_play);
+        GameUI.getInstance().pane[1].removeKeyListener(interaction_play);
+    }else {
+        GameUI.getInstance().pane[0].removeKeyListener(interaction_play);
+    }
+}
 //#endregion
 
 //#region Interaction
@@ -449,6 +459,7 @@ public class Interaction_Play implements KeyListener {
         }
         else if (keySetting.getTurnBlock() == e.getKeyCode()) {
             //System.out.println(curStep);
+            if(checkCurBlockIsWeight()) return; //현재 블록이 무게추인 경우 turnBlock 적용 x
             BoardManager.getInstance(index).eraseBlock(curBlock);
             curBlock.rotate();
             if(!BoardManager.getInstance(index).checkDrawable(curBlock.shape, curBlock.posRow, curBlock.posCol)) {
@@ -463,6 +474,10 @@ public class Interaction_Play implements KeyListener {
             while(BoardManager.getInstance(index).checkBlockMovable(curBlock)) {
                 BoardManager.getInstance(index).translateBlock(curBlock, 1, 0);
                 InGameUIManager.getInstance().drawScore(index);
+            }
+            //무게추인 경우 블럭에 닿을시 바로 keycontrol 제거
+            if(checkCurBlockIsWeight()){
+                removeKeyControl();
             }
             timer.restart();
             InGameUIManager.getInstance().drawBoard(index);

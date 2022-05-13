@@ -71,16 +71,14 @@ public class KeySetting {
         checkOverlap[10] = this.turnBlock2P;
         checkOverlap[11] = this.downBlock2P;
 
-        for (int i = 0; i < checkOverlap.length; i++) {
-            for (int j = i + 1; j < checkOverlap.length - 1; j++) {
+        for (int i = 0; i < checkOverlap.length-1; i++) {
+            for (int j = i + 1; j < checkOverlap.length; j++) {
                 if (checkOverlap[i] == checkOverlap[j]) {
                     flag=true;
-                    break;
+                    return flag;
                 }
             }
-            if (flag) {
-                break;
-            }
+
         }
 
         return flag;

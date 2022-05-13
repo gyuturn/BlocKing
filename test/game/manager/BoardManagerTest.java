@@ -16,7 +16,7 @@ import static org.junit.Assert.*;
 
 public class BoardManagerTest {
     //dependencies
-    BoardManager boardManager = BoardManager.getInstance();
+    BoardManager boardManager = BoardManager.getInstance(0);
     BlockGenerator blockGenerator = BlockGenerator.getInstance();
 
     @After
@@ -88,7 +88,7 @@ public class BoardManagerTest {
         Queue<BlockController> blockQueue = blockGenerator.getBlockQueue();
         //when
         BlockController block = blockQueue.poll();
-        BlockController createdBlock = BoardManager.getInstance().setBlockPos(block, 0, 5);
+        BlockController createdBlock = BoardManager.getInstance(0).setBlockPos(block, 0, 5);
         //then
         //blockI ㅡ모양
         if (blockShape == 0) {
@@ -256,7 +256,7 @@ public class BoardManagerTest {
     public void eraseBlock() {
         //given
         blockGenerator.addBlock();
-        BlockController block = blockGenerator.createBlock();//board에 그려진 상태 0행 5열에 생성되어 있음
+        BlockController block = blockGenerator.createBlock(0);//board에 그려진 상태 0행 5열에 생성되어 있음
         //when
         boardManager.eraseBlock(block);
         //then
@@ -275,7 +275,7 @@ public class BoardManagerTest {
     public void translateBlock() {
         //given
         blockGenerator.addBlock();
-        BlockController block = blockGenerator.createBlock();//board에 그려진 상태 0행 5열에 생성되어 있음
+        BlockController block = blockGenerator.createBlock(0);//board에 그려진 상태 0행 5열에 생성되어 있음
         int beforeCol = block.posCol;
         int beforeRow = block.posRow;
         //when

@@ -2,10 +2,15 @@ package game.manager.gametype;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Timer;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
-import game.GameUI;
+import com.sun.corba.se.spi.orbutil.threadpool.Work;
 import game.GameUI;
 import game.container.BlockGenerator;
 import game.container.ItemGenerator;
@@ -43,7 +48,11 @@ public class GameManager_ItemMode extends GameManager {
 
 private ItemType curItem = ItemType.None;
 
-private Step curStep = Step.GameReady;
+protected Step curStep = Step.GameReady;
+
+public boolean isResurrection = false;
+public static boolean isDoubleScore = false;
+
 
 public enum Step {
 
@@ -101,9 +110,7 @@ protected void gameFramework() { //전체적인 게임의 동작 흐름
         case CheckGameOver:
             curStep = checkGameOver();
             break;
-        
-        
-        
+
 
         case GameOver :
             gameOver();
@@ -235,12 +242,32 @@ protected void initBlockGenerator() {
 }
 
 //#endregion
+//private int onBlockMoveDouble(){
+//    score += 2 * curSpeed;
+//    InGameUIManager.getInstance().drawScore(index);
+//    return 0;
+//}
+
+// 스레드를 사용해 백그라운드에서 30초동안
+static class CheckDouble extends Thread{
+    public void run(){
+        long start = System.currentTimeMillis();
+        long end = start + 30 * 1000;
+        while (System.currentTimeMillis() < end) {
+            if(!timer.isRunning()){
+                // 시간 중지
+            }
+        }
+        isDoubleScore=false;
+    }
+}
+static CheckDouble checkDouble = new CheckDouble();
 
 //#region Events
+
 private int onBlockMove() {
-    
-    if(curItem == ItemType.DoubleBonusChance) {
-        score += curSpeed;
+    if(isDoubleScore==true) {
+        score +=  curSpeed;
     }
     score += curSpeed;
     InGameUIManager.getInstance().drawScore(index);
@@ -248,14 +275,15 @@ private int onBlockMove() {
     return 0;
 }
 
+
 private int onLineErase(int count) {
-    if(curItem == ItemType.DoubleBonusChance) {
+    if(isDoubleScore==true) {       // 적용
         score += curSpeed * count * 10;
     }
     score += curSpeed * count * 10;
 
     if(count > 2) {
-        if(curItem == ItemType.DoubleBonusChance) {
+        if(isDoubleScore==true) {       // 적용
             score += 10000;
         }
         score += 10000;
@@ -271,7 +299,7 @@ private int onLineErase(int count) {
 
 private int onBlockCreate() {
 
-    if(curItem == ItemType.DoubleBonusChance) {
+    if(isDoubleScore==true) {
         score += curSpeed;
     }
     score += curSpeed;
@@ -292,9 +320,10 @@ private void onGameEnd() {
 
 //#region item logic
 private Step checkResurrectionUse() { //
-    if(curItem == ItemType.Resurrection) {
+    if(isResurrection==true) {
         BoardManager.getInstance(index).eraseHalfBoard();
         curItem = ItemType.None;
+        isResurrection = false;
         return Step.CreateNewBlock;
     }
     else {
@@ -302,10 +331,16 @@ private Step checkResurrectionUse() { //
     }
 
 }
-
-private void checkDoubleBonusChance() { //
-    
-}
+//private void checkDoubleBonusChance() { //
+//    if(isDoubleScore==true){
+//        long start = System.currentTimeMillis();
+//        long end = start + 30*1000;
+//        while (System.currentTimeMillis() < end) {
+//
+//        }
+//        isDoubleScore = false;
+//    }
+//}
 
 
 private void checkSmallBlockChance() {
@@ -320,20 +355,15 @@ private void checkWeightUse() {
 
 //#region Utils
 private void checkAddItem() {
-//lineCount % 10 == 0 && lineCount > 0
-    if(lineCount % 10 == 0 && lineCount > 0) //a-b>10 b -= 10;
+
+    if( lineCount % 10 == 0 && lineCount > 0) //a-b>10 b -= 10;
     {
         BlockController targetBlock = BlockGenerator.getInstance().blockQueue.peek();
         ItemType itemType = ItemGenerator.getInstance().SelectRandomItem();
 
         System.out.println(itemType);
 
-        if(curItem == ItemType.SmallBlockChance) {
 
-            ItemGenerator.getInstance().setOneBlock(targetBlock);
-            curItem = ItemType.None;
-            return;
-        }
 
         switch(itemType) {
             case Weight:
@@ -347,19 +377,35 @@ private void checkAddItem() {
             case Resurrection:
                 ItemGenerator.getInstance().addCharInShape(targetBlock, 'R');
                 curItem = ItemType.Resurrection;
+                isResurrection = true;
                 break;
             case DoubleBonusChance:
                 ItemGenerator.getInstance().addCharInShape(targetBlock, 'D');
                 curItem = ItemType.DoubleBonusChance;
+                isDoubleScore = true;
+                checkDouble.start();
                 break;
             case SmallBlockChance:
+                ItemGenerator.getInstance().setOneBlock(targetBlock);
                 ItemGenerator.getInstance().addCharInShape(targetBlock, 'S');
                 curItem = ItemType.SmallBlockChance;
                 break;
+
+
         }
+
+//        if(curItem == ItemType.SmallBlockChance) {
+//            ItemGenerator.getInstance().setOneBlock(targetBlock);
+//            curItem = ItemType.None;
+//            return;
+//        }
+
         BlockController nextBlock = BlockGenerator.getInstance().blockQueue.peek();
         BoardManager.getInstance(index).setNextBlockColor(nextBlock);
         InGameUIManager.getInstance().drawNextBlockInfo(nextBlock, index);
+        System.out.println(isResurrection);
+
+
     }
 }
 //#endregion
@@ -451,3 +497,4 @@ public class Interaction_Utils implements KeyListener {
 
 //#endregion
 }
+

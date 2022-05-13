@@ -31,6 +31,7 @@ public class ItemGenerator {
     public ItemType SelectRandomItem() {
         Random random = new Random();
         int randomNum = random.nextInt(5);
+
         switch(randomNum) {
             case 0:
                 return ItemType.Weight;

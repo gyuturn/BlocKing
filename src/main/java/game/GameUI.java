@@ -1,6 +1,9 @@
 package game;
 //import setting.FixSize;
 //import setting.MainSetting;
+import game.manager.GameInfoManager;
+import game.manager.gametype.GameManager_BasicMode;
+import game.manager.gametype.GameManager_ItemMode;
 import setting.ColorBlind;
 import setting.DuplicateKeySettingException;
 import setting.SaveAndLoad;
@@ -71,7 +74,14 @@ public class GameUI extends JFrame {
             setFrame(i);
             //게임 시작
             Task task = new Task();
-            task.runBasicMode(i);
+            switch(GameInfoManager.getInstance().mode) {
+                case BasicMode:
+                    task.runBasicMode(i);
+                    break;
+                case ItemMode:
+                    task.runItemMode(i);
+            }
+            //task.runBasicMode(i);
         }
 
 

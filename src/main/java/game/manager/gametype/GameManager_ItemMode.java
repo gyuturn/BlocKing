@@ -11,6 +11,7 @@ import game.container.BlockGenerator;
 import game.container.ItemGenerator;
 import game.container.ItemGenerator.ItemType;
 import game.manager.BoardManager;
+import game.manager.DualModeUtils.UserNumber;
 import game.manager.GameInfoManager;
 import game.manager.GameManager;
 import game.manager.InGameUIManager;
@@ -200,10 +201,16 @@ public void initKeyListener() {
     //GameUI.getInstance().pane[index].addKeyListener(interaction_play);
     //GameUI.getInstance().pane[index].addKeyListener(interaction_utils);
 
-    GameUI.getInstance().pane[0].addKeyListener(interaction_play);
-    GameUI.getInstance().pane[0].addKeyListener(interaction_utils);
-    GameUI.getInstance().pane[1].addKeyListener(interaction_play);
-    GameUI.getInstance().pane[1].addKeyListener(interaction_utils);
+    if(UserNumber.getInstance().user==2) {
+        GameUI.getInstance().pane[0].addKeyListener(interaction_play);
+        GameUI.getInstance().pane[0].addKeyListener(interaction_utils);
+        GameUI.getInstance().pane[1].addKeyListener(interaction_play);
+        GameUI.getInstance().pane[1].addKeyListener(interaction_utils);
+    }
+    else{
+        GameUI.getInstance().pane[0].addKeyListener(interaction_play);
+        GameUI.getInstance().pane[0].addKeyListener(interaction_utils);
+    }
 }
 
 @Override
@@ -313,8 +320,8 @@ private void checkWeightUse() {
 
 //#region Utils
 private void checkAddItem() {
-
-    if(lineCount % 10 == 0 && lineCount > 0) //a-b>10 b -= 10;
+//lineCount % 10 == 0 && lineCount > 0
+    if(lineCount >= 0) //a-b>10 b -= 10;
     {
         BlockController targetBlock = BlockGenerator.getInstance().blockQueue.peek();
         ItemType itemType = ItemGenerator.getInstance().SelectRandomItem();

@@ -32,8 +32,6 @@ public class ItemGenerator {
         Random random = new Random();
         int randomNum = random.nextInt(5);
 
-        randomNum=0;//무게추 아이템 test
-
         switch(randomNum) {
             case 0:
                 return ItemType.Weight;

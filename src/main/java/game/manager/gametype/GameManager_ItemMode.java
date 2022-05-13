@@ -309,9 +309,7 @@ static class CheckDouble extends Thread{
         long start = System.currentTimeMillis();
         long end = start + 30 * 1000;
         while (System.currentTimeMillis() < end) {
-            if(!timer.isRunning()){
-                // 시간 중지
-            }
+
         }
         isDoubleScore=false;
     }
@@ -377,7 +375,7 @@ private void onGameEnd() {
 private Step checkResurrectionUse() { //
     if(isResurrection==true) {
         BoardManager.getInstance(index).eraseHalfBoard();
-        curItem = ItemType.None;
+
         isResurrection = false;
         return Step.CreateNewBlock;
     }
@@ -411,17 +409,13 @@ private void checkWeightUse() {
 //#region Utils
 private void checkAddItem() {
 
-    if( lineCount % 10 == 0 && lineCount > 0) //a-b>10 b -= 10;
+    if( lineCount % 10 >= 0 && lineCount > 1) //a-b>10 b -= 10;
     {
         BlockController targetBlock = BlockGenerator.getInstance().blockQueue.peek();
         ItemType itemType = ItemGenerator.getInstance().SelectRandomItem();
 
         System.out.println(itemType);
 
-
-
-        //무게추아이템 test
-        itemType = ItemType.Weight;
 
         switch(itemType) {
             case Weight:
@@ -462,6 +456,7 @@ private void checkAddItem() {
         BoardManager.getInstance(index).setNextBlockColor(nextBlock);
         InGameUIManager.getInstance().drawNextBlockInfo(nextBlock, index);
         System.out.println(isResurrection);
+        lineCount=0;
 
 
     }

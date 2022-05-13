@@ -32,6 +32,10 @@ public class ItemGenerator {
         Random random = new Random();
         int randomNum = random.nextInt(5);
 
+        while(randomNum==3){
+            randomNum=random.nextInt(5);
+        }
+
         switch(randomNum) {
             case 0:
                 return ItemType.Weight;

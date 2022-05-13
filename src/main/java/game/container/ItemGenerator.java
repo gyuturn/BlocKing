@@ -43,6 +43,7 @@ public class ItemGenerator {
                 return ItemType.DoubleBonusChance;
             case 4:
                 return ItemType.SmallBlockChance;
+
         }
         return ItemType.SmallBlockChance;
     }
@@ -96,5 +97,4 @@ public class ItemGenerator {
         curBlock.shape = dotBlock;
         return curBlock;
     }
-
 }

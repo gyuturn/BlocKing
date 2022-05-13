@@ -31,7 +31,7 @@ public abstract class GameManager {
     protected boolean isBlockMovable = true;
     protected boolean isGameOver = false;
 
-    protected Timer timer;
+    protected static Timer timer;
     //private Step curStep = Step.GameReady;
 
 //#endregion

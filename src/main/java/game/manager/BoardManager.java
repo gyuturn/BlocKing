@@ -213,6 +213,12 @@ public class BoardManager {
                     isFull = false;
                 } 
             }
+            //줄삭제 아이템 활성화 : L이 있는 줄 제거
+            for(int j = 1; j<11; j++ ) {
+                if(board[i][j] == 'L') {
+                    isFull = true;
+                }
+            }
             if(isFull) {
                 clear[i] = 1;
             }

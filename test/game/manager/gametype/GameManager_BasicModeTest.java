@@ -18,9 +18,9 @@ import static org.assertj.core.api.Assertions.*;
 
 public class GameManager_BasicModeTest {
 
-    GameManager_BasicMode gameManager_basicMode = GameManager_BasicMode.getInstance();
+    GameManager_BasicMode gameManager_basicMode = GameManager_BasicMode.getInstance(0);
     GameInfoManager gameInfoManager = GameInfoManager.getInstance();
-    BoardManager boardManager = BoardManager.getInstance();
+    BoardManager boardManager = BoardManager.getInstance(0);
     KeySetting keySetting = KeySetting.getInstance();
 
     @After
@@ -75,7 +75,7 @@ public class GameManager_BasicModeTest {
         gameManager_basicMode.initBoardManage();
         //when
         BlockGenerator.getInstance().addBlock();
-        gameManager_basicMode.curBlock = BlockGenerator.getInstance().createBlock();
+        gameManager_basicMode.curBlock = BlockGenerator.getInstance().createBlock(0);
         //then
         Assertions.assertThat(gameManager_basicMode.getCurBlock()).isNotNull();
     }
@@ -119,7 +119,7 @@ public class GameManager_BasicModeTest {
         };
 
         //when
-        int curLineCount = BoardManager.getInstance().eraseFullLine();
+        int curLineCount = BoardManager.getInstance(0).eraseFullLine();
          gameManager_basicMode.onLineErase(curLineCount);
         //then
         Assertions.assertThat(curLineCount).isEqualTo(3);
@@ -242,14 +242,14 @@ public class GameManager_BasicModeTest {
         GameManager_BasicMode.Step step = null;
         BlockController curBlock = gameManager_basicMode.curBlock;
         if (keySetting.getTurnBlock() ==38) {
-            BoardManager.getInstance().eraseBlock(curBlock);
+            BoardManager.getInstance(0).eraseBlock(curBlock);
             curBlock.rotate();
-            if(!BoardManager.getInstance().checkDrawable(curBlock.shape, curBlock.posRow, curBlock.posCol)) {
+            if(!BoardManager.getInstance(0).checkDrawable(curBlock.shape, curBlock.posRow, curBlock.posCol)) {
                 curBlock.rotate();
                 curBlock.rotate();
                 curBlock.rotate();
             }
-            BoardManager.getInstance().setBlockPos(curBlock, curBlock.posRow, curBlock.posCol);
+            BoardManager.getInstance(0).setBlockPos(curBlock, curBlock.posRow, curBlock.posCol);
             step = gameManager_basicMode.blockMove();
         }
         //then

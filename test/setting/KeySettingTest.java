@@ -21,7 +21,7 @@ public class KeySettingTest {
     @DisplayName("키 설정 기본값으로 설정")
     public void resetDefault() {
         //given
-        keySetting.setKeySetting(1, 2, 3, 4, 5, 6, 7);
+        keySetting.setKeySetting(1, 2, 3, 4, 5, 6, 7,8,9,10,11,12);
         //when
         keySetting.resetDefault();
         //then
@@ -41,7 +41,7 @@ public class KeySettingTest {
         //given
         keySetting.resetDefault();
         //when
-        keySetting.setKeySetting(1, 2, 3, 4, 5, 6, 7);
+        keySetting.setKeySetting(1, 2, 3, 4, 5, 6, 7,8,9,10,11,12);
         //then
         assertThat(keySetting.getLeft()).isEqualTo(1);
         assertThat(keySetting.getRight()).isEqualTo(2);
@@ -56,7 +56,7 @@ public class KeySettingTest {
     @DisplayName("키 중복값 찾기")
     public void overLapKeySetting(){
         //given
-        keySetting.setKeySetting(1, 2, 32, 4, 2, 6, 7);
+        keySetting.setKeySetting(1, 2, 1, 4, 5, 6, 7,8,9,10,11,12);
         //when
         boolean flag = keySetting.overLapKeySetting();
         //then

@@ -3,7 +3,6 @@ package game.container;
 import game.manager.BoardManager;
 import game.manager.GameManager;
 import game.manager.gametype.GameManager_BasicMode;
-import game.manager.gametype.GameManager_NormalMode;
 import game.model.BlockController;
 import game.model.blocktypes.*;
 import org.assertj.core.api.Assertions;
@@ -17,9 +16,9 @@ import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class BlockGeneratorTest {
-    BoardManager boardManager = BoardManager.getInstance();
+    BoardManager boardManager = BoardManager.getInstance(0);
     BlockGenerator blockGenerator = BlockGenerator.getInstance();
-    GameManager gameManager = GameManager_BasicMode.getInstance();
+    GameManager gameManager = GameManager_BasicMode.getInstance(0);
 
 
 
@@ -106,7 +105,7 @@ public class BlockGeneratorTest {
         Queue<BlockController> blockQueue = blockGenerator.getBlockQueue();
         BlockController peekBlock = blockQueue.peek();
         //when
-        blockGenerator.createBlock();
+        blockGenerator.createBlock(0);
         //then
         assertThat(peekBlock.posRow).isSameAs(0);
         assertThat(peekBlock.posCol).isSameAs(5);

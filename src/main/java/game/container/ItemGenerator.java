@@ -31,6 +31,7 @@ public class ItemGenerator {
     public ItemType SelectRandomItem() {
         Random random = new Random();
         int randomNum = random.nextInt(5);
+
         switch(randomNum) {
             case 0:
                 return ItemType.Weight;
@@ -42,6 +43,7 @@ public class ItemGenerator {
                 return ItemType.DoubleBonusChance;
             case 4:
                 return ItemType.SmallBlockChance;
+
         }
         return ItemType.SmallBlockChance;
     }
@@ -95,5 +97,4 @@ public class ItemGenerator {
         curBlock.shape = dotBlock;
         return curBlock;
     }
-
 }

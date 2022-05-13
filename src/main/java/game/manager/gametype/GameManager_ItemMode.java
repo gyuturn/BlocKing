@@ -2,10 +2,15 @@ package game.manager.gametype;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Timer;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
-import game.GameUI;
+import com.sun.corba.se.spi.orbutil.threadpool.Work;
 import game.GameUI;
 import game.container.BlockGenerator;
 import game.container.ItemGenerator;
@@ -43,7 +48,11 @@ public class GameManager_ItemMode extends GameManager {
 
 private ItemType curItem = ItemType.None;
 
-private Step curStep = Step.GameReady;
+protected Step curStep = Step.GameReady;
+
+public boolean isResurrection = false;
+public static boolean isDoubleScore = false;
+
 
 public enum Step {
 
@@ -58,7 +67,6 @@ public enum Step {
     CheckGameOver,
     
     CheckItemUse,
-    
     GameOver
 }
 
@@ -101,18 +109,17 @@ protected void gameFramework() { //전체적인 게임의 동작 흐름
         case CheckGameOver:
             curStep = checkGameOver();
             break;
-        
-        
-        
 
         case GameOver :
             gameOver();
             break;
+
     }
 }
 
 private Step gameReady() {
     //게임을 준비합니다.
+    System.out.println("아이템모드");
     initKeyListener();
     initGameStatus();
     initBlockGenerator();
@@ -136,13 +143,68 @@ public Step createNewBlock() {
 
 private Step blockMove() {
     isBlockMovable = BoardManager.getInstance(index).checkBlockMovable(curBlock);
-    if(isBlockMovable) {
+
+    if (isBlockMovable) {
         BoardManager.getInstance(index).translateBlock(curBlock, 1, 0);
         onBlockMove();
+
+        //무게추 아이템이 블록에 닿으면 키 제거
+        if(checkCurBlockIsWeight()&&!BoardManager.getInstance(index).checkBlockMovable(curBlock)){
+            removeKeyControl();
+        }
+        return Step.BlockMove;
+    } else {
+        //무게추 검사 -> 맞으면 아이템 사용, 아니면 Erase animation
+        if (curItem == ItemType.Weight) {
+            if (checkCurBlockIsWeight()) {
+                removeKeyControl();
+                return WeightBlockMove();
+            }
+        }
+        return Step.EraseAnimation;
+    }
+}
+
+
+private boolean checkCurBlockIsWeight(){
+    char[][] mugechuBlock;
+    mugechuBlock = new char[][]{
+            {' ', 'O', 'O', ' '},
+            {'O', 'O', 'O', 'O'},
+            {' ', ' ', ' ', ' '},
+    };
+
+    for (int i = 0; i < curBlock.shape.length; i++) {
+        for (int j = 0; j < curBlock.shape[i].length; j++) {
+            if (curBlock.shape[i][j]!=mugechuBlock[i][j]) {
+                return false;
+            }
+        }
+    }
+    return true;
+
+}
+
+private Step WeightBlockMove(){
+    boolean isWeightMovable = BoardManager.getInstance(index).checkWeightMovable(curBlock);
+    if(isWeightMovable){
+        BoardManager.getInstance(index).useWeight(curBlock);
+        BoardManager.getInstance(index).eraseBlock(curBlock);
+        BoardManager.getInstance(index).setBlockPos(curBlock, curBlock.posRow+1, curBlock.posCol);
         return Step.BlockMove;
     }
-    else //무게추 검사 -> 맞으면 아이템 사용, 아니면 Erase animation
+    else{
+        //이동제한 다시 풀기
+        if(UserNumber.getInstance().user==2) {
+            GameUI.getInstance().pane[0].addKeyListener(interaction_play);
+            GameUI.getInstance().pane[1].addKeyListener(interaction_play);
+        }else {
+            GameUI.getInstance().pane[0].addKeyListener(interaction_play);
+        }
+
         return Step.EraseAnimation;
+    }
+
 }
 
 private Step eraseAnimation() {
@@ -222,7 +284,7 @@ protected void initGameStatus() {
     
     curBlock = null;
     
-    difficulty = GameInfoManager.getInstance().difficulty; 
+    difficulty = GameInfoManager.getInstance().difficulty;
     addSpeed = GameInfoManager.getInstance().difficultiesMap.get(difficulty).getAddSpeed();
 }
 
@@ -235,12 +297,32 @@ protected void initBlockGenerator() {
 }
 
 //#endregion
+//private int onBlockMoveDouble(){
+//    score += 2 * curSpeed;
+//    InGameUIManager.getInstance().drawScore(index);
+//    return 0;
+//}
+
+// 스레드를 사용해 백그라운드에서 30초동안
+static class CheckDouble extends Thread{
+    public void run(){
+        long start = System.currentTimeMillis();
+        long end = start + 30 * 1000;
+        while (System.currentTimeMillis() < end) {
+            if(!timer.isRunning()){
+                // 시간 중지
+            }
+        }
+        isDoubleScore=false;
+    }
+}
+static CheckDouble checkDouble = new CheckDouble();
 
 //#region Events
+
 private int onBlockMove() {
-    
-    if(curItem == ItemType.DoubleBonusChance) {
-        score += curSpeed;
+    if(isDoubleScore==true) {
+        score +=  curSpeed;
     }
     score += curSpeed;
     InGameUIManager.getInstance().drawScore(index);
@@ -248,14 +330,15 @@ private int onBlockMove() {
     return 0;
 }
 
+
 private int onLineErase(int count) {
-    if(curItem == ItemType.DoubleBonusChance) {
+    if(isDoubleScore==true) {       // 적용
         score += curSpeed * count * 10;
     }
     score += curSpeed * count * 10;
 
     if(count > 2) {
-        if(curItem == ItemType.DoubleBonusChance) {
+        if(isDoubleScore==true) {       // 적용
             score += 10000;
         }
         score += 10000;
@@ -271,7 +354,7 @@ private int onLineErase(int count) {
 
 private int onBlockCreate() {
 
-    if(curItem == ItemType.DoubleBonusChance) {
+    if(isDoubleScore==true) {
         score += curSpeed;
     }
     score += curSpeed;
@@ -292,9 +375,10 @@ private void onGameEnd() {
 
 //#region item logic
 private Step checkResurrectionUse() { //
-    if(curItem == ItemType.Resurrection) {
+    if(isResurrection==true) {
         BoardManager.getInstance(index).eraseHalfBoard();
         curItem = ItemType.None;
+        isResurrection = false;
         return Step.CreateNewBlock;
     }
     else {
@@ -302,10 +386,16 @@ private Step checkResurrectionUse() { //
     }
 
 }
-
-private void checkDoubleBonusChance() { //
-    
-}
+//private void checkDoubleBonusChance() { //
+//    if(isDoubleScore==true){
+//        long start = System.currentTimeMillis();
+//        long end = start + 30*1000;
+//        while (System.currentTimeMillis() < end) {
+//
+//        }
+//        isDoubleScore = false;
+//    }
+//}
 
 
 private void checkSmallBlockChance() {
@@ -320,20 +410,18 @@ private void checkWeightUse() {
 
 //#region Utils
 private void checkAddItem() {
-//lineCount % 10 == 0 && lineCount > 0
-    if(lineCount >= 0) //a-b>10 b -= 10;
+
+    if( lineCount % 10 == 0 && lineCount > 0) //a-b>10 b -= 10;
     {
         BlockController targetBlock = BlockGenerator.getInstance().blockQueue.peek();
         ItemType itemType = ItemGenerator.getInstance().SelectRandomItem();
 
         System.out.println(itemType);
 
-        if(curItem == ItemType.SmallBlockChance) {
 
-            ItemGenerator.getInstance().setOneBlock(targetBlock);
-            curItem = ItemType.None;
-            return;
-        }
+
+        //무게추아이템 test
+        itemType = ItemType.Weight;
 
         switch(itemType) {
             case Weight:
@@ -347,19 +435,44 @@ private void checkAddItem() {
             case Resurrection:
                 ItemGenerator.getInstance().addCharInShape(targetBlock, 'R');
                 curItem = ItemType.Resurrection;
+                isResurrection = true;
                 break;
             case DoubleBonusChance:
                 ItemGenerator.getInstance().addCharInShape(targetBlock, 'D');
                 curItem = ItemType.DoubleBonusChance;
+                isDoubleScore = true;
+                checkDouble.start();
                 break;
             case SmallBlockChance:
+                ItemGenerator.getInstance().setOneBlock(targetBlock);
                 ItemGenerator.getInstance().addCharInShape(targetBlock, 'S');
                 curItem = ItemType.SmallBlockChance;
                 break;
+
+
         }
+
+//        if(curItem == ItemType.SmallBlockChance) {
+//            ItemGenerator.getInstance().setOneBlock(targetBlock);
+//            curItem = ItemType.None;
+//            return;
+//        }
+
         BlockController nextBlock = BlockGenerator.getInstance().blockQueue.peek();
         BoardManager.getInstance(index).setNextBlockColor(nextBlock);
         InGameUIManager.getInstance().drawNextBlockInfo(nextBlock, index);
+        System.out.println(isResurrection);
+
+
+    }
+}
+
+public void removeKeyControl(){
+    if(UserNumber.getInstance().user==2) {
+        GameUI.getInstance().pane[0].removeKeyListener(interaction_play);
+        GameUI.getInstance().pane[1].removeKeyListener(interaction_play);
+    }else {
+        GameUI.getInstance().pane[0].removeKeyListener(interaction_play);
     }
 }
 //#endregion
@@ -394,6 +507,7 @@ public class Interaction_Play implements KeyListener {
         }
         else if (keySetting.getTurnBlock() == e.getKeyCode()) {
             //System.out.println(curStep);
+            if(checkCurBlockIsWeight()) return; //현재 블록이 무게추인 경우 turnBlock 적용 x
             BoardManager.getInstance(index).eraseBlock(curBlock);
             curBlock.rotate();
             if(!BoardManager.getInstance(index).checkDrawable(curBlock.shape, curBlock.posRow, curBlock.posCol)) {
@@ -408,6 +522,10 @@ public class Interaction_Play implements KeyListener {
             while(BoardManager.getInstance(index).checkBlockMovable(curBlock)) {
                 BoardManager.getInstance(index).translateBlock(curBlock, 1, 0);
                 InGameUIManager.getInstance().drawScore(index);
+            }
+            //무게추인 경우 블럭에 닿을시 바로 keycontrol 제거
+            if(checkCurBlockIsWeight()){
+                removeKeyControl();
             }
             timer.restart();
             InGameUIManager.getInstance().drawBoard(index);
@@ -451,3 +569,4 @@ public class Interaction_Utils implements KeyListener {
 
 //#endregion
 }
+

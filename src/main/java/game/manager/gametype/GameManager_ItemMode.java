@@ -303,18 +303,32 @@ protected void initBlockGenerator() {
 //    return 0;
 //}
 
-// 스레드를 사용해 백그라운드에서 30초동안
-static class CheckDouble extends Thread{
-    public void run(){
-        long start = System.currentTimeMillis();
-        long end = start + 30 * 1000;
-        while (System.currentTimeMillis() < end) {
+//    static int indexDouble =0;
+//// 스레드를 사용해 백그라운드에서 30초동안
+//static class CheckDouble extends Thread{
+//    public void run(){
+//
+//        long start = System.currentTimeMillis();
+//        long end = start + 30 * 1000;
+//        while (System.currentTimeMillis() < end) {
+//
+//        }
+//        checkDouble[indexDouble]=checkDouble[indexDouble+1];
+//        indexDouble++;
+//        isDoubleScore=false;
+//
+//    }
+//}
+//
+//static CheckDouble[] checkDouble = new CheckDouble[4];
+//
 
-        }
-        isDoubleScore=false;
-    }
-}
-static CheckDouble checkDouble = new CheckDouble();
+//static CheckDouble checkDouble = new CheckDouble();
+//static CheckDouble checkDouble2 = new CheckDouble();
+//static CheckDouble checkDouble3 = new CheckDouble();
+//static CheckDouble checkDouble4 = new CheckDouble();
+//static CheckDouble checkDouble5 = new CheckDouble();
+
 
 //#region Events
 
@@ -384,16 +398,16 @@ private Step checkResurrectionUse() { //
     }
 
 }
-//private void checkDoubleBonusChance() { //
-//    if(isDoubleScore==true){
-//        long start = System.currentTimeMillis();
-//        long end = start + 30*1000;
-//        while (System.currentTimeMillis() < end) {
-//
-//        }
-//        isDoubleScore = false;
-//    }
-//}
+private void checkDoubleBonusChance() { // 사용 X
+    if(isDoubleScore==true){
+        long start = System.currentTimeMillis();
+        long end = start + 30*1000;
+        while (System.currentTimeMillis() < end) {
+
+        }
+        isDoubleScore = false;
+    }
+}
 
 
 private void checkSmallBlockChance() {
@@ -409,24 +423,30 @@ private void checkWeightUse() {
 //#region Utils
 private void checkAddItem() {
 
-    if( lineCount % 10 >= 0 && lineCount > 1) //a-b>10 b -= 10;
+    if(lineCount % 2 == 0)//lineCount % 1 == 0 && lineCount > 0) //a-b>10 b -= 10;
     {
         BlockController targetBlock = BlockGenerator.getInstance().blockQueue.peek();
         ItemType itemType = ItemGenerator.getInstance().SelectRandomItem();
-
         System.out.println(itemType);
 
 
+
+        //무게추아이템 test
+//        itemType = ItemType.Weight;
+
         switch(itemType) {
             case Weight:
+                isDoubleScore = false;
                 ItemGenerator.getInstance().setBlockMugechu(targetBlock);
                 curItem = ItemType.Weight;
                 break;
             case LineClear:
+                isDoubleScore = false;
                 ItemGenerator.getInstance().addCharInShape(targetBlock, 'L');
                 curItem = ItemType.LineClear;
                 break;
             case Resurrection:
+                isDoubleScore = false;
                 ItemGenerator.getInstance().addCharInShape(targetBlock, 'R');
                 curItem = ItemType.Resurrection;
                 isResurrection = true;
@@ -435,9 +455,9 @@ private void checkAddItem() {
                 ItemGenerator.getInstance().addCharInShape(targetBlock, 'D');
                 curItem = ItemType.DoubleBonusChance;
                 isDoubleScore = true;
-                checkDouble.start();
                 break;
             case SmallBlockChance:
+                isDoubleScore = false;
                 ItemGenerator.getInstance().setOneBlock(targetBlock);
                 ItemGenerator.getInstance().addCharInShape(targetBlock, 'S');
                 curItem = ItemType.SmallBlockChance;
@@ -455,8 +475,9 @@ private void checkAddItem() {
         BlockController nextBlock = BlockGenerator.getInstance().blockQueue.peek();
         BoardManager.getInstance(index).setNextBlockColor(nextBlock);
         InGameUIManager.getInstance().drawNextBlockInfo(nextBlock, index);
-        System.out.println(isResurrection);
+        //System.out.println(isResurrection);
         lineCount=0;
+        System.out.println(isDoubleScore);
 
 
     }

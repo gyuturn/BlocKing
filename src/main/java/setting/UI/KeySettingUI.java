@@ -61,7 +61,7 @@ public class KeySettingUI extends JFrame{
         });
     }
 
-    private void eventListenerBtn() {
+    public void eventListenerBtn() {
         //확인 버튼 클릭시 세팅 값 저장
         buttons[0].addActionListener(new ActionListener() {
             @Override
@@ -156,7 +156,7 @@ public class KeySettingUI extends JFrame{
         });
     }
 
-    private void checkBtn() {
+    public void checkBtn() {
         buttons[0]= new JButton("확인");
         buttons[1]= new JButton("뒤로가기");
         radioPanel.add(buttons[0]);
@@ -165,7 +165,7 @@ public class KeySettingUI extends JFrame{
 
 
 
-    private void selectKeySet() {
+    public void selectKeySet() {
         radioPanel = new JPanel();
         GridLayout gridLayout=new GridLayout( 14,2);
         radioPanel.setLayout(gridLayout);
@@ -229,7 +229,7 @@ public class KeySettingUI extends JFrame{
         mainPanel.add(radioPanel);
     }
 
-    private void eventListenerKeyField() {
+    public void eventListenerKeyField() {
 
         for (int i = 0; i < keyName.length; i++) {
             int finalI = i;
@@ -252,7 +252,7 @@ public class KeySettingUI extends JFrame{
         }
     }
 
-    private void setTitle() {
+    public void setTitle() {
         JButton titleBtn;
         if(screenSize.getWidth() == 800){
             titleBtn = new JButton(titleImg1);

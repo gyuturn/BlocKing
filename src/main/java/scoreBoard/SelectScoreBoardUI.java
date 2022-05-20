@@ -58,7 +58,7 @@ public class SelectScoreBoardUI extends JFrame {
             }
         });
     }
-    private void setTitle() {
+    public void setTitle() {
         JButton titleBtn;
         if(screenSize.getWidth() == 800){
             titleBtn = new JButton(titleImg1);

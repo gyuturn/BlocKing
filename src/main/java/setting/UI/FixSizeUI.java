@@ -1,5 +1,7 @@
 package setting.UI;
 
+import setting.DuplicateKeySettingException;
+import setting.SaveAndLoad;
 import setting.ScreenSize;
 
 
@@ -8,6 +10,8 @@ import javax.swing.border.CompoundBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 public class FixSizeUI extends JFrame {
     private JPanel FixSizePanel;
@@ -39,8 +43,18 @@ public class FixSizeUI extends JFrame {
         setTitle();
         selectSize();
         selectedBtnShow();
+        //종료 시 현재 setting 및 scoreBoard 저장
+        this.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent event) {
+                try {
+                    SaveAndLoad.SaveSetting();
+                } catch (DuplicateKeySettingException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
-    private void setTitle() {
+    public void setTitle() {
         JButton titleBtn;
         if(screenSize.getWidth() == 800){
             titleBtn = new JButton(titleImg1);

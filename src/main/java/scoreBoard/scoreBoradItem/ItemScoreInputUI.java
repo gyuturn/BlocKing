@@ -59,7 +59,7 @@ public class ItemScoreInputUI extends JFrame{
 
     }
 
-    private void createCompleteBtn(int score,String mode) {
+    public void createCompleteBtn(int score,String mode) {
         JButton completeInput = new JButton("완료");
         inputScorePanel.add(completeInput);
 

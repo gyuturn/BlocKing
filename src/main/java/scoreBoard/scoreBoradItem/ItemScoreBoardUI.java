@@ -22,6 +22,7 @@ public class ItemScoreBoardUI extends JFrame{
     //각 label 및 텍스트 위치 설정 (배경 크기 기준)
     private int height = screenSize.getHeight();
     private int width = screenSize.getWidth();
+    public static int listToIndex;
 
     private JPanel scorePanel;
     private JButton inputBtn;
@@ -140,9 +141,8 @@ public class ItemScoreBoardUI extends JFrame{
 
     }
 
-    private void showScoreListForStartMenu(){
+    public void showScoreListForStartMenu(){
         //스코어 리스트 최대 10개까지 설정
-        int listToIndex;
         if (scoreList.getList().size() >= 10) {
             listToIndex=10;
         }

@@ -114,6 +114,7 @@ public class InGameUIManager {
 
     public void drawScore(int index){
         JTextPane scorePane = GameUI.getInstance().scorePane[index];
+
         if(GameInfoManager.getInstance().mode == GameInfoManager.GameMode.BasicMode) {
             scorePane.setText("Score :\n" + GameManager_BasicMode.getInstance(index).score + "\n" + "curSpeed :\n" + GameManager_BasicMode.getInstance(index).curSpeed);
         } else if (GameInfoManager.getInstance().mode == GameInfoManager.GameMode.ItemMode) {

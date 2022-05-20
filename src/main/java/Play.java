@@ -1,4 +1,4 @@
-package main.java;
+//package main.java;
 
 import scoreBoard.NoItemScoreBoard.ScoreInputUI;
 import scoreBoard.scoreBoradItem.ItemScoreInputUI;

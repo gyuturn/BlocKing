@@ -23,15 +23,25 @@
 
 ![image](https://user-images.githubusercontent.com/77562357/169430157-ea7d51d7-9414-4a7d-8ac4-f33f0fcfee58.png)
 - 개성있는 아이템 요소를 추가하여 더 역동적으로 진행하는 게임 모드 입니다.
-   - Weight (무게추) : 무게추 아이템은 떨어지면서 밑에 있는 모든 블럭을 지우는 아이템입니다.
+- 일반 블록과는 구분되는 모습으로 아이템 종류를 확인할 수 있습니다.
+   - Weight (무게추)
+       - ![image](https://user-images.githubusercontent.com/77562357/169430607-69ee31ba-aa97-4289-856b-5a1ce1612d95.png)
+       - 무게추 아이템은 떨어지는 경로에 있는 모든 블럭을 지우는 아이템입니다.
 
-
-
-   - LineClear (줄 삭제) : 줄 삭제 아이템은 기본 블록에 문자 'L'의 형태로 나타내어지고, 블럭이 바닥에 닿거나 더이상 움직이지 못하면 L이 위치한 줄이 다 채워져 있지 않더라도 해당 줄을 전부 삭제합니다.
+   - LineClear (줄 삭제)
        - ![image](https://user-images.githubusercontent.com/77562357/169430192-45455ff4-1941-47bc-9b8b-bb20a4fa639f.png)
-   - Resurrection (부활) : Game over 위기에 처하면 보드의 위 10줄(보드의 절반)을 제거하는 아이템입니다.
-   - DoubleBonusChance (점수 2배) : 일정 시간동안 획득하는 점수가 2배가 되는 아이템입니다.
-   - SmallBlockChance (1칸 블럭) : 1칸의 블럭이 생성되는 아이템입니다.
+       - 줄 삭제 아이템은 기본 블록에 문자 'L'의 형태로 나타내어지고, 블럭이 바닥에 닿거나 더이상 움직이지 못하면 L이 위치한 줄이 다 채워져 있지 않더라도 해당 줄을 전부 삭제합니다.
+       
+   - Resurrection (부활)
+        - ![image](https://user-images.githubusercontent.com/77562357/169430757-54a0a0db-53b9-481e-97e9-ffad54143ada.png)
+        - Game over 위기에 처하면 보드의 위 10줄(보드의 절반)을 제거하면서 부활하는 아이템입니다.
+        
+   - DoubleBonusChance (점수 2배)
+        - 일정 시간동안 획득하는 점수가 2배가 되는 아이템입니다.
+        
+   - SmallBlockChance (1칸 블럭)
+       - ![image](https://user-images.githubusercontent.com/77562357/169430476-440a99d4-796f-4cba-9281-cc68532fe1f8.png)
+       - 1칸의 블럭이 생성되는 아이템 입니다.
 
 ### Feature
 

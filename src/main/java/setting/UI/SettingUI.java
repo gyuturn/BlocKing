@@ -22,9 +22,9 @@ public class SettingUI extends JFrame {
     private KeySetting keySetting = KeySetting.getInstance();
     private ColorBlind colorBlind = ColorBlind.getInstance();
 
-    ImageIcon titleImg1 = new ImageIcon("./src/main/java/start/img/title1.png");
-    ImageIcon titleImg2 = new ImageIcon("./src/main/java/start/img/title2.png");
-    ImageIcon titleImg3 = new ImageIcon("./src/main/java/start/img/title3.png");
+    public ImageIcon titleImg1 = new ImageIcon("./src/main/java/start/img/title1.png");
+    public ImageIcon titleImg2 = new ImageIcon("./src/main/java/start/img/title2.png");
+    public ImageIcon titleImg3 = new ImageIcon("./src/main/java/start/img/title3.png");
 
     private final String settingList[] = {"화면사이즈 조절", "게임 조작 키 설정", "스코어보드 초기화", "색맹모드", "모든 설정 기본으로 돌리기","시작메뉴"};  //스코어 보드는 테스트용 -> 실제는 게임 시작화면에 있어야함
 
@@ -351,12 +351,12 @@ public class SettingUI extends JFrame {
         });
     }
 
-    private void setTitle() {
+    public void setTitle() {
         JButton titleBtn;
-        if(screenSize.getWidth() == 400){
+        if(screenSize.getWidth() == 800){
             titleBtn = new JButton(titleImg1);
         }
-        else if(screenSize.getWidth() == 600){
+        else if(screenSize.getWidth() == 1024){
             titleBtn = new JButton(titleImg2);
         }
         else{
@@ -367,31 +367,5 @@ public class SettingUI extends JFrame {
         mainPanel.add(titleBtn);
     }
 
-    public void backBtn(){
-        JButton button = new JButton("뒤로가기");
-        mainPanel.add(button);
-        button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new GameUI();
-                setVisible(false);
-            }
-        });
-
-    }
-
-
-
-//    public void setLabel(){
-//        JLabel settingLabel = new JLabel("SETTING");
-//        settingLabel.setForeground(Color.GRAY);
-//        settingLabel.setBackground(Color.WHITE);
-//
-//        mainPanel.add(settingLabel,"North");
-//    }
-
-    //public void setBtn(){
-    //
-    //}
 
 }

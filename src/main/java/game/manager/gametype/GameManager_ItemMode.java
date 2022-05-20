@@ -423,7 +423,7 @@ private void checkWeightUse() {
 //#region Utils
 private void checkAddItem() {
 
-    if( lineCount % 1 == 0 && lineCount > 0) //a-b>10 b -= 10;
+    if(lineCount % 2 == 0)//lineCount % 1 == 0 && lineCount > 0) //a-b>10 b -= 10;
     {
         BlockController targetBlock = BlockGenerator.getInstance().blockQueue.peek();
         ItemType itemType = ItemGenerator.getInstance().SelectRandomItem();

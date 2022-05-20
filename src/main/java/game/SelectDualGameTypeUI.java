@@ -109,6 +109,19 @@ public class SelectDualGameTypeUI extends JFrame {
                     dispose();
                 }
 
+                if (gameModeBtns[1].isSelected()) {
+                    gameInfoManager.difficulty = GameInfoManager.GameDifficulty.Easy;
+                    gameInfoManager.mode = GameInfoManager.GameMode.ItemMode;
+                    new GameUI();
+                    dispose();
+                }
+
+                if (gameModeBtns[2].isSelected()) {
+                    gameInfoManager.difficulty = GameInfoManager.GameDifficulty.Easy;
+                    new GameUI();
+                    dispose();
+                }
+
 
 
             }

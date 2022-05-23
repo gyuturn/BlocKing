@@ -27,6 +27,8 @@ public class ScoreBoardUI extends JFrame{
     private JButton exitBtn;
     private JButton backToStartBtn;
 
+    public static int listToIndex;
+
 
     //시작화면에서의 scoreBoardUI 점수 입력값 없음
     public ScoreBoardUI(){
@@ -139,9 +141,8 @@ public class ScoreBoardUI extends JFrame{
 
     }
 
-    private void showScoreListForStartMenu(){
+    public void showScoreListForStartMenu(){
         //스코어 리스트 최대 10개까지 설정
-        int listToIndex;
         if (scoreList.getList().size() >= 10) {
             listToIndex=10;
         }

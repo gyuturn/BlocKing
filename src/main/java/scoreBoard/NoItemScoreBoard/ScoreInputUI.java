@@ -13,7 +13,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-public class ScoreInputUI  extends JFrame{
+public class  ScoreInputUI  extends JFrame{
     private JPanel mainPanel;
     private ScreenSize screenSize = ScreenSize.getInstance();
     private JPanel inputScorePanel;
@@ -59,7 +59,7 @@ public class ScoreInputUI  extends JFrame{
 
     }
 
-    private void createCompleteBtn(int score,String mode) {
+    public void createCompleteBtn(int score,String mode) {
         JButton completeInput = new JButton("완료");
         inputScorePanel.add(completeInput);
 

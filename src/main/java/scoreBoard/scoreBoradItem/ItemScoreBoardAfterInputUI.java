@@ -94,7 +94,7 @@ public class ItemScoreBoardAfterInputUI extends JFrame {
 
     }
 
-    private void showScoreList(User user) {
+    public void showScoreList(User user) {
         //scoreBoard에 user push
         scoreList.push(user);
         scoreList.sortDescByScore();

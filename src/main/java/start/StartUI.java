@@ -330,40 +330,10 @@ public class StartUI extends JFrame {
         });
     }
 
-    public void gameBtn(){
-
-    }
-
-    public void settingBtn(){
-
-    }
-
-    public void scbBtn(){//스코어보드 버튼
-
-    }
-
-    public void exitBtn(){
-
-    }
 
 
 
-    public void defaultBtn(){
-        JButton defaultButtons = new JButton("기본값 버튼입니다");
-        mainPanel.add(defaultButtons);
 
-        boolean isClicked = false;
-        if(isClicked == true){
-            defaultButtons.setForeground(Color.red);
-        }
 
-        //다음으로 넘어가는 event
-        defaultButtons.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("버튼의 기본값입니다.");
-            }
-        });
-    }
 
 }

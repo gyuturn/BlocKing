@@ -16,7 +16,7 @@ import java.awt.event.WindowEvent;
 public class ColorSettingUI extends JFrame {
     private JPanel colorSettingPanel;
     ButtonGroup btnGroup = new ButtonGroup();
-    private JRadioButton[] colorSettingBtns = new JRadioButton[2];
+    public JRadioButton[] colorSettingBtns = new JRadioButton[2];
     private ScreenSize screenSize =ScreenSize.getInstance();
     private ColorBlind colorBlind = ColorBlind.getInstance();
     ImageIcon titleImg1 = new ImageIcon("./src/main/java/start/img/title1.png");
@@ -55,7 +55,7 @@ public class ColorSettingUI extends JFrame {
             }
         });
     }
-    private void setTitle() {
+    public void setTitle() {
         JButton titleBtn;
         if(screenSize.getWidth() == 800){
             titleBtn = new JButton(titleImg1);

@@ -18,9 +18,11 @@ import java.awt.event.WindowEvent;
 public class SelectDualGameTypeUI extends JFrame {
     private JPanel gameSelectPanel;
     ButtonGroup gameModeGroup = new ButtonGroup();
+    ButtonGroup difficultyGroup = new ButtonGroup();
     private GameInfoManager gameInfoManager = GameInfoManager.getInstance();
 
     private JRadioButton[] gameModeBtns = new JRadioButton[3];
+    private JRadioButton[] difficultyBtns = new JRadioButton[3];
     private ScreenSize screenSize =ScreenSize.getInstance();
     ImageIcon titleImg1 = new ImageIcon("./src/main/java/start/img/title1.png");
     ImageIcon titleImg2 = new ImageIcon("./src/main/java/start/img/title2.png");
@@ -46,6 +48,7 @@ public class SelectDualGameTypeUI extends JFrame {
         this.getContentPane().add(gameSelectPanel,BorderLayout.CENTER);
         setTitle();
         selectMode();
+        selectDifficulty();
         //종료 시 현재 setting 및 scoreBoard 저장
         this.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent event) {
@@ -57,7 +60,7 @@ public class SelectDualGameTypeUI extends JFrame {
             }
         });
     }
-    private void setTitle() {
+    public void setTitle() {
         JButton titleBtn;
         if(screenSize.getWidth() == 800){
             titleBtn = new JButton(titleImg1);
@@ -93,6 +96,28 @@ public class SelectDualGameTypeUI extends JFrame {
         }
 
         gameSelectPanel.add(radioPanel, "Center");
+    }
+
+    public void selectDifficulty() {
+        JPanel radioPanel = new JPanel();
+        GridLayout gridLayout=new GridLayout( 3,1);
+        radioPanel.setLayout(gridLayout);
+        radioPanel.setBackground(Color.BLACK);
+        radioPanel.setBorder(BorderFactory.createEmptyBorder(screenSize.getHeight()/4,0,0,0));
+
+        difficultyBtns[0] = new JRadioButton("EASY");
+        difficultyBtns[1] = new JRadioButton("NORMAL");
+        difficultyBtns[2] = new JRadioButton("HARD");
+
+        for (int i = 0; i < 3; i++) {
+            difficultyGroup.add(difficultyBtns[i]);
+        }
+
+        for (int i = 0; i < 3; i++) {
+            radioPanel.add(difficultyBtns[i]);
+        }
+
+        gameSelectPanel.add(radioPanel, "Center");
 
         JPanel checkPanel = new JPanel();
         JButton btn = new JButton("완료");
@@ -104,14 +129,47 @@ public class SelectDualGameTypeUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (gameModeBtns[0].isSelected()) {
-                    gameInfoManager.difficulty = GameInfoManager.GameDifficulty.Easy;
-                    new GameUI();
-                    dispose();
+                    //일반모드
+                    gameInfoManager.mode = GameInfoManager.GameMode.BasicMode;
+                    if (difficultyBtns[0].isSelected()) {
+                        gameInfoManager.difficulty = GameInfoManager.GameDifficulty.Easy;
+                    } else if (difficultyBtns[1].isSelected()) {
+                        gameInfoManager.difficulty = GameInfoManager.GameDifficulty.Normal;
+                    } else if (difficultyBtns[2].isSelected()) {
+                        gameInfoManager.difficulty = GameInfoManager.GameDifficulty.Hard;
+                    }
+
+                } else if (gameModeBtns[1].isSelected()) {
+                    gameInfoManager.mode = GameInfoManager.GameMode.ItemMode;
+                    if (difficultyBtns[0].isSelected()) {
+                        gameInfoManager.difficulty = GameInfoManager.GameDifficulty.Easy;
+                    } else if (difficultyBtns[1].isSelected()) {
+                        gameInfoManager.difficulty = GameInfoManager.GameDifficulty.Normal;
+                    } else if (difficultyBtns[2].isSelected()) {
+                        gameInfoManager.difficulty = GameInfoManager.GameDifficulty.Hard;
+                    }
                 }
 
+                if (gameModeBtns[0].isSelected()) {
+                    gameInfoManager.mode = GameInfoManager.GameMode.BasicMode;
+                }
 
+                if (gameModeBtns[1].isSelected()) {
+                    gameInfoManager.mode = GameInfoManager.GameMode.ItemMode;
+                }
+
+                if (gameModeBtns[2].isSelected()) {
+                    gameInfoManager.difficulty = GameInfoManager.GameDifficulty.Easy;
+                    //타이머모드 Enum 추가 후 반영
+                }
+                new GameUI();
+                dispose();
 
             }
         });
+
+
     }
+
+
 }

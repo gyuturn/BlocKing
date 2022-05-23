@@ -4,12 +4,14 @@ package game;
 import game.manager.GameInfoManager;
 import game.manager.gametype.GameManager_BasicMode;
 import game.manager.gametype.GameManager_ItemMode;
+import game.manager.gametype.GameManager_TimeAttackMode;
 import setting.ColorBlind;
 import setting.DuplicateKeySettingException;
 import setting.SaveAndLoad;
 import game.manager.GameManager;
 import game.manager.DualModeUtils.Task;
 import game.manager.DualModeUtils.UserNumber;
+import game.manager.GameInfoManager.GameMode;
 import setting.ScreenSize;
 import setting.UI.SettingUI;
 
@@ -70,10 +72,13 @@ public class GameUI extends JFrame {
         mainPanel.setLayout(null);
         mainPanel.setBackground(Color.CYAN);
 
+        
         //user 수만큼 화면 출력
         for (int i = 0; i < UserNumber.getInstance().user; i++) {
             setFrame(i);
             //게임 시작
+            
+
             Task task = new Task();
             switch(GameInfoManager.getInstance().mode) {
                 case BasicMode:
@@ -81,14 +86,19 @@ public class GameUI extends JFrame {
                     break;
                 case ItemMode:
                     task.runItemMode(i);
+                    break;
+                case TimeAttackMode:
+                    task.runTimeAttackMode(i);
+                    break;
             }
             //task.runBasicMode(i);
         }
 
-
-
-
-
+        if(GameInfoManager.getInstance().mode == GameMode.TimeAttackMode)
+        {
+            System.out.println("test");
+            GameManager_TimeAttackMode.AdditionalTimer(10f);
+        }
 
         //종료 시 현재 setting값 저장
         this.addWindowListener(new WindowAdapter() {

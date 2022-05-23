@@ -159,7 +159,7 @@ public class SelectDualGameTypeUI extends JFrame {
                 }
 
                 if (gameModeBtns[2].isSelected()) {
-                    gameInfoManager.difficulty = GameInfoManager.GameDifficulty.Easy;
+                    gameInfoManager.mode = GameInfoManager.GameMode.TimeAttackMode;
                     //타이머모드 Enum 추가 후 반영
                 }
                 new GameUI();

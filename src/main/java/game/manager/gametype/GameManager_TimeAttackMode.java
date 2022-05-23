@@ -1,5 +1,8 @@
 package game.manager.gametype;
 
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
@@ -16,21 +19,57 @@ import game.model.BlockController;
 import scoreBoard.NoItemScoreBoard.ScoreInputUI;
 import start.StartUI;
 
-public class GameManager_BasicMode extends GameManager {
+import javax.swing.*;
+
+public class GameManager_TimeAttackMode extends GameManager {
+
+//#region Gimmick
+    private static float timeLimit;
+    private static float maxTimeLimit;
+    private static Timer additionalTimer;
     
+    public static void AdditionalTimer(float maxSecond) {
+
+        maxTimeLimit = maxSecond;
+        timeLimit = maxTimeLimit;
+
+        additionalTimer = new Timer(1000, new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+                
+				timeLimit -= 1.0f;
+                System.out.println(timeLimit);
+                if(timeLimit <= 0f)
+                {
+                    GameManager_TimeAttackMode.TimeLimit();
+                }
+			}
+		});
+
+        additionalTimer.start();
+    }
+
+    private static void TimeLimit()
+    {
+        GameManager_TimeAttackMode.getInstance(0).gameOver();
+        //GameManager_TimeAttackMode.getInstance(1).gameOver(); //하나만 끝나도 괜찮다.
+        additionalTimer.stop();
+    }
+//#endregion
+
 //#region Singleton
 
-    private GameManager_BasicMode(int index) {
+    private GameManager_TimeAttackMode(int index) {
         this.index = index;
     }
 
-    private static GameManager_BasicMode instance = new GameManager_BasicMode(0);
-    private static GameManager_BasicMode instance2 = new GameManager_BasicMode(1);
+    private static GameManager_TimeAttackMode instance = new GameManager_TimeAttackMode(0);
+    private static GameManager_TimeAttackMode instance2 = new GameManager_TimeAttackMode(1);
 
-    private static ArrayList<GameManager_BasicMode> gameManagerList =
-        new ArrayList<GameManager_BasicMode>(Arrays.asList(instance, instance2));
+    private static ArrayList<GameManager_TimeAttackMode> gameManagerList =
+        new ArrayList<GameManager_TimeAttackMode>(Arrays.asList(instance, instance2));
 
-    public static GameManager_BasicMode getInstance(int i) {
+    public static GameManager_TimeAttackMode getInstance(int i) {
         return gameManagerList.get(i);
     }
 
@@ -39,7 +78,7 @@ public class GameManager_BasicMode extends GameManager {
 
 //#region GameFramework
 
-protected Step curStep = Step.GameReady;
+public Step curStep = Step.GameReady;
 
 public enum Step {
 
@@ -186,6 +225,8 @@ public Step checkGameOver() {
             }
         }
     }
+
+    
     return Step.CreateNewBlock;
 }
 
@@ -396,5 +437,4 @@ public class Interaction_Utils implements KeyListener {
 }
 
 //#endregion
-
 }

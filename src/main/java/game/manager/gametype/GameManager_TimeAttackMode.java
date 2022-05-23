@@ -232,7 +232,8 @@ public Step checkGameOver() {
 
 @Override
 protected void gameOver() {
-    onGameEnd();
+    instance.onGameEnd();
+    instance2.onGameEnd();
     new ScoreInputUI(score,GameInfoManager.getInstance().difficultyToString(difficulty));
 
 }
@@ -331,20 +332,13 @@ public class Interaction_Play implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        System.out.println("e.getKeyCode() = " + e.getKeyCode());
         if(index==0) {
             if (keySetting.getDownBlock() == e.getKeyCode()) {
                 blockMove();
-                InGameUIManager.getInstance().drawBoard(index);
-                System.out.println("input down");
             } else if (keySetting.getRight() == e.getKeyCode()) {
                 BoardManager.getInstance(index).translateBlock(curBlock, 0, 1);
-                InGameUIManager.getInstance().drawBoard(index);
-                System.out.println("input right");
             } else if (keySetting.getLeft() == e.getKeyCode()) {
                 BoardManager.getInstance(index).translateBlock(curBlock, 0, -1);
-                InGameUIManager.getInstance().drawBoard(index);
-                System.out.println("input left");
             } else if (keySetting.getTurnBlock() == e.getKeyCode()) {
                 BoardManager.getInstance(index).eraseBlock(curBlock);
                 curBlock.rotate();
@@ -354,11 +348,10 @@ public class Interaction_Play implements KeyListener {
                     curBlock.rotate();
                 }
                 BoardManager.getInstance(index).setBlockPos(curBlock, curBlock.posRow, curBlock.posCol);
-                InGameUIManager.getInstance().drawBoard(index);
-                System.out.println("input up");
             } else if (keySetting.getOneTimeDown() == e.getKeyCode()) {
                 while (BoardManager.getInstance(index).checkBlockMovable(curBlock)) {
                     BoardManager.getInstance(index).translateBlock(curBlock, 1, 0);
+                    InGameUIManager.getInstance().drawScore(index);
                 }
                 timer.restart();
                 InGameUIManager.getInstance().drawBoard(index);
@@ -367,16 +360,10 @@ public class Interaction_Play implements KeyListener {
         else{
             if (keySetting.getDownBlock2P() == e.getKeyCode()) {
                 blockMove();
-                InGameUIManager.getInstance().drawBoard(index);
-                System.out.println("input down");
             } else if (keySetting.getRight2P() == e.getKeyCode()) {
                 BoardManager.getInstance(index).translateBlock(curBlock, 0, 1);
-                InGameUIManager.getInstance().drawBoard(index);
-                System.out.println("input right");
             } else if (keySetting.getLeft2P() == e.getKeyCode()) {
                 BoardManager.getInstance(index).translateBlock(curBlock, 0, -1);
-                InGameUIManager.getInstance().drawBoard(index);
-                System.out.println("input left");
             } else if (keySetting.getTurnBlock2P() == e.getKeyCode()) {
                 BoardManager.getInstance(index).eraseBlock(curBlock);
                 curBlock.rotate();
@@ -386,16 +373,18 @@ public class Interaction_Play implements KeyListener {
                     curBlock.rotate();
                 }
                 BoardManager.getInstance(index).setBlockPos(curBlock, curBlock.posRow, curBlock.posCol);
-                InGameUIManager.getInstance().drawBoard(index);
-                System.out.println("input up");
             } else if (keySetting.getOneTimeDown2P() == e.getKeyCode()) {
                 while (BoardManager.getInstance(index).checkBlockMovable(curBlock)) {
                     BoardManager.getInstance(index).translateBlock(curBlock, 1, 0);
+                    InGameUIManager.getInstance().drawScore(index);
                 }
                 timer.restart();
                 InGameUIManager.getInstance().drawBoard(index);
             }
         }
+
+        InGameUIManager.getInstance().drawScore(index);
+        InGameUIManager.getInstance().drawBoard(index);
     }
 
 

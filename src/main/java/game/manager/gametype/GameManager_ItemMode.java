@@ -262,7 +262,8 @@ private Step checkGameOver() {
 
 @Override
 protected void gameOver() {
-    onGameEnd();
+    instance.onGameEnd();
+    instance2.onGameEnd();
     new ScoreInputUI(score,GameInfoManager.getInstance().difficultyToString(difficulty));
 
 }
@@ -518,25 +519,16 @@ public class Interaction_Play implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        //System.out.println("e.getKeyCode() = " + e.getKeyCode());
         if (keySetting.getDownBlock() == e.getKeyCode()) {
             blockMove();
-            InGameUIManager.getInstance().drawScore(index);
-            InGameUIManager.getInstance().drawBoard(index);
-            //System.out.println("input down");
         }
         else if (keySetting.getRight() == e.getKeyCode()) {
             BoardManager.getInstance(index).translateBlock(curBlock, 0, 1);
-            InGameUIManager.getInstance().drawBoard(index);
-            //System.out.println("input right");
         }
         else if (keySetting.getLeft() == e.getKeyCode()) {
             BoardManager.getInstance(index).translateBlock(curBlock, 0, -1);
-            InGameUIManager.getInstance().drawBoard(index);
-            //System.out.println("input left");
         }
         else if (keySetting.getTurnBlock() == e.getKeyCode()) {
-            //System.out.println(curStep);
             if(checkCurBlockIsWeight()) return; //현재 블록이 무게추인 경우 turnBlock 적용 x
             BoardManager.getInstance(index).eraseBlock(curBlock);
             curBlock.rotate();
@@ -546,8 +538,6 @@ public class Interaction_Play implements KeyListener {
                 curBlock.rotate();
             }
             BoardManager.getInstance(index).setBlockPos(curBlock, curBlock.posRow, curBlock.posCol);
-            InGameUIManager.getInstance().drawBoard(index);
-            //System.out.println("input up");
         } else if (keySetting.getOneTimeDown() == e.getKeyCode()) {
             while(BoardManager.getInstance(index).checkBlockMovable(curBlock)) {
                 BoardManager.getInstance(index).translateBlock(curBlock, 1, 0);
@@ -560,6 +550,34 @@ public class Interaction_Play implements KeyListener {
             timer.restart();
             InGameUIManager.getInstance().drawBoard(index);
         }
+        else{
+            if (keySetting.getDownBlock2P() == e.getKeyCode()) {
+                blockMove();
+            } else if (keySetting.getRight2P() == e.getKeyCode()) {
+                BoardManager.getInstance(index).translateBlock(curBlock, 0, 1);
+            } else if (keySetting.getLeft2P() == e.getKeyCode()) {
+                BoardManager.getInstance(index).translateBlock(curBlock, 0, -1);
+            } else if (keySetting.getTurnBlock2P() == e.getKeyCode()) {
+                BoardManager.getInstance(index).eraseBlock(curBlock);
+                curBlock.rotate();
+                if (!BoardManager.getInstance(index).checkDrawable(curBlock.shape, curBlock.posRow, curBlock.posCol)) {
+                    curBlock.rotate();
+                    curBlock.rotate();
+                    curBlock.rotate();
+                }
+                BoardManager.getInstance(index).setBlockPos(curBlock, curBlock.posRow, curBlock.posCol);
+            } else if (keySetting.getOneTimeDown2P() == e.getKeyCode()) {
+                while (BoardManager.getInstance(index).checkBlockMovable(curBlock)) {
+                    BoardManager.getInstance(index).translateBlock(curBlock, 1, 0);
+                    InGameUIManager.getInstance().drawScore(index);
+                }
+                timer.restart();
+                InGameUIManager.getInstance().drawBoard(index);
+            }
+        }
+
+        InGameUIManager.getInstance().drawScore(index);
+        InGameUIManager.getInstance().drawBoard(index);
     }
 
     @Override

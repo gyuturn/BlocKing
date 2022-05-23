@@ -158,6 +158,14 @@ private Step blockMove() {
         if(checkCurBlockIsWeight()&&!BoardManager.getInstance(index).checkBlockMovable(curBlock)){
             removeKeyControl();
         }
+        else
+        {
+            isBlockMovable = BoardManager.getInstance(index).checkBlockMovable(curBlock);
+            if(!isBlockMovable)
+            {
+                return Step.EraseAnimation;
+            }
+        }
         return Step.BlockMove;
     } else {
         //무게추 검사 -> 맞으면 아이템 사용, 아니면 Erase animation
@@ -575,7 +583,10 @@ public class Interaction_Play implements KeyListener {
                 InGameUIManager.getInstance().drawBoard(index);
             }
         }
-
+        isBlockMovable = BoardManager.getInstance(index).checkBlockMovable(curBlock);
+        if(isBlockMovable) {
+            curStep = Step.BlockMove;
+        }
         InGameUIManager.getInstance().drawScore(index);
         InGameUIManager.getInstance().drawBoard(index);
     }

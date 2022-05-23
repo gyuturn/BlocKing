@@ -173,6 +173,13 @@ public Step blockMove() {
     if(isBlockMovable) {
         BoardManager.getInstance(index).translateBlock(curBlock, 1, 0);
         onBlockMove();
+
+        isBlockMovable = BoardManager.getInstance(index).checkBlockMovable(curBlock);
+        if(!isBlockMovable)
+        {
+            return Step.EraseAnimation;
+        }
+        
         return Step.BlockMove;
     }
     else

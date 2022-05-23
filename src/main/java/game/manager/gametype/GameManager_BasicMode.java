@@ -134,10 +134,18 @@ public Step blockMove() {
     if(isBlockMovable) {
         BoardManager.getInstance(index).translateBlock(curBlock, 1, 0);
         onBlockMove();
+
+        isBlockMovable = BoardManager.getInstance(index).checkBlockMovable(curBlock);
+        if(!isBlockMovable)
+        {
+            return Step.EraseAnimation;
+        }
         return Step.BlockMove;
     }
     else
+    {
         return Step.EraseAnimation;
+    }   
 }
 
 private Step eraseAnimation() {
@@ -343,7 +351,10 @@ public class Interaction_Play implements KeyListener {
                 InGameUIManager.getInstance().drawBoard(index);
             }
         }
-
+        isBlockMovable = BoardManager.getInstance(index).checkBlockMovable(curBlock);
+        if(isBlockMovable) {
+            curStep = Step.BlockMove;
+        }
         InGameUIManager.getInstance().drawScore(index);
         InGameUIManager.getInstance().drawBoard(index);
     }

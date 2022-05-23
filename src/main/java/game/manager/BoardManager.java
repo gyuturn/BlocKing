@@ -1,10 +1,12 @@
 package game.manager;
 
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import game.manager.DualModeUtils.UserNumber;
 import game.model.BlockController;
 
 import javax.swing.*;
@@ -37,7 +39,11 @@ public class BoardManager {
     // 'X' : 테두리
     // 'O' :
     public char[][] board;
+    public char[][] board2;
+    public char[][] board3;
+    public char[][] attackBoard;
     public char[][] boardColor;
+    public char[][] attackBoardColor;
     public char[][] nextBlock;
     public char[][] nextBlockColor;
     int m =5; int n=6;
@@ -68,6 +74,46 @@ public class BoardManager {
             {'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'}
         };
 
+        board2 = new char [][] { //lineclear되기 전 board의 상태를 저장
+                {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'}, //1행
+                {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
+                {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
+                {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
+                {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
+                {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
+                {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
+                {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
+                {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
+                {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'}, //10행
+                {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
+                {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
+                {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
+                {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
+                {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
+                {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
+                {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
+                {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
+                {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
+                {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'}, //20행
+                {'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'},
+                {'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'}
+        };
+
+        attackBoard = new char [][] {
+                {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}, //1행,
+                {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+                {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+                {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+                {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+                {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+                {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+                {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+                {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+                {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}  //10행
+        };
+
+
+
         boardColor = new char [][] {
             {'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B'}, //1행
             {'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B'},
@@ -85,12 +131,26 @@ public class BoardManager {
             {'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B'},
             {'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B'},
             {'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B'},
-            {'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B'}, 
+            {'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B'},
             {'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B'},
             {'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B'},
             {'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B'}, //20행
             {'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B'},
             {'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B'},
+        };
+
+        attackBoardColor = new char [][] {
+                {'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L'},//1행
+                {'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L'},
+                {'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L'},
+                {'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L'},
+                {'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L'},
+                {'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L'},
+                {'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L'},
+                {'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L'},
+                {'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L'},
+                {'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L'} //10행
+
         };
 
         nextBlock = new char [][]{
@@ -151,8 +211,30 @@ public class BoardManager {
     //#endregion
 
     //#region 행 삭제 관련
-    public int eraseFullLine() {
+    public int eraseFullLine(int boardIndex) {
+        if(boardIndex == 0){
+            boardIndex = 1;
+        }
+        else if(boardIndex == 1){
+            boardIndex = 0;
+        }
+        int clear[] = new int[22];
+        int clearsum = 0;
         int lineCount = 0;
+        for(int i=0; i<20; i++) {
+            boolean isFull = true;
+            for(int j = 1; j<11; j++ ) {
+                if(board[i][j] == ' ') {
+                    isFull = false;
+                }
+            }
+            if(isFull) {
+                clear[i] = 1;
+            }
+        }
+        for(int i=0; i<20; i++) {
+            clearsum += clear[i];
+        }
 
         for(int i=0; i<20; i++) {
             boolean isFull = true;
@@ -166,12 +248,75 @@ public class BoardManager {
                 {
                     board[j] = board[j-1].clone();
                 }
-                
+                if(UserNumber.getInstance().user==2 && clearsum >=2) {
+                    for(int j=0; j<9; j++)
+                    {
+                        attackBoard[j] = attackBoard[j+1].clone();
+                    }
+                    for(int j=0; j<10; j++)
+                    {
+                        attackBoard[9][j] = board2[i][j+1];
+                    }
+                    InGameUIManager.getInstance().drawAttackBoard(boardIndex);
+
+                }
+
                 lineCount++;
             }
         }
-        
+
         return lineCount;
+    }
+
+    public void attackEvent(int boardIndex){
+
+
+        if(boardIndex == 0){
+            boardIndex = 1;
+        }
+        else if(boardIndex == 1){
+            boardIndex = 0;
+        }
+
+        int attacklinecount = 0;
+        for(int i=0; i<10; i++) {
+            int attackcount =0;
+            for (int j = 0; j < 10; j++) {
+                if (BoardManager.getInstance(boardIndex).attackBoard[i][j] == ' ') {
+                    attackcount++;
+                }
+            }
+            if (attackcount < 10) {
+                attacklinecount++;
+            }
+        }
+
+        for(int i=0; i<20-attacklinecount; i++)
+        {
+            board[i] = board[i+attacklinecount].clone();
+            boardColor[i] = boardColor[i+attacklinecount].clone();
+        }
+        for(int i=20-attacklinecount; i<20; i++)
+        {
+            board[i][0] = 'X';
+            for(int j=1; j<11; j++)
+            {
+
+                board[i][j] = BoardManager.getInstance(boardIndex).attackBoard[i-10][j-1];
+                boardColor[i][j] = 'L';
+            }
+            board[i][11] = 'X';
+        }
+
+        BoardManager.getInstance(boardIndex).eraseAttackBoard();
+        if(boardIndex == 0){
+            boardIndex = 1;
+        }
+        else if(boardIndex == 1){
+            boardIndex = 0;
+        }
+        InGameUIManager.getInstance().drawAttackBoard(boardIndex);
+
     }
 
     public void initBoard(){
@@ -184,6 +329,13 @@ public class BoardManager {
         char[] emptyLine = {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'};
 
         board[row] = emptyLine.clone();
+    }
+
+    public void eraseAttackBoard(){
+        char[] emptyAttackLine = {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '};
+        for(int i=0; i<10; i++){
+            attackBoard[i] = emptyAttackLine.clone();
+        }
     }
 
     public void eraseHalfBoard(){
@@ -533,6 +685,17 @@ public class BoardManager {
             });
             timers.start();
         }
+
+        if(UserNumber.getInstance().user==2) {
+            if(clearsum == 0){
+                for(int i=0; i<20; i++) {
+                    for(int j = 1; j<11; j++ ) {
+                        board2[i][j] = board[i][j];
+                    }
+                }
+            }
+        }
+
     }
 //#endregion
 

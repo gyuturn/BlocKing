@@ -1,5 +1,6 @@
 package game.manager.gametype;
 
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
@@ -16,6 +17,8 @@ import game.manager.InGameUIManager;
 import game.model.BlockController;
 import scoreBoard.NoItemScoreBoard.ScoreInputUI;
 import start.StartUI;
+
+import javax.swing.*;
 
 public class GameManager_BasicMode extends GameManager {
     
@@ -51,6 +54,7 @@ public enum Step {
     BlockMove,
     EraseAnimation,
     EraseLine,
+    SendAttackBoard,
     SetGameBalance,
     CheckGameOver,
 
@@ -80,6 +84,11 @@ protected void gameFramework() { //전체적인 게임의 동작 흐름
 
         case EraseLine:
             curStep = eraseLine();
+            gameFramework();
+            break;
+
+        case SendAttackBoard:
+            curStep = sendAttackBoard();
             gameFramework();
             break;
 
@@ -148,11 +157,20 @@ private Step eraseAnimation() {
 private Step eraseLine() {
 
 
-    int curLineCount = BoardManager.getInstance(index).eraseFullLine();
+    int curLineCount = BoardManager.getInstance(index).eraseFullLine(index);
     onLineErase(curLineCount);
 
+    return Step.SendAttackBoard;
+}
+
+private Step sendAttackBoard() {
+
+    if(UserNumber.getInstance().user==2) {
+        BoardManager.getInstance(index).attackEvent(index);
+    }
     return Step.SetGameBalance;
 }
+
 
 private Step setGameBalance() {
     curSpeed = basicSpeed + addSpeed * (lineCount + blockCount);

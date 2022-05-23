@@ -30,6 +30,7 @@ import static setting.ColorBlind.ColorSetting.ColorBlinded;
 public class GameUI extends JFrame {
     private JPanel mainPanel;
     public JTextPane[] pane = new JTextPane[2];
+    public JTextPane[] attackPane = new JTextPane[2];
     public JTextPane[] scorePane = new JTextPane[2];
     public JTextPane[] nextBlockPane = new JTextPane[2];
 
@@ -104,6 +105,7 @@ public class GameUI extends JFrame {
     void setFrame(int user){
         JLabel label, scoreLabel;
         Font f1;
+        Font f2;
 
 
         //보드 UI 부분
@@ -111,6 +113,7 @@ public class GameUI extends JFrame {
         pane[user].setText("start!");
         pane[user].setEditable(false);
         f1 = new Font("monospaced", Font.BOLD,this.getHeight()/38);  //폰트 사이즈 화면크기에 맞게 조정
+        f2 = new Font("monospaced", Font.BOLD,this.getHeight()/62);
         pane[user].setBounds(10+user*800,10,this.getWidth()/4,this.getHeight()*8/10);// 변화하는 화면 크기에 맞춰 사이즈 조정
         mainPanel.add(pane[user]);
 
@@ -121,6 +124,11 @@ public class GameUI extends JFrame {
         CompoundBorder border = BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(Color.RED, 2),
                 BorderFactory.createLineBorder(Color.YELLOW, 2)
+        );
+
+        CompoundBorder border2 = BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(Color.lightGray, 2),
+                BorderFactory.createLineBorder(Color.gray, 2)
         );
 
         // Next Block 텍스트 출력
@@ -148,7 +156,12 @@ public class GameUI extends JFrame {
         scoreLabel.setBackground(Color.BLACK);
         scoreLabel.setFont(f1);
         scoreLabel.setHorizontalAlignment(JLabel.CENTER);
-        scoreLabel.setBounds((int) ((this.getWidth()/4)+(user*800)),30+this.getWidth()/4,this.getWidth()/4,30);
+        if(UserNumber.getInstance().user==2) {
+            scoreLabel.setBounds((int) ((this.getWidth()/4)+(user*800)),180+this.getWidth()/4,this.getWidth()/4,30);
+        }
+        else{
+            scoreLabel.setBounds((int) ((this.getWidth()/4)+(user*800)),30+this.getWidth()/4,this.getWidth()/4,30);
+        }
         mainPanel.add(scoreLabel);
 
         // Score UI 부분
@@ -157,8 +170,26 @@ public class GameUI extends JFrame {
         scorePane[user].setFont(f1);
         scorePane[user].setBackground(Color.BLACK);
         scorePane[user].setForeground(Color.WHITE);
-        scorePane[user].setBounds((int) ((this.getWidth()/3.5)+(user*800)),60+this.getWidth()/4,this.getWidth()/5,this.getWidth()/8);
+        if(UserNumber.getInstance().user==2) {
+            scorePane[user].setBounds((int) ((this.getWidth()/3.5)+(user*800)),210+this.getWidth()/4,this.getWidth()/5,this.getWidth()/10);
+        }
+        else{
+            scorePane[user].setBounds((int) ((this.getWidth()/3.5)+(user*800)),60+this.getWidth()/4,this.getWidth()/5,this.getWidth()/8);
+        }
         mainPanel.add(scorePane[user]);
+
+
+        // 공격 UI 부분 (대전모드)
+        if(UserNumber.getInstance().user==2) {
+            attackPane[user] = new JTextPane();
+            attackPane[user].setEditable(false);
+            attackPane[user].setFont(f2);
+            attackPane[user].setBackground(Color.BLACK);
+            attackPane[user].setForeground(Color.GRAY);
+            attackPane[user].setBorder(border2);
+            attackPane[user].setBounds((int) ((this.getWidth()/3)+(user*800)),100+this.getWidth()/8,this.getWidth()*1/10,this.getWidth()*2/15);
+            mainPanel.add(attackPane[user]);
+        }
 
 
         //pause 버튼 --> 다른걸로 변경 예정
@@ -188,9 +219,26 @@ public class GameUI extends JFrame {
         StyleConstants.setAlignment(scoreCenter, StyleConstants.ALIGN_CENTER);
         scoreDoc.setParagraphAttributes(0, scoreDoc.getLength(), center, false);
 
+
+        if(UserNumber.getInstance().user==2){
+            StyledDocument attackDoc = attackPane[user].getStyledDocument();
+            SimpleAttributeSet attackCenter = new SimpleAttributeSet();
+            StyleConstants.setAlignment(attackCenter, StyleConstants.ALIGN_CENTER);
+            attackDoc.setParagraphAttributes(0, doc.getLength(), attackCenter, false);
+            javax.swing.text.Style styles = attackPane[user].addStyle("L", null);
+            StyleConstants.setForeground(styles, Color.LIGHT_GRAY);
+            attackDoc.setParagraphAttributes(0, doc.getLength(), styles, false);
+
+        }
+
+
+
+
         //글자 색 정보 저장
         addCharacterPaneStyle(pane[user]);
         addCharacternextBlockPaneStyle(nextBlockPane[user]);
+
+
 
         setBtn();
 
@@ -305,5 +353,7 @@ public class GameUI extends JFrame {
             StyleConstants.setForeground(ZBlock,  new Color(212,17,89));
         }
     }
+
+
 
 }

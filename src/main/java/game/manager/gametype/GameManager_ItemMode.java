@@ -63,6 +63,7 @@ public enum Step {
     BlockMove,
     EraseAnimation,
     EraseLine,
+    SendAttackBoard,
     SetGameBalance,
     CheckGameOver,
     
@@ -93,6 +94,11 @@ protected void gameFramework() { //전체적인 게임의 동작 흐름
 
         case EraseLine:
             curStep = eraseLine();
+            gameFramework();
+            break;
+
+        case SendAttackBoard:
+            curStep = sendAttackBoard();
             gameFramework();
             break;
 
@@ -215,9 +221,17 @@ private Step eraseAnimation() {
 }
 
 private Step eraseLine() {
-    int curLineCount = BoardManager.getInstance(index).eraseFullLine();
+    int curLineCount = BoardManager.getInstance(index).eraseFullLine(index);
     onLineErase(curLineCount);
 
+    return Step.SendAttackBoard;
+}
+
+private Step sendAttackBoard() {
+
+    if(UserNumber.getInstance().user==2) {
+        BoardManager.getInstance(index).attackEvent(index);
+    }
     return Step.SetGameBalance;
 }
 

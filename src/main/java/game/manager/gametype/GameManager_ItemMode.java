@@ -136,10 +136,10 @@ private Step gameReady() {
 }
 
 public Step createNewBlock() {
-    BlockGenerator.getInstance().addBlock();
-    curBlock = BlockGenerator.getInstance().createBlock(index);
+    BlockGenerator.getInstance(index).addBlock();
+    curBlock = BlockGenerator.getInstance(index).createBlock(index);
 
-    BlockController nextBlock = BlockGenerator.getInstance().blockQueue.peek();
+    BlockController nextBlock = BlockGenerator.getInstance(index).blockQueue.peek();
     BoardManager.getInstance(index).setNextBlockColor(nextBlock);
     InGameUIManager.getInstance().drawNextBlockInfo(nextBlock, index);
     onBlockCreate();
@@ -248,7 +248,7 @@ private Step checkItemUse() {
 }
 
 private Step checkGameOver() {
-    BlockController nextBlock = BlockGenerator.getInstance().blockQueue.peek();
+    BlockController nextBlock = BlockGenerator.getInstance(index).blockQueue.peek();
     for(int i=0; i<nextBlock.height(); i++) {
         for(int j=0; j<nextBlock.width(); j++) {
             if(nextBlock.getShape(i, j) != ' ') {
@@ -307,7 +307,7 @@ protected void initBoardManage() {
 }
 
 protected void initBlockGenerator() {
-    BlockGenerator.getInstance().initBlockQueue();
+    BlockGenerator.getInstance(index).initBlockQueue();
 }
 
 //#endregion
@@ -439,7 +439,7 @@ private void checkAddItem() {
 
     if(lineCount % 2 == 0)//lineCount % 1 == 0 && lineCount > 0) //a-b>10 b -= 10;
     {
-        BlockController targetBlock = BlockGenerator.getInstance().blockQueue.peek();
+        BlockController targetBlock = BlockGenerator.getInstance(index).blockQueue.peek();
         ItemType itemType = ItemGenerator.getInstance().SelectRandomItem();
         System.out.println(itemType);
 
@@ -486,7 +486,7 @@ private void checkAddItem() {
 //            return;
 //        }
 
-        BlockController nextBlock = BlockGenerator.getInstance().blockQueue.peek();
+        BlockController nextBlock = BlockGenerator.getInstance(index).blockQueue.peek();
         BoardManager.getInstance(index).setNextBlockColor(nextBlock);
         InGameUIManager.getInstance().drawNextBlockInfo(nextBlock, index);
         //System.out.println(isResurrection);

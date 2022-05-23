@@ -118,10 +118,10 @@ private Step gameReady() {
 }
 
 public Step createNewBlock() {
-    BlockGenerator.getInstance().addBlock();
-    curBlock = BlockGenerator.getInstance().createBlock(index);
+    BlockGenerator.getInstance(index).addBlock();
+    curBlock = BlockGenerator.getInstance(index).createBlock(index);
 
-    BlockController nextBlock = BlockGenerator.getInstance().blockQueue.peek();
+    BlockController nextBlock = BlockGenerator.getInstance(index).blockQueue.peek();
     BoardManager.getInstance(index).setNextBlockColor(nextBlock);
     InGameUIManager.getInstance().drawNextBlockInfo(nextBlock, index);
     onBlockCreate();
@@ -177,7 +177,7 @@ private Step setGameBalance() {
 }
 
 public Step checkGameOver() {
-    BlockController nextBlock = BlockGenerator.getInstance().blockQueue.peek();
+    BlockController nextBlock = BlockGenerator.getInstance(index).blockQueue.peek();
     for(int i=0; i<nextBlock.height(); i++) {
         for(int j=0; j<nextBlock.width(); j++) {
             if(nextBlock.getShape(i, j) != ' ') {
@@ -236,7 +236,7 @@ protected void initBoardManage() {
 }
 
 protected void initBlockGenerator() {
-    BlockGenerator.getInstance().initBlockQueue();
+    BlockGenerator.getInstance(index).initBlockQueue();
 }
 
 //#endregion

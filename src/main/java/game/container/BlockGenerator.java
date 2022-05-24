@@ -1,5 +1,7 @@
 package game.container;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Random;
@@ -22,10 +24,20 @@ public class BlockGenerator {
 
 	public Queue<BlockController> blockQueue = new LinkedList<>(); //앞으로 생성할 블록들
 
-    private static BlockGenerator instance = new BlockGenerator();
+    private static BlockGenerator instance = new BlockGenerator(0);
+	private static BlockGenerator instance2 = new BlockGenerator(1);
+	private int index;
     
-    public static BlockGenerator getInstance() {
-        return instance;
+
+	private BlockGenerator(int index) {
+        this.index = index;
+    }
+
+    private static ArrayList<BlockGenerator> gameManagerList =
+        new ArrayList<BlockGenerator>(Arrays.asList(instance, instance2));
+		
+	public static BlockGenerator getInstance(int i) {
+        return gameManagerList.get(i);
     }
 
 	private GameInfoManager gameInfoManager = GameInfoManager.getInstance();

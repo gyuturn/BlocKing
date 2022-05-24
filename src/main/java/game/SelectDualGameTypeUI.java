@@ -60,7 +60,7 @@ public class SelectDualGameTypeUI extends JFrame {
             }
         });
     }
-    private void setTitle() {
+    public void setTitle() {
         JButton titleBtn;
         if(screenSize.getWidth() == 800){
             titleBtn = new JButton(titleImg1);
@@ -159,7 +159,7 @@ public class SelectDualGameTypeUI extends JFrame {
                 }
 
                 if (gameModeBtns[2].isSelected()) {
-                    gameInfoManager.difficulty = GameInfoManager.GameDifficulty.Easy;
+                    gameInfoManager.mode = GameInfoManager.GameMode.TimeAttackMode;
                     //타이머모드 Enum 추가 후 반영
                 }
                 new GameUI();

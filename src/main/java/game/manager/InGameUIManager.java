@@ -4,6 +4,7 @@ import game.GameUI;
 import game.manager.gametype.GameManager_BasicMode;
 import game.manager.gametype.GameManager_ItemMode;
 
+import game.manager.gametype.GameManager_TimeAttackMode;
 import game.model.BlockController;
 
 import java.awt.*;
@@ -78,6 +79,46 @@ public class InGameUIManager {
         }
     }
 
+    public void drawAttackBoard(int index) {
+
+
+        JTextPane attackPane = GameUI.getInstance().attackPane[index];
+        StyledDocument doc = attackPane.getStyledDocument();
+        attackPane.setForeground(Color.blue);
+
+        if(index == 0){
+            index = 1;
+        }
+        else if(index == 1){
+            index = 0;
+        }
+
+        //Set Text
+        StringBuffer sb = new StringBuffer();
+
+        for(int i=0; i<10; i++)
+        {
+            for(int j=0; j<10; j++)
+            {
+                char curText = BoardManager.getInstance(index).attackBoard[i][j];
+                sb.append(curText);
+            }
+            sb.append('\n');
+        }
+        attackPane.setText(sb.toString());
+
+
+        System.out.println(sb);
+
+
+
+
+
+
+
+    }
+
+
     public void drawNextBlockInfo(BlockController nextBlock, int index) {
         JTextPane pane = GameUI.getInstance().nextBlockPane[index];
         StyledDocument doc = pane.getStyledDocument();
@@ -119,6 +160,9 @@ public class InGameUIManager {
             scorePane.setText("Score :\n" + GameManager_BasicMode.getInstance(index).score + "\n" + "curSpeed :\n" + GameManager_BasicMode.getInstance(index).curSpeed);
         } else if (GameInfoManager.getInstance().mode == GameInfoManager.GameMode.ItemMode) {
             scorePane.setText("Score :\n" + GameManager_ItemMode.getInstance(index).score + "\n" + "curSpeed :\n" + GameManager_ItemMode.getInstance(index).curSpeed);
+        }
+          else if (GameInfoManager.getInstance().mode == GameInfoManager.GameMode.TimeAttackMode) {
+            scorePane.setText("Score :\n" + GameManager_TimeAttackMode.getInstance(index).score + "\n" + "curSpeed :\n" + GameManager_TimeAttackMode.getInstance(index).curSpeed + "\n" + "Timer : " + (int)(GameManager_TimeAttackMode.getInstance(index).timeLimit -1));
         }
     }
 

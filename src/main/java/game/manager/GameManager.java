@@ -28,6 +28,7 @@ public abstract class GameManager {
 
 //#region flow control
 
+    protected int unMovableCount = 0;
     protected boolean isBlockMovable = true;
     protected boolean isGameOver = false;
 

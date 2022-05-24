@@ -74,8 +74,8 @@ public class GameManager_BasicModeTest {
         gameManager_basicMode.initBlockGenerator();
         gameManager_basicMode.initBoardManage();
         //when
-        BlockGenerator.getInstance().addBlock();
-        gameManager_basicMode.curBlock = BlockGenerator.getInstance().createBlock(0);
+        BlockGenerator.getInstance(0).addBlock();
+        gameManager_basicMode.curBlock = BlockGenerator.getInstance(0).createBlock(0);
         //then
         Assertions.assertThat(gameManager_basicMode.getCurBlock()).isNotNull();
     }
@@ -83,7 +83,7 @@ public class GameManager_BasicModeTest {
     @Test
     public void blockMove(){
         //given
-        initBlockGenerator();
+        gameManager_basicMode.initBlockGenerator();
         //when
         GameManager_BasicMode.Step step = gameManager_basicMode.blockMove();
         //then
@@ -119,7 +119,7 @@ public class GameManager_BasicModeTest {
         };
 
         //when
-        int curLineCount = BoardManager.getInstance(0).eraseFullLine();
+        int curLineCount = BoardManager.getInstance(0).eraseFullLine(0);
          gameManager_basicMode.onLineErase(curLineCount);
         //then
         Assertions.assertThat(curLineCount).isEqualTo(3);

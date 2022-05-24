@@ -33,11 +33,11 @@ public class GameManager_TimeAttackMode extends GameManager {
         maxTimeLimit = maxSecond;
         timeLimit = maxTimeLimit;
 
-        additionalTimer = new Timer(1000, new ActionListener() {
+        additionalTimer = new Timer(100, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
                 
-				timeLimit -= 1.0f;
+				timeLimit -= 0.1f;
                 System.out.println(timeLimit);
                 if(timeLimit <= 0f)
                 {
@@ -416,10 +416,14 @@ public class Interaction_Utils implements KeyListener {
     public void keyPressed(KeyEvent e) {
         if(keySetting.getStop() == e.getKeyCode()) {
             BoardManager.getInstance(index).printBoard();
-            if(timer.isRunning())
+            if(timer.isRunning()){
+                additionalTimer.stop();
                 stopGameFramework();
-            else
+            }
+            else{
+                additionalTimer.restart();
                 restartGameFramework();
+            }
         }
         
         if(keySetting.getEscape() == e.getKeyCode()) {

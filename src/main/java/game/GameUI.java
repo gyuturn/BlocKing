@@ -287,23 +287,24 @@ public class GameUI extends JFrame {
         StyleConstants.setForeground(JBlock, Color.ORANGE);
         StyleConstants.setForeground(SBlock, Color.YELLOW);
         StyleConstants.setForeground(TBlock, Color.GREEN);
-        StyleConstants.setForeground(style5, Color.BLUE);
-        StyleConstants.setForeground(style6, Color.PINK);
-        StyleConstants.setForeground(style7, Color.LIGHT_GRAY);
-        StyleConstants.setForeground(style8, Color.GRAY);
         StyleConstants.setForeground(LBlock, Color.WHITE);
         StyleConstants.setForeground(OBlock, Color.CYAN);
         StyleConstants.setForeground(ZBlock, Color.MAGENTA);
+        StyleConstants.setForeground(style5, Color.GRAY);
+        StyleConstants.setForeground(style6, Color.PINK);
+        StyleConstants.setForeground(style7, Color.LIGHT_GRAY);
+        StyleConstants.setForeground(style8, Color.GRAY);
         StyleConstants.setForeground(style12, Color.DARK_GRAY);
 
+
         if(colorBlind.getColorBlind()== ColorBlinded){
-            StyleConstants.setForeground(IBlock, new Color(255, 194, 10));
-            StyleConstants.setForeground(JBlock, new Color(12,123,220));
-            StyleConstants.setForeground(SBlock, new Color(153,79,0));
-            StyleConstants.setForeground(TBlock, new Color(254,254,98));
-            StyleConstants.setForeground(LBlock, new Color(211,95,183));
-            StyleConstants.setForeground(OBlock,  new Color(225,190,160));
-            StyleConstants.setForeground(ZBlock,  new Color(212,17,89));
+            StyleConstants.setForeground(ZBlock,  new Color(0X00FFFF));
+            StyleConstants.setForeground(SBlock,new Color(0XD55E00));
+            StyleConstants.setForeground(TBlock, new Color(0X0000FF));
+            StyleConstants.setForeground(JBlock, new Color(0X009E73));
+            StyleConstants.setForeground(LBlock, new Color(0XFFA500));
+            StyleConstants.setForeground(OBlock,  new Color(0Xfec2de));
+            StyleConstants.setForeground(IBlock, new Color(0XFFFF00));
         }
     }
 
@@ -330,7 +331,7 @@ public class GameUI extends JFrame {
         StyleConstants.setForeground(JBlock, Color.ORANGE);
         StyleConstants.setForeground(SBlock, Color.YELLOW);
         StyleConstants.setForeground(TBlock, Color.GREEN);
-        StyleConstants.setForeground(style5, Color.BLUE);
+        StyleConstants.setForeground(style5, Color.GRAY);
         StyleConstants.setForeground(style6, Color.PINK);
         StyleConstants.setForeground(style7, Color.LIGHT_GRAY);
         StyleConstants.setForeground(style8, Color.GRAY);
@@ -340,16 +341,24 @@ public class GameUI extends JFrame {
         StyleConstants.setForeground(style12, Color.DARK_GRAY);
 
         if(colorBlind.getColorBlind()== ColorBlinded){
-            StyleConstants.setForeground(IBlock, new Color(255, 194, 10));
-            StyleConstants.setForeground(JBlock, new Color(12,123,220));
-            StyleConstants.setForeground(SBlock,new Color(153,79,0));
-            StyleConstants.setForeground(TBlock, new Color(254,254,98));
-            StyleConstants.setForeground(LBlock, new Color(211,95,183));
-            StyleConstants.setForeground(OBlock,  new Color(225,190,160));
-            StyleConstants.setForeground(ZBlock,  new Color(212,17,89));
+            StyleConstants.setForeground(ZBlock,  new Color(0X00FFFF));
+            StyleConstants.setForeground(SBlock,new Color(0XD55E00));
+            StyleConstants.setForeground(TBlock, new Color(0X0000FF));
+            StyleConstants.setForeground(JBlock, new Color(0X009E73));
+            StyleConstants.setForeground(LBlock, new Color(0XFFA500));
+            StyleConstants.setForeground(OBlock,  new Color(0Xfec2de));
+            StyleConstants.setForeground(IBlock, new Color(0XFFFF00));
         }
     }
 
-
-
 }
+
+//        if(colorBlind.getColorBlind()== ColorBlinded){   // 원래 색
+//            StyleConstants.setForeground(IBlock, new Color(255, 194, 10));
+//            StyleConstants.setForeground(JBlock, new Color(12,123,220));
+//            StyleConstants.setForeground(SBlock, new Color(153,79,0));
+//            StyleConstants.setForeground(TBlock, new Color(254,254,98));
+//            StyleConstants.setForeground(LBlock, new Color(211,95,183));
+//            StyleConstants.setForeground(OBlock,  new Color(225,190,160));
+//            StyleConstants.setForeground(ZBlock,  new Color(212,17,89));
+//        }

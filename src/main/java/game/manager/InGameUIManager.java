@@ -4,6 +4,7 @@ import game.GameUI;
 import game.manager.gametype.GameManager_BasicMode;
 import game.manager.gametype.GameManager_ItemMode;
 
+import game.manager.gametype.GameManager_TimeAttackMode;
 import game.model.BlockController;
 
 import java.awt.*;
@@ -162,6 +163,9 @@ public class InGameUIManager {
             scorePane.setText("Score :\n" + GameManager_BasicMode.getInstance(index).score + "\n" + "curSpeed :\n" + GameManager_BasicMode.getInstance(index).curSpeed);
         } else if (GameInfoManager.getInstance().mode == GameInfoManager.GameMode.ItemMode) {
             scorePane.setText("Score :\n" + GameManager_ItemMode.getInstance(index).score + "\n" + "curSpeed :\n" + GameManager_ItemMode.getInstance(index).curSpeed);
+        }
+          else if (GameInfoManager.getInstance().mode == GameInfoManager.GameMode.TimeAttackMode) {
+            scorePane.setText("Score :\n" + GameManager_TimeAttackMode.getInstance(index).score + "\n" + "curSpeed :\n" + GameManager_TimeAttackMode.getInstance(index).curSpeed + "\n" + "Timer : " + (int)(GameManager_TimeAttackMode.getInstance(index).timeLimit -1));
         }
     }
 

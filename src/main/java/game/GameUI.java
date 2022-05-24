@@ -97,7 +97,7 @@ public class GameUI extends JFrame {
         if(GameInfoManager.getInstance().mode == GameMode.TimeAttackMode)
         {
             System.out.println("test");
-            GameManager_TimeAttackMode.AdditionalTimer(10f);
+            GameManager_TimeAttackMode.AdditionalTimer(15f);
         }
 
         //종료 시 현재 setting값 저장
@@ -250,7 +250,7 @@ public class GameUI extends JFrame {
 
 
 
-        setBtn();
+        //setBtn();
 
         this.getContentPane().add(mainPanel);
 

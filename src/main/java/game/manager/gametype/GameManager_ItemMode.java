@@ -271,8 +271,11 @@ private Step checkGameOver() {
 @Override
 protected void gameOver() {
     instance.onGameEnd();
-    instance2.onGameEnd();
+    if(UserNumber.getInstance().user==2){
+        instance2.onGameEnd();
+    }
     new ScoreInputUI(score,GameInfoManager.getInstance().difficultyToString(difficulty));
+    GameUI.getInstance().setVisible(false);
 
 }
 

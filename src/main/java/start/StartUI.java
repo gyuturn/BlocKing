@@ -163,33 +163,37 @@ public class StartUI extends JFrame {
                         exitButtons.setForeground(Color.black);
                     }
                 } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-                    if(btnClicked.isGameBtnClicked()){
+                    if (btnClicked.isGameBtnClicked()) {
                         btnClicked.setExitBtnClicked();
                         exitButtons.setForeground(Color.red);
                         gameButtons.setForeground(Color.black);
-                    }
-                    else if(btnClicked.isSettingBtnClicked()){
+                    } else if (btnClicked.isDualGameBtnClicked()) {
                         btnClicked.setGameBtnClicked();
                         gameButtons.setForeground(Color.red);
+                        dualGameButtons.setForeground(Color.black);
+                    } else if (btnClicked.isSettingBtnClicked()) {
+                        btnClicked.setDualGameBtnClicked();
+                        dualGameButtons.setForeground(Color.red);
                         settingButtons.setForeground(Color.black);
-                    }
-                    else if(btnClicked.isScbBtnClicked()){
+                    } else if (btnClicked.isScbBtnClicked()) {
                         btnClicked.setSettingBtnClicked();
                         settingButtons.setForeground(Color.red);
                         scbButtons.setForeground(Color.black);
 
-                    }
-                    else if(btnClicked.isExitBtnClicked()){
+                    } else if (btnClicked.isExitBtnClicked()) {
                         btnClicked.setScbBtnClicked();
                         scbButtons.setForeground(Color.red);
                         exitButtons.setForeground(Color.black);
                     }
                 } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
                     if(btnClicked.isGameBtnClicked()){
+                        btnClicked.setDualGameBtnClicked();
+                        dualGameButtons.setForeground(Color.red);
+                        gameButtons.setForeground(Color.black);
+                    }else if(btnClicked.isDualGameBtnClicked()){
                         btnClicked.setSettingBtnClicked();
                         settingButtons.setForeground(Color.red);
-                        gameButtons.setForeground(Color.black);
-
+                        dualGameButtons.setForeground(Color.black);
                     }
                     else if(btnClicked.isSettingBtnClicked()){
                         btnClicked.setScbBtnClicked();
@@ -213,6 +217,7 @@ public class StartUI extends JFrame {
                         setVisible(false);
                     }
                     else if(btnClicked.isDualGameBtnClicked()){
+                        userNumber.user=2;
                         new SelectDualGameTypeUI();
                         setVisible(false);
                     }

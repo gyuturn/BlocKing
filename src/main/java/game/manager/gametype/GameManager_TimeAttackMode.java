@@ -24,7 +24,7 @@ import javax.swing.*;
 public class GameManager_TimeAttackMode extends GameManager {
 
 //#region Gimmick
-    private static float timeLimit;
+    public static float timeLimit;
     private static float maxTimeLimit;
     private static Timer additionalTimer;
     
@@ -240,8 +240,11 @@ public Step checkGameOver() {
 @Override
 protected void gameOver() {
     instance.onGameEnd();
-    instance2.onGameEnd();
+    if(UserNumber.getInstance().user==2){
+        instance2.onGameEnd();
+    }
     new ScoreInputUI(score,GameInfoManager.getInstance().difficultyToString(difficulty));
+    GameUI.getInstance().setVisible(false);
 
 }
 

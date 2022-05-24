@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class BlockGeneratorTest {
     BoardManager boardManager = BoardManager.getInstance(0);
-    BlockGenerator blockGenerator = BlockGenerator.getInstance();
+    BlockGenerator blockGenerator = BlockGenerator.getInstance(0);
     GameManager gameManager = GameManager_BasicMode.getInstance(0);
 
 

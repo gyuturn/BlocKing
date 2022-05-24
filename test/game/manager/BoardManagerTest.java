@@ -17,7 +17,7 @@ import static org.junit.Assert.*;
 public class BoardManagerTest {
     //dependencies
     BoardManager boardManager = BoardManager.getInstance(0);
-    BlockGenerator blockGenerator = BlockGenerator.getInstance();
+    BlockGenerator blockGenerator = BlockGenerator.getInstance(0);
 
     @After
     public void resetBoard() {
@@ -317,7 +317,7 @@ public class BoardManagerTest {
                 {'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'}
         };
         //when
-        int eraseLineCount = boardManager.eraseFullLine();
+        int eraseLineCount = boardManager.eraseFullLine(0);
         //then
         Assertions.assertThat(eraseLineCount).isEqualTo(3);
     }

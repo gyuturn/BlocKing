@@ -94,7 +94,7 @@ public class BlockGeneratorTest {
         //when
         blockGenerator.initBlockQueue();
         //then
-        assertThat(blockQueue.size()).isEqualTo(beforeSize+2); // 큐에 넣은 후 사이즈 확인
+        assertThat(blockQueue.size()).isEqualTo(beforeSize); // 큐에 넣은 후 사이즈 확인
     }
 
     @Test

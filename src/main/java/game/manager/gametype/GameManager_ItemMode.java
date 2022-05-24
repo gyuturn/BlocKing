@@ -136,6 +136,18 @@ private Step gameReady() {
 }
 
 public Step createNewBlock() {
+    //시작하기전에 무게추 블럭이었으면 바닥에 닿아도 움직이지 못하게 함
+    if (curItem == ItemType.Weight) {
+        if (checkCurBlockIsWeight()) {
+            if(UserNumber.getInstance().user==2) {
+                GameUI.getInstance().pane[0].addKeyListener(interaction_play);
+                GameUI.getInstance().pane[1].addKeyListener(interaction_play);
+            }else {
+                GameUI.getInstance().pane[0].addKeyListener(interaction_play);
+            }
+        }
+    }
+
     BlockGenerator.getInstance(index).addBlock();
     curBlock = BlockGenerator.getInstance(index).createBlock(index);
 
@@ -209,13 +221,12 @@ private Step WeightBlockMove(){
     }
     else{
         //이동제한 다시 풀기
-        if(UserNumber.getInstance().user==2) {
-            GameUI.getInstance().pane[0].addKeyListener(interaction_play);
-            GameUI.getInstance().pane[1].addKeyListener(interaction_play);
-        }else {
-            GameUI.getInstance().pane[0].addKeyListener(interaction_play);
-        }
-
+//        if(UserNumber.getInstance().user==2) {
+//            GameUI.getInstance().pane[0].addKeyListener(interaction_play);
+//            GameUI.getInstance().pane[1].addKeyListener(interaction_play);
+//        }else {
+//            GameUI.getInstance().pane[0].addKeyListener(interaction_play);
+//        }
         return Step.EraseAnimation;
     }
 
@@ -247,6 +258,8 @@ private Step setGameBalance() {
     curSpeed = basicSpeed + addSpeed * (lineCount + blockCount);
     timeScale = maxSpeed / curSpeed;
     setTimeScale(timeScale);
+
+
 
     return Step.CheckItemUse;
 }
@@ -449,7 +462,7 @@ private void checkWeightUse() {
 //#region Utils
 private void checkAddItem() {
 
-    if(lineCount % 2 == 0)//lineCount % 1 == 0 && lineCount > 0) //a-b>10 b -= 10;
+    if(lineCount % 1 == 0 && lineCount > 0) //a-b>10 b -= 10;
     {
         BlockController targetBlock = BlockGenerator.getInstance(index).blockQueue.peek();
         ItemType itemType = ItemGenerator.getInstance().SelectRandomItem();
@@ -457,8 +470,8 @@ private void checkAddItem() {
 
 
 
-        //무게추아이템 test
-//        itemType = ItemType.Weight;
+//        무게추아이템 test
+        itemType = ItemType.Weight;
 
         switch(itemType) {
             case Weight:

@@ -112,7 +112,7 @@ public class GameUI extends JFrame {
         });
     }
 
-    void setFrame(int user){
+    public void setFrame(int user){
         JLabel label, scoreLabel;
         Font f1;
         Font f2;
@@ -262,20 +262,6 @@ public class GameUI extends JFrame {
         ScreenSize.getInstance().getHeight();
     }
 
-    void setBtn(){
-        JButton buttons = new JButton("다음으로 넘어가기2");
-        buttons.setBounds(this.getWidth()*5/8,this.getHeight()-100,100,50);
-        mainPanel.add(buttons);
-
-        //다음으로 넘어가는 event
-        buttons.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new SettingUI(SettingUI.Scene.GameUI);
-                dispose();
-            }
-        });
-    }
 
 
     private void addCharacternextBlockPaneStyle(JTextPane nextBlockPane)

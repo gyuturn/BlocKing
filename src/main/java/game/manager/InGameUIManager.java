@@ -82,9 +82,6 @@ public class InGameUIManager {
     public void drawAttackBoard(int index) {
 
 
-
-
-
         JTextPane attackPane = GameUI.getInstance().attackPane[index];
         StyledDocument doc = attackPane.getStyledDocument();
         attackPane.setForeground(Color.blue);

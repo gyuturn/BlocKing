@@ -147,7 +147,7 @@ public Step createNewBlock() {
     return Step.BlockMove;
 }
 
-private Step blockMove() {
+public Step blockMove() {
     isBlockMovable = BoardManager.getInstance(index).checkBlockMovable(curBlock);
 
     if (isBlockMovable) {
@@ -255,7 +255,7 @@ private Step checkItemUse() {
     return Step.CheckGameOver;
 }
 
-private Step checkGameOver() {
+public Step checkGameOver() {
     BlockController nextBlock = BlockGenerator.getInstance(index).blockQueue.peek();
     for(int i=0; i<nextBlock.height(); i++) {
         for(int j=0; j<nextBlock.width(); j++) {
@@ -358,7 +358,7 @@ protected void initBlockGenerator() {
 
 //#region Events
 
-private int onBlockMove() {
+public int onBlockMove() {
     if(isDoubleScore==true) {
         score +=  curSpeed;
     }

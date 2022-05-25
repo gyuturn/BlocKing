@@ -247,6 +247,7 @@ public class BoardManager {
                 for(int j=i; j>0; j--)
                 {
                     board[j] = board[j-1].clone();
+                    boardColor[j] = boardColor[j-1].clone();
                 }
                 if(UserNumber.getInstance().user==2 && clearsum >=2) {
                     for(int j=0; j<9; j++)
@@ -306,6 +307,12 @@ public class BoardManager {
                 boardColor[i][j] = 'L';
             }
             board[i][11] = 'X';
+        }
+
+        for(int i=0; i<20; i++) {
+            for(int j = 1; j<11; j++ ) {
+                board2[i][j] = board[i][j];
+            }
         }
 
         BoardManager.getInstance(boardIndex).eraseAttackBoard();

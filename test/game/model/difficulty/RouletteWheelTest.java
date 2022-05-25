@@ -46,6 +46,54 @@ public class RouletteWheelTest {
         Assertions.assertThat(errorPercent).isLessThan(5);
     }
 
+    @Test
+    public void nonFucntionalTestByRouteWheelEasyModePrt(){
+        //given
+        int[] test = new int[7];
+        GameInfoManager.GameDifficulty easy = GameInfoManager.GameDifficulty.Easy;
+        //when
+        for (int i = 0; i < 50000; i++) {
+            int blockShape = RouletteWheel.GenerateBlockByValue(easy);
+            test[blockShape]++;
+        }
+        //then
+        for (int i = 0; i < 7; i++) {
+            System.out.println(i+"번째:"+test[i]);
+        }
+    }
+
+    @Test
+    public void nonFucntionalTestByRouteWheelHardModePrt(){
+        //given
+        int[] test = new int[7];
+        GameInfoManager.GameDifficulty hard = GameInfoManager.GameDifficulty.Hard;
+        //when
+        for (int i = 0; i < 50000; i++) {
+            int blockShape = RouletteWheel.GenerateBlockByValue(hard);
+            test[blockShape]++;
+        }
+        //then
+        for (int i = 0; i < 7; i++) {
+            System.out.println(i+"번째:"+test[i]);
+        }
+    }
+
+    @Test
+    public void nonFucntionalTestByRouteWheelNormalPrt(){
+        //given
+        int[] test = new int[7];
+        GameInfoManager.GameDifficulty normal = GameInfoManager.GameDifficulty.Normal;
+        //when
+        for (int i = 0; i < 50000; i++) {
+            int blockShape = RouletteWheel.GenerateBlockByValue(normal);
+            test[blockShape]++;
+        }
+        //then
+        for (int i = 0; i < 7; i++) {
+            System.out.println(i+"번째:"+test[i]);
+        }
+    }
+
 
 
 

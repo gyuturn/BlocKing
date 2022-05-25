@@ -16,6 +16,7 @@ import game.container.BlockGenerator;
 import game.container.ItemGenerator;
 import game.container.ItemGenerator.ItemType;
 import game.manager.BoardManager;
+import game.manager.DualModeUtils.GameEndForDualUI;
 import game.manager.DualModeUtils.UserNumber;
 import game.manager.GameInfoManager;
 import game.manager.GameManager;
@@ -136,6 +137,18 @@ private Step gameReady() {
 }
 
 public Step createNewBlock() {
+    //시작하기전에 무게추 블럭이었으면 바닥에 닿아도 움직이지 못하게 함
+    if (curItem == ItemType.Weight) {
+        if (checkCurBlockIsWeight()) {
+            if(UserNumber.getInstance().user==2) {
+                GameUI.getInstance().pane[0].addKeyListener(interaction_play);
+                GameUI.getInstance().pane[1].addKeyListener(interaction_play);
+            }else {
+                GameUI.getInstance().pane[0].addKeyListener(interaction_play);
+            }
+        }
+    }
+
     BlockGenerator.getInstance(index).addBlock();
     curBlock = BlockGenerator.getInstance(index).createBlock(index);
 
@@ -209,13 +222,12 @@ private Step WeightBlockMove(){
     }
     else{
         //이동제한 다시 풀기
-        if(UserNumber.getInstance().user==2) {
-            GameUI.getInstance().pane[0].addKeyListener(interaction_play);
-            GameUI.getInstance().pane[1].addKeyListener(interaction_play);
-        }else {
-            GameUI.getInstance().pane[0].addKeyListener(interaction_play);
-        }
-
+//        if(UserNumber.getInstance().user==2) {
+//            GameUI.getInstance().pane[0].addKeyListener(interaction_play);
+//            GameUI.getInstance().pane[1].addKeyListener(interaction_play);
+//        }else {
+//            GameUI.getInstance().pane[0].addKeyListener(interaction_play);
+//        }
         return Step.EraseAnimation;
     }
 
@@ -248,6 +260,8 @@ private Step setGameBalance() {
     timeScale = maxSpeed / curSpeed;
     setTimeScale(timeScale);
 
+
+
     return Step.CheckItemUse;
 }
 
@@ -268,16 +282,19 @@ public Step checkGameOver() {
     return Step.CreateNewBlock;
 }
 
-@Override
-protected void gameOver() {
-    instance.onGameEnd();
-    if(UserNumber.getInstance().user==2){
-        instance2.onGameEnd();
+    @Override
+    protected void gameOver() {
+        if(UserNumber.getInstance().user==2){
+            instance.onGameEnd();
+            instance2.onGameEnd();
+            new GameEndForDualUI(instance.score, instance2.score);
+        }
+        else{
+            instance.onGameEnd();
+            new ScoreInputUI(score,GameInfoManager.getInstance().difficultyToString(difficulty));
+        }
+        GameUI.getInstance().setVisible(false);
     }
-    new ScoreInputUI(score,GameInfoManager.getInstance().difficultyToString(difficulty));
-    GameUI.getInstance().setVisible(false);
-
-}
 
 //#endregion
 
@@ -457,8 +474,8 @@ private void checkAddItem() {
 
 
 
-        //무게추아이템 test
-//        itemType = ItemType.Weight;
+//        무게추아이템 test
+        itemType = ItemType.Weight;
 
         switch(itemType) {
             case Weight:

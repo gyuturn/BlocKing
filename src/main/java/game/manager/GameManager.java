@@ -41,7 +41,7 @@ public abstract class GameManager {
 //#region difficulty
 
     protected static int maxSpeed = 1000000;
-    protected static int basicSpeed = 4000;
+    protected static int basicSpeed = 1000;
     public static int curSpeed = 1000;
     public static int timeScale = 1000;
 

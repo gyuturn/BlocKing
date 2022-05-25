@@ -431,6 +431,7 @@ public class Interaction_Utils implements KeyListener {
         }
         
         if(keySetting.getEscape() == e.getKeyCode()) {
+            additionalTimer.stop();
             onGameEnd();
             new StartUI();
             GameUI.getInstance().dispose();

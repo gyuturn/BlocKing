@@ -393,11 +393,22 @@ public class BoardManager {
         }
 
         if(clearsum > 0) {
-            Timer timers = new Timer(1, new ActionListener()
-            {
+
+            Timer timers = new Timer(1,
+            
+            new ActionListener() {
                 int phase = 1;
+/*
+                
+*/
                 public void actionPerformed (ActionEvent e)
                 {
+                    if(GameManager.curSpeed > 2500)
+                    {
+                        System.out.println("hello");
+                        phase += 10;
+                    }
+
                     switch (phase){
                         case 1:  for(int i=0; i<22; i++) {
                             if(clear[i]==1) {
@@ -661,7 +672,7 @@ public class BoardManager {
                             InGameUIManager.getInstance().drawBoard(boardIndex);
                             phase++;
                             break;
-                        case 21: for(int i=0; i<22; i++) {
+                        default : for(int i=0; i<22; i++) {
                             if(clear[i]==1) {
                                 board[i][m] = '*';
                                 board[i][n] = '*';
@@ -671,7 +682,7 @@ public class BoardManager {
                                 m--; n++;
                             }
                             InGameUIManager.getInstance().drawBoard(boardIndex);
-                            System.out.println("블록 제거중" + m);
+                            //System.out.println("블록 제거중" + m);
                             if(m ==0){
                                 ((Timer)e.getSource()).stop();
                                 for(int i=0; i<22; i++) {
@@ -684,12 +695,14 @@ public class BoardManager {
                                         board[i][11] = 'X';
                                     }
                                 }
-                                System.out.println("블록 제거 완료" + m);
+                                //System.out.println("블록 제거 완료" + m);
                             }
                             break;
                     }
                 }
+                
             });
+
             timers.start();
         }
 

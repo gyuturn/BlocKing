@@ -54,6 +54,7 @@ protected Step curStep = Step.GameReady;
 
 public boolean isResurrection = false;
 public static boolean isDoubleScore = false;
+public int itemLineCount = 0;
 
 
 public enum Step {
@@ -398,6 +399,7 @@ private int onLineErase(int count) {
     InGameUIManager.getInstance().drawScore(index);
 
     lineCount += count;
+    itemLineCount += count;
 
     //checkAddItem();
 
@@ -463,16 +465,12 @@ private void checkWeightUse() {
 //#region Utils
 private void checkAddItem() {
 
-    if(lineCount % 1 == 0 && lineCount > 0) //a-b>10 b -= 10;
+    if(itemLineCount >= 10) //a-b>10 b -= 10;
     {
+        itemLineCount -= 10;
         BlockController targetBlock = BlockGenerator.getInstance(index).blockQueue.peek();
         ItemType itemType = ItemGenerator.getInstance().SelectRandomItem();
         System.out.println(itemType);
-
-
-
-//        무게추아이템 test
-        itemType = ItemType.Weight;
 
         switch(itemType) {
             case Weight:

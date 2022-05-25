@@ -87,6 +87,8 @@ public class SelectDualGameTypeUI extends JFrame {
         gameModeBtns[1] = new JRadioButton("Item-Mode");
         gameModeBtns[2] = new JRadioButton("Timer-Mode");
 
+        gameModeBtns[0].setSelected(true);
+
         for (int i = 0; i < 3; i++) {
             gameModeGroup.add(gameModeBtns[i]);
         }
@@ -108,6 +110,8 @@ public class SelectDualGameTypeUI extends JFrame {
         difficultyBtns[0] = new JRadioButton("EASY");
         difficultyBtns[1] = new JRadioButton("NORMAL");
         difficultyBtns[2] = new JRadioButton("HARD");
+
+        difficultyBtns[0].setSelected(true);
 
         for (int i = 0; i < 3; i++) {
             difficultyGroup.add(difficultyBtns[i]);

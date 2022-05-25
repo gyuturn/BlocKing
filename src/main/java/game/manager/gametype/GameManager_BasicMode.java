@@ -8,6 +8,7 @@ import java.util.Arrays;
 import game.GameUI;
 import game.container.BlockGenerator;
 import game.manager.BoardManager;
+import game.manager.DualModeUtils.GameEndForDualUI;
 import game.manager.DualModeUtils.UserNumber;
 import game.manager.GameInfoManager;
 import game.manager.GameManager;
@@ -199,11 +200,15 @@ public Step checkGameOver() {
 
 @Override
 protected void gameOver() {
-    instance.onGameEnd();
     if(UserNumber.getInstance().user==2){
+        instance.onGameEnd();
         instance2.onGameEnd();
+        new GameEndForDualUI(instance.score, instance2.score);
     }
-    new ScoreInputUI(score,GameInfoManager.getInstance().difficultyToString(difficulty));
+    else{
+        instance.onGameEnd();
+        new ScoreInputUI(score,GameInfoManager.getInstance().difficultyToString(difficulty));
+    }
     GameUI.getInstance().setVisible(false);
 }
 

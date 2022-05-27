@@ -465,6 +465,7 @@ private void checkWeightUse() {
 //#region Utils
 private void checkAddItem() {
 
+    System.out.println(itemLineCount);
     if(itemLineCount >= 10) //a-b>10 b -= 10;
     {
         itemLineCount -= 10;

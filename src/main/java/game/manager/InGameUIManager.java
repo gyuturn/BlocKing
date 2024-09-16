@@ -2,7 +2,9 @@ package game.manager;
 
 import game.GameUI;
 import game.manager.gametype.GameManager_BasicMode;
-import game.manager.gametype.GameManager_NormalMode;
+import game.manager.gametype.GameManager_ItemMode;
+
+import game.manager.gametype.GameManager_TimeAttackMode;
 import game.model.BlockController;
 
 import java.awt.*;
@@ -23,7 +25,7 @@ public class InGameUIManager {
         {
             for(int j=0; j<12; j++)
             {
-                char curText = BoardManager.getInstance().board[i][j];
+                char curText = BoardManager.getInstance(index).board[i][j];
                 sb.append(curText);
             }
             sb.append('\n');
@@ -42,9 +44,9 @@ public class InGameUIManager {
     }
     */
 
-    public void drawBoard() {
+    public void drawBoard(int index) {
 
-        JTextPane pane = GameUI.getInstance().pane;
+        JTextPane pane = GameUI.getInstance().pane[index];
         StyledDocument doc = pane.getStyledDocument();
 
         //Set Text
@@ -54,7 +56,7 @@ public class InGameUIManager {
         {
             for(int j=0; j<12; j++)
             {
-                char curText = BoardManager.getInstance().board[i][j];
+                char curText = BoardManager.getInstance(index).board[i][j];
                 sb.append(curText);
             }
             sb.append('\n');
@@ -70,15 +72,55 @@ public class InGameUIManager {
             for(int j=0; j<12; j++)
             {
                 offset = 13 * i + j;
-                color += BoardManager.getInstance().boardColor[i][j];
+                color += BoardManager.getInstance(index).boardColor[i][j];
                 doc.setCharacterAttributes(offset, 1, pane.getStyle(color), true);
                 color = "";
             }
         }
     }
 
-    public void drawNextBlockInfo(BlockController nextBlock) {
-        JTextPane pane = GameUI.getInstance().nextBlockPane;
+    public void drawAttackBoard(int index) {
+
+
+        JTextPane attackPane = GameUI.getInstance().attackPane[index];
+        StyledDocument doc = attackPane.getStyledDocument();
+        attackPane.setForeground(Color.blue);
+
+        if(index == 0){
+            index = 1;
+        }
+        else if(index == 1){
+            index = 0;
+        }
+
+        //Set Text
+        StringBuffer sb = new StringBuffer();
+
+        for(int i=0; i<10; i++)
+        {
+            for(int j=0; j<10; j++)
+            {
+                char curText = BoardManager.getInstance(index).attackBoard[i][j];
+                sb.append(curText);
+            }
+            sb.append('\n');
+        }
+        attackPane.setText(sb.toString());
+
+
+        System.out.println(sb);
+
+
+
+
+
+
+
+    }
+
+
+    public void drawNextBlockInfo(BlockController nextBlock, int index) {
+        JTextPane pane = GameUI.getInstance().nextBlockPane[index];
         StyledDocument doc = pane.getStyledDocument();
 
         StringBuffer sb = new StringBuffer();
@@ -102,18 +144,26 @@ public class InGameUIManager {
             for(int j=0; j<nextBlock.width(); j++)
             {
                 offset = (nextBlock.width()+1) * i + j;
-                color += BoardManager.getInstance().nextBlockColor[i][j];
+                color += BoardManager.getInstance(index).nextBlockColor[i][j];
                 doc.setCharacterAttributes(offset, 1, pane.getStyle(color), true);
-                System.out.println("color : " + color);
+                //System.out.println("color : " + color); //Debug
                 color = "";
             }
         }
 
     }
 
-    public void drawScore(){
-        JTextPane scorePane = GameUI.getInstance().scorePane;
-        scorePane.setText("Score :\n" + GameManager_BasicMode.getInstance().score + "\n" + "curSpeed :\n" + GameManager_BasicMode.getInstance().curSpeed);
+    public void drawScore(int index){
+        JTextPane scorePane = GameUI.getInstance().scorePane[index];
+
+        if(GameInfoManager.getInstance().mode == GameInfoManager.GameMode.BasicMode) {
+            scorePane.setText("Score :\n" + GameManager_BasicMode.getInstance(index).score + "\n" + "curSpeed :\n" + GameManager_BasicMode.getInstance(index).curSpeed);
+        } else if (GameInfoManager.getInstance().mode == GameInfoManager.GameMode.ItemMode) {
+            scorePane.setText("Score :\n" + GameManager_ItemMode.getInstance(index).score + "\n" + "curSpeed :\n" + GameManager_ItemMode.getInstance(index).curSpeed);
+        }
+          else if (GameInfoManager.getInstance().mode == GameInfoManager.GameMode.TimeAttackMode) {
+            scorePane.setText("Score :\n" + GameManager_TimeAttackMode.getInstance(index).score + "\n" + "curSpeed :\n" + GameManager_TimeAttackMode.getInstance(index).curSpeed + "\n" + "Timer : " + (int)(GameManager_TimeAttackMode.getInstance(index).timeLimit -1));
+        }
     }
 
     public void moveScene(){

@@ -1,3 +1,5 @@
+//package main.java;
+
 import scoreBoard.NoItemScoreBoard.ScoreInputUI;
 import scoreBoard.scoreBoradItem.ItemScoreInputUI;
 import setting.SaveAndLoad;

@@ -14,9 +14,9 @@ public class KeySettingUI extends JFrame{
     private JPanel mainPanel;
     private ScreenSize screenSize = ScreenSize.getInstance();
     private KeySetting keySetting = KeySetting.getInstance();
-    private JTextField[] keyTextField = new JTextField[7];
-    private int[] keyCode = new int[7];
-    private JLabel[] keyName = new JLabel[7];
+    private JTextField[] keyTextField = new JTextField[12];
+    private int[] keyCode = new int[12];
+    private JLabel[] keyName = new JLabel[12];
     private JButton[] buttons = new JButton[2];;
     private JPanel radioPanel;
     ImageIcon titleImg1 = new ImageIcon("./src/main/java/start/img/title1.png");
@@ -61,7 +61,7 @@ public class KeySettingUI extends JFrame{
         });
     }
 
-    private void eventListenerBtn() {
+    public void eventListenerBtn() {
         //확인 버튼 클릭시 세팅 값 저장
         buttons[0].addActionListener(new ActionListener() {
             @Override
@@ -71,8 +71,13 @@ public class KeySettingUI extends JFrame{
                 int downBlock = keyCode[2];
                 int turnBlock = keyCode[3];
                 int onetimeBlock = keyCode[4];
-                int stop = keyCode[5];
-                int escape = keyCode[6];
+                int left2P = keyCode[5];
+                int right2P = keyCode[6];
+                int downBlock2P = keyCode[7];
+                int turnBlock2P = keyCode[8];
+                int onetimeBlock2P = keyCode[9];
+                int stop = keyCode[10];
+                int escape = keyCode[11];
 
                 for (int i = 0; i < keyCode.length; i++) {
                     if (keyCode[i] == 0) {
@@ -98,12 +103,32 @@ public class KeySettingUI extends JFrame{
                                 onetimeBlock=keyCode[4];
                                 break;
                             case 5:
-                                keyCode[5] = keySetting.getStop();
-                                stop = keyCode[5];
+                                keyCode[5] = keySetting.getLeft2P();
+                                left2P = keyCode[5];
                                 break;
                             case 6:
-                                keyCode[6] = keySetting.getEscape();
-                                escape = keyCode[6];
+                                keyCode[6] = keySetting.getRight2P();
+                                right2P = keyCode[6];
+                                break;
+                            case 7:
+                                keyCode[7] = keySetting.getDownBlock2P();
+                                downBlock2P = keyCode[7];
+                                break;
+                            case 8:
+                                keyCode[8] = keySetting.getOneTimeDown2P();
+                                onetimeBlock2P = keyCode[8];
+                                break;
+                            case 9:
+                                keyCode[9] = keySetting.getTurnBlock2P();
+                                turnBlock2P = keyCode[9];
+                                break;
+                            case 10:
+                                keyCode[10] = keySetting.getStop();
+                                stop = keyCode[10];
+                                break;
+                            case 11:
+                                keyCode[11] = keySetting.getEscape();
+                                escape = keyCode[11];
                                 break;
 
                         }
@@ -111,7 +136,7 @@ public class KeySettingUI extends JFrame{
                     }
                 }
 
-                keySetting.setKeySetting(left, right, turnBlock, downBlock, stop, onetimeBlock, escape);
+                keySetting.setKeySetting(left, right, turnBlock, downBlock, stop, onetimeBlock, escape,left2P,right2P,turnBlock2P,downBlock2P,onetimeBlock2P);
                 if (keySetting.overLapKeySetting()) {
                      JOptionPane.showConfirmDialog(null, "중복된 key값이 있습니다.","오류",JOptionPane.WARNING_MESSAGE);
                      return;
@@ -131,7 +156,7 @@ public class KeySettingUI extends JFrame{
         });
     }
 
-    private void checkBtn() {
+    public void checkBtn() {
         buttons[0]= new JButton("확인");
         buttons[1]= new JButton("뒤로가기");
         radioPanel.add(buttons[0]);
@@ -140,9 +165,9 @@ public class KeySettingUI extends JFrame{
 
 
 
-    private void selectKeySet() {
+    public void selectKeySet() {
         radioPanel = new JPanel();
-        GridLayout gridLayout=new GridLayout( 8,2);
+        GridLayout gridLayout=new GridLayout( 14,2);
         radioPanel.setLayout(gridLayout);
         radioPanel.setBackground(Color.BLACK);
         radioPanel.setBorder(BorderFactory.createEmptyBorder(screenSize.getHeight() / 4, 0, 0, 0));
@@ -167,13 +192,33 @@ public class KeySettingUI extends JFrame{
         String oneTimeDown = KeyEvent.getKeyText(keySetting.getOneTimeDown());
         keyTextField[4] = new JTextField(oneTimeDown);
 
-        keyName[5] = new JLabel("일시정지");
-        String stop = KeyEvent.getKeyText(keySetting.getStop());
-        keyTextField[5] = new JTextField(stop);
+        keyName[5]=new JLabel("왼쪽 이동(2P)");
+        String left2P = KeyEvent.getKeyText(keySetting.getLeft2P());
+        keyTextField[5]=new JTextField(left2P);
 
-        keyName[6] = new JLabel("게임 중 시작메뉴로");
+        keyName[6]=new JLabel("오른쪽 이동(2P)");
+        String right2P = KeyEvent.getKeyText(keySetting.getRight2P());
+        keyTextField[6] = new JTextField(right2P);
+
+        keyName[7] = new JLabel("내리기(2P)");
+        String downBlock2P = KeyEvent.getKeyText(keySetting.getDownBlock2P());
+        keyTextField[7]=new JTextField(downBlock2P);
+
+        keyName[8] = new JLabel("회전시키기(2P)");
+        String turnBlock2P = KeyEvent.getKeyText(keySetting.getTurnBlock2P());
+        keyTextField[8] = new JTextField(turnBlock2P);
+
+        keyName[9]=new JLabel("한번에 내리기(2P)");
+        String oneTimeDown2P = KeyEvent.getKeyText(keySetting.getOneTimeDown2P());
+        keyTextField[9] = new JTextField(oneTimeDown2P);
+
+        keyName[10] = new JLabel("일시정지");
+        String stop = KeyEvent.getKeyText(keySetting.getStop());
+        keyTextField[10] = new JTextField(stop);
+
+        keyName[11] = new JLabel("게임 중 시작메뉴로");
         String escape = KeyEvent.getKeyText(keySetting.getEscape());
-        keyTextField[6] = new JTextField(escape);
+        keyTextField[11] = new JTextField(escape);
 
         for (int i = 0; i < keyTextField.length; i++) {
             keyName[i].setForeground(Color.white);
@@ -184,7 +229,7 @@ public class KeySettingUI extends JFrame{
         mainPanel.add(radioPanel);
     }
 
-    private void eventListenerKeyField() {
+    public void eventListenerKeyField() {
 
         for (int i = 0; i < keyName.length; i++) {
             int finalI = i;
@@ -207,12 +252,12 @@ public class KeySettingUI extends JFrame{
         }
     }
 
-    private void setTitle() {
+    public void setTitle() {
         JButton titleBtn;
-        if(screenSize.getWidth() == 400){
+        if(screenSize.getWidth() == 800){
             titleBtn = new JButton(titleImg1);
         }
-        else if(screenSize.getWidth() == 600){
+        else if(screenSize.getWidth() == 1024){
             titleBtn = new JButton(titleImg2);
         }
         else{

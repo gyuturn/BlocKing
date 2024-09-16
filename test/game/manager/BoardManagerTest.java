@@ -16,8 +16,8 @@ import static org.junit.Assert.*;
 
 public class BoardManagerTest {
     //dependencies
-    BoardManager boardManager = BoardManager.getInstance();
-    BlockGenerator blockGenerator = BlockGenerator.getInstance();
+    BoardManager boardManager = BoardManager.getInstance(0);
+    BlockGenerator blockGenerator = BlockGenerator.getInstance(0);
 
     @After
     public void resetBoard() {
@@ -88,7 +88,7 @@ public class BoardManagerTest {
         Queue<BlockController> blockQueue = blockGenerator.getBlockQueue();
         //when
         BlockController block = blockQueue.poll();
-        BlockController createdBlock = BoardManager.getInstance().setBlockPos(block, 0, 5);
+        BlockController createdBlock = BoardManager.getInstance(0).setBlockPos(block, 0, 5);
         //then
         //blockI ㅡ모양
         if (blockShape == 0) {
@@ -256,7 +256,7 @@ public class BoardManagerTest {
     public void eraseBlock() {
         //given
         blockGenerator.addBlock();
-        BlockController block = blockGenerator.createBlock();//board에 그려진 상태 0행 5열에 생성되어 있음
+        BlockController block = blockGenerator.createBlock(0);//board에 그려진 상태 0행 5열에 생성되어 있음
         //when
         boardManager.eraseBlock(block);
         //then
@@ -275,7 +275,7 @@ public class BoardManagerTest {
     public void translateBlock() {
         //given
         blockGenerator.addBlock();
-        BlockController block = blockGenerator.createBlock();//board에 그려진 상태 0행 5열에 생성되어 있음
+        BlockController block = blockGenerator.createBlock(0);//board에 그려진 상태 0행 5열에 생성되어 있음
         int beforeCol = block.posCol;
         int beforeRow = block.posRow;
         //when
@@ -317,7 +317,7 @@ public class BoardManagerTest {
                 {'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'}
         };
         //when
-        int eraseLineCount = boardManager.eraseFullLine();
+        int eraseLineCount = boardManager.eraseFullLine(0);
         //then
         Assertions.assertThat(eraseLineCount).isEqualTo(3);
     }
@@ -483,4 +483,67 @@ public class BoardManagerTest {
         //then
         Assertions.assertThat(clearsum).isEqualTo(3);
     }
+
+//    @Test
+//    public void eraseHalfBoard(){
+//        //given
+//        char [][] board = new char[][]{
+//                {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'}, //1행
+//                {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
+//                {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
+//                {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
+//                {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
+//                {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
+//                {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
+//                {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
+//                {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
+//                {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'}, //10행
+//                {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
+//                {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
+//                {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
+//                {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
+//                {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
+//                {'X', ' ', ' ', ' ', '0', '0', ' ', ' ', ' ', ' ', ' ', 'X'},
+//                {'X', ' ', ' ', ' ', '0', '0', ' ', ' ', ' ', ' ', ' ', 'X'},
+//                {'X', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', ' ', 'O', 'X'},
+//                {'X', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', ' ', 'X'},
+//                {'X', 'O', 'O', 'O', 'O', 'O', 'O', 'O', ' ', 'O', 'O', 'X'}, //20행
+//                {'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'},
+//                {'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'}
+//        };
+//        char[][] clearBoard = new char[][]{
+//                {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
+//                {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
+//                {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
+//                {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
+//                {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
+//                {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
+//                {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
+//                {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
+//                {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
+//                {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
+//                {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
+//                {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
+//                {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
+//                {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
+//                {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
+//                {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
+//                {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
+//                {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
+//                {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
+//                {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
+//                {'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'},
+//                {'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'}
+//        };
+//
+//        //when
+//        char[] emptyLine = {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'};
+//        for(int i=0;i<10;i++) {
+//            board[i] = emptyLine.clone();
+//        }
+//        //then
+//        Assertions.assertThat(board).isEqualTo(clearBoard);
+
+
+
 }

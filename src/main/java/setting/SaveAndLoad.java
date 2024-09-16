@@ -70,6 +70,12 @@ public class SaveAndLoad {
         keySettingJson.put("oneTimeDown", keySetting.getOneTimeDown());
         keySettingJson.put("stop", keySetting.getStop());
         keySettingJson.put("escape", keySetting.getEscape());
+        keySettingJson.put("left2P", keySetting.getLeft2P());
+        keySettingJson.put("right2P", keySetting.getRight2P());
+        keySettingJson.put("downBlock2P", keySetting.getDownBlock2P());
+        keySettingJson.put("turnBlock2P", keySetting.getTurnBlock2P());
+        keySettingJson.put("oneTimeDown2P", keySetting.getOneTimeDown2P());
+
 
         try{
             FileWriter keySettingFile = new FileWriter("src/main/java/save/KeySetting.json");
@@ -212,7 +218,12 @@ public class SaveAndLoad {
             int stop = (Integer)getKeySettingMap.get("stop");
             int oneTimeDown = (Integer)getKeySettingMap.get("oneTimeDown");
             int escape = (Integer)getKeySettingMap.get("escape");
-            keySetting.setKeySetting(left, right, turnBlock, downBlock, stop, oneTimeDown, escape);
+            int left2P = (Integer)getKeySettingMap.get("left2P");
+            int right2P = (Integer)getKeySettingMap.get("right2P");
+            int downBlock2P = (Integer)getKeySettingMap.get("downBlock2P");
+            int turnBlock2P = (Integer)getKeySettingMap.get("turnBlock2P");
+            int oneTimeDown2P = (Integer)getKeySettingMap.get("oneTimeDown2P");
+            keySetting.setKeySetting(left, right, turnBlock, downBlock, stop, oneTimeDown, escape,left2P,right2P,turnBlock2P,downBlock2P,oneTimeDown2P);
 
         }
         catch (FileNotFoundException e) {

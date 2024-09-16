@@ -62,7 +62,7 @@ public class SelectGameTypeUI extends JFrame {
             }
         });
     }
-    private void setTitle() {
+    public void setTitle() {
         JButton titleBtn;
         if(screenSize.getWidth() == 800){
             titleBtn = new JButton(titleImg1);
@@ -88,6 +88,8 @@ public class SelectGameTypeUI extends JFrame {
         gameModeBtns[0] = new JRadioButton("Basic-Mode");
         gameModeBtns[1] = new JRadioButton("Item-Mode");
 
+        gameModeBtns[0].setSelected(true);
+
         for (int i = 0; i < 2; i++) {
             gameModeGroup.add(gameModeBtns[i]);
         }
@@ -111,6 +113,8 @@ public class SelectGameTypeUI extends JFrame {
         difficultyBtns[0] = new JRadioButton("EASY");
         difficultyBtns[1] = new JRadioButton("NORMAL");
         difficultyBtns[2] = new JRadioButton("HARD");
+
+        difficultyBtns[0].setSelected(true);
 
         for (int i = 0; i < 3; i++) {
             difficultyGroup.add(difficultyBtns[i]);

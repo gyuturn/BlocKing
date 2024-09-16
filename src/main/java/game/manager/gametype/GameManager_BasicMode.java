@@ -2,10 +2,14 @@ package game.manager.gametype;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import game.GameUI;
 import game.container.BlockGenerator;
 import game.manager.BoardManager;
+import game.manager.DualModeUtils.GameEndForDualUI;
+import game.manager.DualModeUtils.UserNumber;
 import game.manager.GameInfoManager;
 import game.manager.GameManager;
 import game.manager.InGameUIManager;
@@ -17,10 +21,18 @@ public class GameManager_BasicMode extends GameManager {
     
 //#region Singleton
 
-    private static GameManager_BasicMode instance = new GameManager_BasicMode();
-    
-    public static GameManager_BasicMode getInstance() {
-        return instance;
+    private GameManager_BasicMode(int index) {
+        this.index = index;
+    }
+
+    private static GameManager_BasicMode instance = new GameManager_BasicMode(0);
+    private static GameManager_BasicMode instance2 = new GameManager_BasicMode(1);
+
+    private static ArrayList<GameManager_BasicMode> gameManagerList =
+        new ArrayList<GameManager_BasicMode>(Arrays.asList(instance, instance2));
+
+    public static GameManager_BasicMode getInstance(int i) {
+        return gameManagerList.get(i);
     }
 
 //#endregion
@@ -39,6 +51,7 @@ public enum Step {
     BlockMove,
     EraseAnimation,
     EraseLine,
+    SendAttackBoard,
     SetGameBalance,
     CheckGameOver,
 
@@ -68,6 +81,11 @@ protected void gameFramework() { //전체적인 게임의 동작 흐름
 
         case EraseLine:
             curStep = eraseLine();
+            gameFramework();
+            break;
+
+        case SendAttackBoard:
+            curStep = sendAttackBoard();
             gameFramework();
             break;
 
@@ -101,44 +119,63 @@ private Step gameReady() {
 }
 
 public Step createNewBlock() {
-    BlockGenerator.getInstance().addBlock();
-    curBlock = BlockGenerator.getInstance().createBlock();
+    BlockGenerator.getInstance(index).addBlock();
+    curBlock = BlockGenerator.getInstance(index).createBlock(index);
 
-    BlockController nextBlock = BlockGenerator.getInstance().blockQueue.peek();
-    BoardManager.getInstance().setNextBlockColor(nextBlock);
-    InGameUIManager.getInstance().drawNextBlockInfo(nextBlock);
+    BlockController nextBlock = BlockGenerator.getInstance(index).blockQueue.peek();
+    BoardManager.getInstance(index).setNextBlockColor(nextBlock);
+    InGameUIManager.getInstance().drawNextBlockInfo(nextBlock, index);
     onBlockCreate();
 
     return Step.BlockMove;
 }
 
 public Step blockMove() {
-    isBlockMovable = BoardManager.getInstance().checkBlockMovable(curBlock);
+    isBlockMovable = BoardManager.getInstance(index).checkBlockMovable(curBlock);
     if(isBlockMovable) {
-        BoardManager.getInstance().translateBlock(curBlock, 1, 0);
+        BoardManager.getInstance(index).translateBlock(curBlock, 1, 0);
         onBlockMove();
+
+        isBlockMovable = BoardManager.getInstance(index).checkBlockMovable(curBlock);
+        if(!isBlockMovable)
+        {
+            return Step.EraseAnimation;
+        }
         return Step.BlockMove;
     }
     else
+    {
         return Step.EraseAnimation;
+    }   
 }
 
 private Step eraseAnimation() {
     
-    BoardManager.getInstance().eraseEvent(targetLineIndexList);
+    BoardManager.getInstance(index).eraseEvent(targetLineIndexList, index);
     return Step.EraseLine;
 }
 
 
-public Step checkLineDelete() {
+
+
 
 private Step eraseLine() {
 
-    int curLineCount = BoardManager.getInstance().eraseFullLine();
+
+    int curLineCount = BoardManager.getInstance(index).eraseFullLine(index);
     onLineErase(curLineCount);
 
+    return Step.SendAttackBoard;
+}
+
+private Step sendAttackBoard() {
+
+    if(UserNumber.getInstance().user==2) {
+        BoardManager.getInstance(index).attackEvent(index);
+    }
     return Step.SetGameBalance;
 }
+
 
 private Step setGameBalance() {
     curSpeed = basicSpeed + addSpeed * (lineCount + blockCount);
@@ -149,11 +186,11 @@ private Step setGameBalance() {
 }
 
 public Step checkGameOver() {
-    BlockController nextBlock = BlockGenerator.getInstance().blockQueue.peek();
+    BlockController nextBlock = BlockGenerator.getInstance(index).blockQueue.peek();
     for(int i=0; i<nextBlock.height(); i++) {
         for(int j=0; j<nextBlock.width(); j++) {
             if(nextBlock.getShape(i, j) != ' ') {
-                if(BoardManager.getInstance().board[i][j + 5] != ' ')
+                if(BoardManager.getInstance(index).board[i][j + 5] != ' ')
                     return Step.GameOver;
             }
         }
@@ -163,9 +200,16 @@ public Step checkGameOver() {
 
 @Override
 protected void gameOver() {
-    onGameEnd();
-    new ScoreInputUI(score,GameInfoManager.getInstance().difficultyToString(difficulty));
-
+    if(UserNumber.getInstance().user==2){
+        instance.onGameEnd();
+        instance2.onGameEnd();
+        new GameEndForDualUI(instance.score, instance2.score);
+    }
+    else{
+        instance.onGameEnd();
+        new ScoreInputUI(score,GameInfoManager.getInstance().difficultyToString(difficulty));
+    }
+    GameUI.getInstance().setVisible(false);
 }
 
 //#endregion
@@ -175,8 +219,19 @@ protected void gameOver() {
 public void initKeyListener() {
     interaction_play = new Interaction_Play();
     interaction_utils = new Interaction_Utils();
-    GameUI.getInstance().pane.addKeyListener(interaction_play);
-    GameUI.getInstance().pane.addKeyListener(interaction_utils);
+    //GameUI.getInstance().pane[index].addKeyListener(interaction_play);
+    //GameUI.getInstance().pane[index].addKeyListener(interaction_utils);
+
+    if(UserNumber.getInstance().user==2) {
+        GameUI.getInstance().pane[0].addKeyListener(interaction_play);
+        GameUI.getInstance().pane[0].addKeyListener(interaction_utils);
+        GameUI.getInstance().pane[1].addKeyListener(interaction_play);
+        GameUI.getInstance().pane[1].addKeyListener(interaction_utils);
+    }
+    else{
+        GameUI.getInstance().pane[0].addKeyListener(interaction_play);
+        GameUI.getInstance().pane[0].addKeyListener(interaction_utils);
+    }
 }
 
 @Override
@@ -193,11 +248,11 @@ protected void initGameStatus() {
 }
 
 protected void initBoardManage() {
-    BoardManager.getInstance().initBoard();
+    BoardManager.getInstance(index).initBoard();
 }
 
 protected void initBlockGenerator() {
-    BlockGenerator.getInstance().initBlockQueue();
+    BlockGenerator.getInstance(index).initBlockQueue();
 }
 
 //#endregion
@@ -205,7 +260,7 @@ protected void initBlockGenerator() {
 //#region Events
 private int onBlockMove() {
     score += curSpeed;
-
+    InGameUIManager.getInstance().drawScore(index);
     return 0;
 }
 
@@ -217,6 +272,7 @@ public int onLineErase(int count) {
     }
 
     lineCount += count;
+    InGameUIManager.getInstance().drawScore(index);
 
     return 0;
 }
@@ -224,6 +280,7 @@ public int onLineErase(int count) {
 private int onBlockCreate() {
     score += curSpeed;
     blockCount++;
+    InGameUIManager.getInstance().drawScore(index);
 
     return 0;
 }
@@ -249,41 +306,66 @@ public class Interaction_Play implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e) {
-        System.out.println("e.getKeyCode() = " + e.getKeyCode());
-        if (keySetting.getDownBlock() == e.getKeyCode()) {
-            blockMove();
-            InGameUIManager.getInstance().drawBoard();
-            System.out.println("input down");
-        }
-        else if (keySetting.getRight() == e.getKeyCode()) {
-            BoardManager.getInstance().translateBlock(curBlock, 0, 1);
-            InGameUIManager.getInstance().drawBoard();
-            System.out.println("input right");
-        }
-        else if (keySetting.getLeft() == e.getKeyCode()) {
-            BoardManager.getInstance().translateBlock(curBlock, 0, -1);
-            InGameUIManager.getInstance().drawBoard();
-            System.out.println("input left");
-        }
-        else if (keySetting.getTurnBlock() == e.getKeyCode()) {
-            BoardManager.getInstance().eraseBlock(curBlock);
-            curBlock.rotate();
-            if(!BoardManager.getInstance().checkDrawable(curBlock.shape, curBlock.posRow, curBlock.posCol)) {
+        if(index==0) {
+            if (keySetting.getDownBlock() == e.getKeyCode()) {
+                blockMove();
+            } else if (keySetting.getRight() == e.getKeyCode()) {
+                BoardManager.getInstance(index).translateBlock(curBlock, 0, 1);
+            } else if (keySetting.getLeft() == e.getKeyCode()) {
+                BoardManager.getInstance(index).translateBlock(curBlock, 0, -1);
+            } else if (keySetting.getTurnBlock() == e.getKeyCode()) {
+                BoardManager.getInstance(index).eraseBlock(curBlock);
                 curBlock.rotate();
-                curBlock.rotate();
-                curBlock.rotate();
+                if (!BoardManager.getInstance(index).checkDrawable(curBlock.shape, curBlock.posRow, curBlock.posCol)) {
+                    curBlock.rotate();
+                    curBlock.rotate();
+                    curBlock.rotate();
+                }
+                BoardManager.getInstance(index).setBlockPos(curBlock, curBlock.posRow, curBlock.posCol);
+            } else if (keySetting.getOneTimeDown() == e.getKeyCode()) {
+                while (BoardManager.getInstance(index).checkBlockMovable(curBlock)) {
+                    BoardManager.getInstance(index).translateBlock(curBlock, 1, 0);
+                    onBlockMove();
+                    InGameUIManager.getInstance().drawScore(index);
+                }
+                timer.restart();
+                InGameUIManager.getInstance().drawBoard(index);
             }
-            BoardManager.getInstance().setBlockPos(curBlock, curBlock.posRow, curBlock.posCol);
-            InGameUIManager.getInstance().drawBoard();
-            System.out.println("input up");
-        } else if (keySetting.getOneTimeDown() == e.getKeyCode()) {
-            while(BoardManager.getInstance().checkBlockMovable(curBlock)) {
-                BoardManager.getInstance().translateBlock(curBlock, 1, 0);
-            }
-            timer.restart();
-            InGameUIManager.getInstance().drawBoard();
         }
+        else{
+            if (keySetting.getDownBlock2P() == e.getKeyCode()) {
+                blockMove();
+            } else if (keySetting.getRight2P() == e.getKeyCode()) {
+                BoardManager.getInstance(index).translateBlock(curBlock, 0, 1);
+            } else if (keySetting.getLeft2P() == e.getKeyCode()) {
+                BoardManager.getInstance(index).translateBlock(curBlock, 0, -1);
+            } else if (keySetting.getTurnBlock2P() == e.getKeyCode()) {
+                BoardManager.getInstance(index).eraseBlock(curBlock);
+                curBlock.rotate();
+                if (!BoardManager.getInstance(index).checkDrawable(curBlock.shape, curBlock.posRow, curBlock.posCol)) {
+                    curBlock.rotate();
+                    curBlock.rotate();
+                    curBlock.rotate();
+                }
+                BoardManager.getInstance(index).setBlockPos(curBlock, curBlock.posRow, curBlock.posCol);
+            } else if (keySetting.getOneTimeDown2P() == e.getKeyCode()) {
+                while (BoardManager.getInstance(index).checkBlockMovable(curBlock)) {
+                    BoardManager.getInstance(index).translateBlock(curBlock, 1, 0);
+                    onBlockMove();
+                    InGameUIManager.getInstance().drawScore(index);
+                }
+                timer.restart();
+                InGameUIManager.getInstance().drawBoard(index);
+            }
+        }
+        isBlockMovable = BoardManager.getInstance(index).checkBlockMovable(curBlock);
+        if(isBlockMovable) {
+            curStep = Step.BlockMove;
+        }
+        InGameUIManager.getInstance().drawScore(index);
+        InGameUIManager.getInstance().drawBoard(index);
     }
+
 
     @Override
     public void keyReleased(KeyEvent e) {
@@ -300,7 +382,7 @@ public class Interaction_Utils implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         if(keySetting.getStop() == e.getKeyCode()) {
-            BoardManager.getInstance().printBoard();
+            BoardManager.getInstance(index).printBoard();
             if(timer.isRunning())
                 stopGameFramework();
             else

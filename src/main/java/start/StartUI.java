@@ -1,7 +1,10 @@
 package start;
 
 import game.GameUI;
+import game.GameUI;
+import game.SelectDualGameTypeUI;
 import game.SelectGameTypeUI;
+import game.manager.DualModeUtils.UserNumber;
 import scoreBoard.NoItemScoreBoard.ScoreBoardUI;
 import scoreBoard.SelectScoreBoardUI;
 import setting.DuplicateKeySettingException;
@@ -15,6 +18,8 @@ import javax.swing.border.CompoundBorder;
 import java.awt.*;
 import java.awt.event.*;
 
+
+
 import static start.IsButtonClicked.btnClicked;
 
 public class StartUI extends JFrame {
@@ -22,10 +27,21 @@ public class StartUI extends JFrame {
     public  JPanel mainPanel;
     private ScreenSize screenSize = ScreenSize.getInstance();
     private KeyListener startInteraction;
+    public UserNumber userNumber = UserNumber.getInstance();
     ImageIcon titleImg1 = new ImageIcon("./src/main/java/start/img/title1.png");
     ImageIcon titleImg2 = new ImageIcon("./src/main/java/start/img/title2.png");
     ImageIcon titleImg3 = new ImageIcon("./src/main/java/start/img/title3.png");
 
+    private static StartUI instance;
+    public static StartUI getInstance() {
+        if(instance != null)
+            return instance;
+        else
+        {
+            System.out.println("Error : GameUI Instance == null ");
+            return null;
+        }
+    }
 
 
     public StartUI(){
@@ -37,6 +53,7 @@ public class StartUI extends JFrame {
 
         //board display setting
         mainPanel = new JPanel();
+        mainPanel.setLayout(null);
         mainPanel.setBackground(Color.BLACK);
 
         CompoundBorder border = BorderFactory.createCompoundBorder(
@@ -47,22 +64,34 @@ public class StartUI extends JFrame {
 
 
 
+        instance = this;
 
-        this.getContentPane().add(mainPanel,BorderLayout.CENTER);
+        this.getContentPane().add(mainPanel);
 
 
         titleBtn();
 
         JButton gameButtons = new JButton("게임 시작");
+        gameButtons.setBounds(this.getWidth()/2-this.getWidth()/12,this.getHeight()/3,this.getWidth()/6,this.getHeight()/16);
         mainPanel.add(gameButtons);
 
+        JButton dualGameButtons = new JButton("2P 게임 시작");
+        dualGameButtons.setBounds(this.getWidth()/2-this.getWidth()/12,this.getHeight()/3+this.getHeight()/16,this.getWidth()/6,this.getHeight()/16);
+        mainPanel.add(dualGameButtons);
+
         JButton settingButtons = new JButton("설정 메뉴");
+        settingButtons.setBounds(this.getWidth()/2-this.getWidth()/12,this.getHeight()/3+this.getHeight()*2/16,this.getWidth()/6,this.getHeight()/16);
+
         mainPanel.add(settingButtons);
 
         JButton scbButtons = new JButton("스코어보드");
+        scbButtons.setBounds(this.getWidth()/2-this.getWidth()/12,this.getHeight()/3+this.getHeight()*3/16,this.getWidth()/6,this.getHeight()/16);
+
         mainPanel.add(scbButtons);
 
         JButton exitButtons = new JButton("게임 종료");
+        exitButtons.setBounds(this.getWidth()/2-this.getWidth()/12,this.getHeight()/3+this.getHeight()*4/16,this.getWidth()/6,this.getHeight()/16);
+
         mainPanel.add(exitButtons);
 
 
@@ -75,6 +104,7 @@ public class StartUI extends JFrame {
         gameButtons.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                userNumber.user=1;
                 new SelectGameTypeUI();
                 dispose();
             }
@@ -84,23 +114,24 @@ public class StartUI extends JFrame {
             @Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_UP) {
-                    if(btnClicked.isGameBtnClicked()){
+                    if (btnClicked.isGameBtnClicked()) {
                         btnClicked.setExitBtnClicked();
                         exitButtons.setForeground(Color.red);
                         gameButtons.setForeground(Color.black);
-                    }
-                    else if(btnClicked.isSettingBtnClicked()){
+                    } else if (btnClicked.isDualGameBtnClicked()) {
                         btnClicked.setGameBtnClicked();
                         gameButtons.setForeground(Color.red);
+                        dualGameButtons.setForeground(Color.black);
+                    } else if (btnClicked.isSettingBtnClicked()) {
+                        btnClicked.setDualGameBtnClicked();
+                        dualGameButtons.setForeground(Color.red);
                         settingButtons.setForeground(Color.black);
-                    }
-                    else if(btnClicked.isScbBtnClicked()){
+                    } else if (btnClicked.isScbBtnClicked()) {
                         btnClicked.setSettingBtnClicked();
                         settingButtons.setForeground(Color.red);
                         scbButtons.setForeground(Color.black);
 
-                    }
-                    else if(btnClicked.isExitBtnClicked()){
+                    } else if (btnClicked.isExitBtnClicked()) {
                         btnClicked.setScbBtnClicked();
                         scbButtons.setForeground(Color.red);
                         exitButtons.setForeground(Color.black);
@@ -108,10 +139,13 @@ public class StartUI extends JFrame {
 
                 } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
                     if(btnClicked.isGameBtnClicked()){
+                        btnClicked.setDualGameBtnClicked();
+                        dualGameButtons.setForeground(Color.red);
+                        gameButtons.setForeground(Color.black);
+                    }else if(btnClicked.isDualGameBtnClicked()){
                         btnClicked.setSettingBtnClicked();
                         settingButtons.setForeground(Color.red);
-                        gameButtons.setForeground(Color.black);
-
+                        dualGameButtons.setForeground(Color.black);
                     }
                     else if(btnClicked.isSettingBtnClicked()){
                         btnClicked.setScbBtnClicked();
@@ -129,33 +163,37 @@ public class StartUI extends JFrame {
                         exitButtons.setForeground(Color.black);
                     }
                 } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-                    if(btnClicked.isGameBtnClicked()){
+                    if (btnClicked.isGameBtnClicked()) {
                         btnClicked.setExitBtnClicked();
                         exitButtons.setForeground(Color.red);
                         gameButtons.setForeground(Color.black);
-                    }
-                    else if(btnClicked.isSettingBtnClicked()){
+                    } else if (btnClicked.isDualGameBtnClicked()) {
                         btnClicked.setGameBtnClicked();
                         gameButtons.setForeground(Color.red);
+                        dualGameButtons.setForeground(Color.black);
+                    } else if (btnClicked.isSettingBtnClicked()) {
+                        btnClicked.setDualGameBtnClicked();
+                        dualGameButtons.setForeground(Color.red);
                         settingButtons.setForeground(Color.black);
-                    }
-                    else if(btnClicked.isScbBtnClicked()){
+                    } else if (btnClicked.isScbBtnClicked()) {
                         btnClicked.setSettingBtnClicked();
                         settingButtons.setForeground(Color.red);
                         scbButtons.setForeground(Color.black);
 
-                    }
-                    else if(btnClicked.isExitBtnClicked()){
+                    } else if (btnClicked.isExitBtnClicked()) {
                         btnClicked.setScbBtnClicked();
                         scbButtons.setForeground(Color.red);
                         exitButtons.setForeground(Color.black);
                     }
                 } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
                     if(btnClicked.isGameBtnClicked()){
+                        btnClicked.setDualGameBtnClicked();
+                        dualGameButtons.setForeground(Color.red);
+                        gameButtons.setForeground(Color.black);
+                    }else if(btnClicked.isDualGameBtnClicked()){
                         btnClicked.setSettingBtnClicked();
                         settingButtons.setForeground(Color.red);
-                        gameButtons.setForeground(Color.black);
-
+                        dualGameButtons.setForeground(Color.black);
                     }
                     else if(btnClicked.isSettingBtnClicked()){
                         btnClicked.setScbBtnClicked();
@@ -174,7 +212,13 @@ public class StartUI extends JFrame {
                     }
                 } else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                     if(btnClicked.isGameBtnClicked()){
-                        new GameUI();
+                        //new GameUI();
+                        new SelectGameTypeUI();
+                        setVisible(false);
+                    }
+                    else if(btnClicked.isDualGameBtnClicked()){
+                        userNumber.user=2;
+                        new SelectDualGameTypeUI();
                         setVisible(false);
                     }
                     else if(btnClicked.isSettingBtnClicked()){
@@ -194,6 +238,15 @@ public class StartUI extends JFrame {
         });
         gameButtons.requestFocus();
 
+        //다음으로 넘어가는 event(2p 모드 선택)
+        dualGameButtons.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                userNumber.user=2;
+                new SelectDualGameTypeUI();
+                setVisible(false);
+            }
+        });
 
 
 
@@ -251,10 +304,10 @@ public class StartUI extends JFrame {
     public void titleBtn(){
         JButton settingTitles = new JButton(titleImg1);
         //설정에서 이미지 크기를 변경하면 타이틀 이미지 크기도 조정됨
-        if(screenSize.getWidth() == 400){
+        if(screenSize.getWidth() == 800){
             settingTitles = new JButton(titleImg1);
         }
-        else if(screenSize.getWidth() == 600){
+        else if(screenSize.getWidth() == 1024){
             settingTitles = new JButton(titleImg2);
         }
         else{
@@ -263,6 +316,9 @@ public class StartUI extends JFrame {
         settingTitles.setBorderPainted(false);
         settingTitles.setFocusPainted(false);
         settingTitles.setContentAreaFilled(false);
+        settingTitles.setBounds(0,30,this.getWidth(),this.getHeight()/8);
+
+
 
         settingTitles.setPreferredSize(new Dimension((int)(screenSize.getWidth()*0.8), (int)(screenSize.getWidth()*0.17))); // 버튼 크기 지정
         mainPanel.add(settingTitles);
@@ -272,46 +328,17 @@ public class StartUI extends JFrame {
         settingTitles.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                //new GameUI();
                 new GameUI();
                 setVisible(false);
             }
         });
     }
 
-    public void gameBtn(){
-
-    }
-
-    public void settingBtn(){
-
-    }
-
-    public void scbBtn(){//스코어보드 버튼
-
-    }
-
-    public void exitBtn(){
-
-    }
 
 
 
-    public void defaultBtn(){
-        JButton defaultButtons = new JButton("기본값 버튼입니다");
-        mainPanel.add(defaultButtons);
 
-        boolean isClicked = false;
-        if(isClicked == true){
-            defaultButtons.setForeground(Color.red);
-        }
 
-        //다음으로 넘어가는 event
-        defaultButtons.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("버튼의 기본값입니다.");
-            }
-        });
-    }
 
 }

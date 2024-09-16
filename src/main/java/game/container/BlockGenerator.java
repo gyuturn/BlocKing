@@ -1,5 +1,7 @@
 package game.container;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Random;
@@ -16,17 +18,26 @@ import game.model.blocktypes.TBlock;
 import game.model.blocktypes.ZBlock;
 
 import game.manager.BoardManager;
-import game.manager.gametype.GameManager_NormalMode;
 import game.model.difficulty.RouletteWheel;
 
 public class BlockGenerator {
 
 	public Queue<BlockController> blockQueue = new LinkedList<>(); //앞으로 생성할 블록들
 
-    private static BlockGenerator instance = new BlockGenerator();
+    private static BlockGenerator instance = new BlockGenerator(0);
+	private static BlockGenerator instance2 = new BlockGenerator(1);
+	private int index;
     
-    public static BlockGenerator getInstance() {
-        return instance;
+
+	private BlockGenerator(int index) {
+        this.index = index;
+    }
+
+    private static ArrayList<BlockGenerator> gameManagerList =
+        new ArrayList<BlockGenerator>(Arrays.asList(instance, instance2));
+		
+	public static BlockGenerator getInstance(int i) {
+        return gameManagerList.get(i);
     }
 
 	private GameInfoManager gameInfoManager = GameInfoManager.getInstance();
@@ -38,31 +49,31 @@ public class BlockGenerator {
 	}
 
 
-    
-    public BlockController getRandomBlock() {
+
+	public BlockController getRandomBlock() {
 		block = RouletteWheel.GenerateBlockByValue(gameInfoManager.difficulty);
 		switch(BlockGenerator.block) {
-		case 0:
-			return new IBlock();
-		case 1:
-			return new JBlock();
-		case 2:
-			return new LBlock();
-		case 3:
-			return new ZBlock();
-		case 4:
-			return new SBlock();
-		case 5:
-			return new TBlock();
-		case 6:
-			return new OBlock();			
+			case 0:
+				return new IBlock();
+			case 1:
+				return new JBlock();
+			case 2:
+				return new LBlock();
+			case 3:
+				return new ZBlock();
+			case 4:
+				return new SBlock();
+			case 5:
+				return new TBlock();
+			case 6:
+				return new OBlock();
 		}
 		return new LBlock();
 	}
 
-    public void initNewBlockPos(BlockController curBlock, int row, int col)
+    public void initNewBlockPos(BlockController curBlock, int row, int col, int index)
     {
-        BoardManager.getInstance().setBlockPos(curBlock, row, col);
+        BoardManager.getInstance(index).setBlockPos(curBlock, row, col);
     }
 
 
@@ -72,11 +83,9 @@ public class BlockGenerator {
 	}
 
 
-
-	public BlockController createBlock() {
+	public BlockController createBlock(int index) {
 		BlockController curBlock = blockQueue.poll();
-		initNewBlockPos(curBlock, 0, 5);
-		GameManager_NormalMode.getInstance().curBlock = curBlock;
+		initNewBlockPos(curBlock, 0, 5, index);
 		return curBlock;
 	}
 

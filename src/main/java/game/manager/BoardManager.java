@@ -6,8 +6,8 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import game.manager.DualModeUtils.UserNumber;
 import game.model.BlockController;
-import game.model.BlockModel;
 
 import javax.swing.*;
 
@@ -16,10 +16,20 @@ public class BoardManager {
 //#region Singleton
     
     private static BoardManager instance = new BoardManager();
+    private static BoardManager instance2 = new BoardManager();
 
+    private static ArrayList<BoardManager> boardManagerList =
+        new ArrayList<BoardManager>(Arrays.asList(instance, instance2));
+
+    public static BoardManager getInstance(int i) {
+        return boardManagerList.get(i);
+    }
+
+    /*
     public static BoardManager getInstance() {
         return instance;
     }
+    */
     
 //#endregion
 
@@ -29,7 +39,11 @@ public class BoardManager {
     // 'X' : 테두리
     // 'O' :
     public char[][] board;
+    public char[][] board2;
+    public char[][] board3;
+    public char[][] attackBoard;
     public char[][] boardColor;
+    public char[][] attackBoardColor;
     public char[][] nextBlock;
     public char[][] nextBlockColor;
     int m =5; int n=6;
@@ -60,6 +74,46 @@ public class BoardManager {
             {'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'}
         };
 
+        board2 = new char [][] { //lineclear되기 전 board의 상태를 저장
+                {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'}, //1행
+                {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
+                {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
+                {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
+                {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
+                {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
+                {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
+                {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
+                {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
+                {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'}, //10행
+                {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
+                {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
+                {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
+                {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
+                {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
+                {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
+                {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
+                {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
+                {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'},
+                {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'}, //20행
+                {'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'},
+                {'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X'}
+        };
+
+        attackBoard = new char [][] {
+                {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}, //1행,
+                {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+                {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+                {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+                {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+                {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+                {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+                {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+                {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '},
+                {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '}  //10행
+        };
+
+
+
         boardColor = new char [][] {
             {'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B'}, //1행
             {'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B'},
@@ -77,12 +131,26 @@ public class BoardManager {
             {'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B'},
             {'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B'},
             {'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B'},
-            {'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B'}, 
+            {'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B'},
             {'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B'},
             {'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B'},
             {'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B'}, //20행
             {'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B'},
             {'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B', 'B'},
+        };
+
+        attackBoardColor = new char [][] {
+                {'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L'},//1행
+                {'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L'},
+                {'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L'},
+                {'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L'},
+                {'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L'},
+                {'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L'},
+                {'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L'},
+                {'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L'},
+                {'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L'},
+                {'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L', 'L'} //10행
+
         };
 
         nextBlock = new char [][]{
@@ -109,6 +177,10 @@ public class BoardManager {
                     board[targetRow+i][targetCol+j] = 'O';
                     boardColor[targetRow+i][targetCol+j] = curBlock.getColor();
                 }
+                else if(curBlock.getShape(i, j) != ' ') {
+                    board[targetRow+i][targetCol+j] = curBlock.getShape(i,j);
+                    boardColor[targetRow+i][targetCol+j] = 'W';
+                }
 				    
             }
         }
@@ -123,7 +195,7 @@ public class BoardManager {
     public void eraseBlock(BlockController curBlock) {
         for(int i=0; i<curBlock.height(); i++) {
             for(int j=0; j<curBlock.width(); j++) {
-                if(curBlock.getShape(i, j) == 'O')
+                if(curBlock.getShape(i, j) != ' ')
                     board[curBlock.posRow+i][curBlock.posCol+j] = ' ';
             }
         }
@@ -139,22 +211,119 @@ public class BoardManager {
     //#endregion
 
     //#region 행 삭제 관련
-    public int eraseFullLine() {
+    public int eraseFullLine(int boardIndex) {
+        if(boardIndex == 0){
+            boardIndex = 1;
+        }
+        else if(boardIndex == 1){
+            boardIndex = 0;
+        }
+        int clear[] = new int[22];
+        int clearsum = 0;
         int lineCount = 0;
-        char[] checker = {'X', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'X'};
+        for(int i=0; i<20; i++) {
+            boolean isFull = true;
+            for(int j = 1; j<11; j++ ) {
+                if(board[i][j] == ' ') {
+                    isFull = false;
+                }
+            }
+            if(isFull) {
+                clear[i] = 1;
+            }
+        }
+        for(int i=0; i<20; i++) {
+            clearsum += clear[i];
+        }
 
-        for(int i=0; i<22; i++) {
-            if(Arrays.equals(board[i], checker)) {
+        for(int i=0; i<20; i++) {
+            boolean isFull = true;
+            for(int j = 1; j<11; j++ ) {
+                if(board[i][j] == ' ') {
+                    isFull = false;
+                } 
+            }
+            if(isFull) {
                 for(int j=i; j>0; j--)
                 {
                     board[j] = board[j-1].clone();
+                    boardColor[j] = boardColor[j-1].clone();
                 }
-                
+                if(UserNumber.getInstance().user==2 && clearsum >=2) {
+                    for(int j=0; j<9; j++)
+                    {
+                        attackBoard[j] = attackBoard[j+1].clone();
+                    }
+                    for(int j=0; j<10; j++)
+                    {
+                        attackBoard[9][j] = board2[i][j+1];
+                    }
+                    InGameUIManager.getInstance().drawAttackBoard(boardIndex);
+
+                }
+
                 lineCount++;
             }
         }
-        
+
         return lineCount;
+    }
+
+    public void attackEvent(int boardIndex){
+
+
+        if(boardIndex == 0){
+            boardIndex = 1;
+        }
+        else if(boardIndex == 1){
+            boardIndex = 0;
+        }
+
+        int attacklinecount = 0;
+        for(int i=0; i<10; i++) {
+            int attackcount =0;
+            for (int j = 0; j < 10; j++) {
+                if (BoardManager.getInstance(boardIndex).attackBoard[i][j] == ' ') {
+                    attackcount++;
+                }
+            }
+            if (attackcount < 10) {
+                attacklinecount++;
+            }
+        }
+
+        for(int i=0; i<20-attacklinecount; i++)
+        {
+            board[i] = board[i+attacklinecount].clone();
+            boardColor[i] = boardColor[i+attacklinecount].clone();
+        }
+        for(int i=20-attacklinecount; i<20; i++)
+        {
+            board[i][0] = 'X';
+            for(int j=1; j<11; j++)
+            {
+
+                board[i][j] = BoardManager.getInstance(boardIndex).attackBoard[i-10][j-1];
+                boardColor[i][j] = 'L';
+            }
+            board[i][11] = 'X';
+        }
+
+        for(int i=0; i<20; i++) {
+            for(int j = 1; j<11; j++ ) {
+                board2[i][j] = board[i][j];
+            }
+        }
+
+        BoardManager.getInstance(boardIndex).eraseAttackBoard();
+        if(boardIndex == 0){
+            boardIndex = 1;
+        }
+        else if(boardIndex == 1){
+            boardIndex = 0;
+        }
+        InGameUIManager.getInstance().drawAttackBoard(boardIndex);
+
     }
 
     public void initBoard(){
@@ -167,6 +336,13 @@ public class BoardManager {
         char[] emptyLine = {'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'};
 
         board[row] = emptyLine.clone();
+    }
+
+    public void eraseAttackBoard(){
+        char[] emptyAttackLine = {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' '};
+        for(int i=0; i<10; i++){
+            attackBoard[i] = emptyAttackLine.clone();
+        }
     }
 
     public void eraseHalfBoard(){
@@ -183,15 +359,27 @@ public class BoardManager {
     //#endregion
 
     //#region animation
-    public void eraseEvent(ArrayList<Integer> additionalIndex){
-        char[] checker = {'X', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'O', 'X'};
+    public void eraseEvent(ArrayList<Integer> additionalIndex, int boardIndex){
         int clear[] = new int[22];
         int clearsum = 0;
         m=5; n=6;
         Arrays.fill(clear,0);
-        for(int i=0; i<22; i++) {
-            if(Arrays.equals(board[i], checker)) {
-                clear[i]=1;
+
+        for(int i=0; i<20; i++) {
+            boolean isFull = true;
+            for(int j = 1; j<11; j++ ) {
+                if(board[i][j] == ' ') {
+                    isFull = false;
+                } 
+            }
+            //줄삭제 아이템 활성화 : L이 있는 줄 제거
+            for(int j = 1; j<11; j++ ) {
+                if(board[i][j] == 'L') {
+                    isFull = true;
+                }
+            }
+            if(isFull) {
+                clear[i] = 1;
             }
         }
 
@@ -200,16 +388,27 @@ public class BoardManager {
             clear[index] = 1;            
         }
         
-        for(int i=0; i<22; i++) {
+        for(int i=0; i<20; i++) {
             clearsum += clear[i];
         }
 
         if(clearsum > 0) {
-            Timer timers = new Timer(1, new ActionListener()
-            {
+
+            Timer timers = new Timer(1,
+            
+            new ActionListener() {
                 int phase = 1;
+/*
+                
+*/
                 public void actionPerformed (ActionEvent e)
                 {
+                    if(GameManager.curSpeed > 2500)
+                    {
+                        System.out.println("hello");
+                        phase += 10;
+                    }
+
                     switch (phase){
                         case 1:  for(int i=0; i<22; i++) {
                             if(clear[i]==1) {
@@ -220,7 +419,7 @@ public class BoardManager {
                                 }
                             }
                         }
-                            InGameUIManager.getInstance().drawBoard();
+                            InGameUIManager.getInstance().drawBoard(boardIndex);
                             phase++;
                             break;
                         case 2:  for(int i=0; i<22; i++) {
@@ -233,7 +432,7 @@ public class BoardManager {
                                 }
                             }
                         }
-                            InGameUIManager.getInstance().drawBoard();
+                            InGameUIManager.getInstance().drawBoard(boardIndex);
                             phase++;
                             break;
                         case 3:  for(int i=0; i<22; i++) {
@@ -246,7 +445,7 @@ public class BoardManager {
                                 }
                             }
                         }
-                            InGameUIManager.getInstance().drawBoard();
+                            InGameUIManager.getInstance().drawBoard(boardIndex);
                             phase++;
                             break;
                         case 4:  for(int i=0; i<22; i++) {
@@ -260,7 +459,7 @@ public class BoardManager {
                                 }
                             }
                         }
-                            InGameUIManager.getInstance().drawBoard();
+                            InGameUIManager.getInstance().drawBoard(boardIndex);
                             phase++;
                             break;
                         case 5:  for(int i=0; i<22; i++) {
@@ -274,7 +473,7 @@ public class BoardManager {
                                 }
                             }
                         }
-                            InGameUIManager.getInstance().drawBoard();
+                            InGameUIManager.getInstance().drawBoard(boardIndex);
                             phase++;
                             break;
                         case 6:  for(int i=0; i<22; i++) {
@@ -288,7 +487,7 @@ public class BoardManager {
                                 }
                             }
                         }
-                            InGameUIManager.getInstance().drawBoard();
+                            InGameUIManager.getInstance().drawBoard(boardIndex);
                             phase++;
                             break;
                         case 7:  for(int i=0; i<22; i++) {
@@ -302,7 +501,7 @@ public class BoardManager {
                                 }
                             }
                         }
-                            InGameUIManager.getInstance().drawBoard();
+                            InGameUIManager.getInstance().drawBoard(boardIndex);
                             phase++;
                             break;
                         case 8:  for(int i=0; i<22; i++) {
@@ -316,7 +515,7 @@ public class BoardManager {
                                 }
                             }
                         }
-                            InGameUIManager.getInstance().drawBoard();
+                            InGameUIManager.getInstance().drawBoard(boardIndex);
                             phase++;
                             break;
                         case 9:  for(int i=0; i<22; i++) {
@@ -328,7 +527,7 @@ public class BoardManager {
                                 board[i][10] = ' ';
                             }
                         }
-                            InGameUIManager.getInstance().drawBoard();
+                            InGameUIManager.getInstance().drawBoard(boardIndex);
                             phase++;
                             break;
                         case 10: for(int i=0; i<22; i++) {
@@ -339,7 +538,7 @@ public class BoardManager {
                                 board[i][10] = '┓';
                             }
                         }
-                            InGameUIManager.getInstance().drawBoard();
+                            InGameUIManager.getInstance().drawBoard(boardIndex);
                             phase++;
                             break;
                         case 11: for(int i=0; i<22; i++) {
@@ -350,7 +549,7 @@ public class BoardManager {
                                 board[i][10] = '┛';
                             }
                         }
-                            InGameUIManager.getInstance().drawBoard();
+                            InGameUIManager.getInstance().drawBoard(boardIndex);
                             phase++;
                             break;
                         case 12: for(int i=0; i<22; i++) {
@@ -362,7 +561,7 @@ public class BoardManager {
                                 board[i][10] = ' ';
                             }
                         }
-                            InGameUIManager.getInstance().drawBoard();
+                            InGameUIManager.getInstance().drawBoard(boardIndex);
                             phase++;
                             break;
                         case 13:  for(int i=0; i<22; i++) {
@@ -376,7 +575,7 @@ public class BoardManager {
                                 }
                             }
                         }
-                            InGameUIManager.getInstance().drawBoard();
+                            InGameUIManager.getInstance().drawBoard(boardIndex);
                             phase++;
                             break;
                         case 14:  for(int i=0; i<22; i++) {
@@ -390,7 +589,7 @@ public class BoardManager {
                                 }
                             }
                         }
-                            InGameUIManager.getInstance().drawBoard();
+                            InGameUIManager.getInstance().drawBoard(boardIndex);
                             phase++;
                             break;
                         case 15:  for(int i=0; i<22; i++) {
@@ -404,7 +603,7 @@ public class BoardManager {
                                 }
                             }
                         }
-                            InGameUIManager.getInstance().drawBoard();
+                            InGameUIManager.getInstance().drawBoard(boardIndex);
                             phase++;
                             break;
                         case 16:  for(int i=0; i<22; i++) {
@@ -418,7 +617,7 @@ public class BoardManager {
                                 }
                             }
                         }
-                            InGameUIManager.getInstance().drawBoard();
+                            InGameUIManager.getInstance().drawBoard(boardIndex);
                             phase++;
                             break;
                         case 17:  for(int i=0; i<22; i++) {
@@ -432,7 +631,7 @@ public class BoardManager {
                                 }
                             }
                         }
-                            InGameUIManager.getInstance().drawBoard();
+                            InGameUIManager.getInstance().drawBoard(boardIndex);
                             phase++;
                             break;
                         case 18:  for(int i=0; i<22; i++) {
@@ -445,7 +644,7 @@ public class BoardManager {
                                 }
                             }
                         }
-                            InGameUIManager.getInstance().drawBoard();
+                            InGameUIManager.getInstance().drawBoard(boardIndex);
                             phase++;
                             break;
                         case 19:  for(int i=0; i<22; i++) {
@@ -458,7 +657,7 @@ public class BoardManager {
                                 }
                             }
                         }
-                            InGameUIManager.getInstance().drawBoard();
+                            InGameUIManager.getInstance().drawBoard(boardIndex);
                             phase++;
                             break;
                         case 20:  for(int i=0; i<22; i++) {
@@ -470,10 +669,10 @@ public class BoardManager {
                                 }
                             }
                         }
-                            InGameUIManager.getInstance().drawBoard();
+                            InGameUIManager.getInstance().drawBoard(boardIndex);
                             phase++;
                             break;
-                        case 21: for(int i=0; i<22; i++) {
+                        default : for(int i=0; i<22; i++) {
                             if(clear[i]==1) {
                                 board[i][m] = '*';
                                 board[i][n] = '*';
@@ -482,8 +681,8 @@ public class BoardManager {
                             if(m>0) {
                                 m--; n++;
                             }
-                            InGameUIManager.getInstance().drawBoard();
-                            System.out.println("블록 제거중" + m);
+                            InGameUIManager.getInstance().drawBoard(boardIndex);
+                            //System.out.println("블록 제거중" + m);
                             if(m ==0){
                                 ((Timer)e.getSource()).stop();
                                 for(int i=0; i<22; i++) {
@@ -496,14 +695,27 @@ public class BoardManager {
                                         board[i][11] = 'X';
                                     }
                                 }
-                                System.out.println("블록 제거 완료" + m);
+                                //System.out.println("블록 제거 완료" + m);
                             }
                             break;
                     }
                 }
+                
             });
+
             timers.start();
         }
+
+        if(UserNumber.getInstance().user==2) {
+            if(clearsum == 0){
+                for(int i=0; i<20; i++) {
+                    for(int j = 1; j<11; j++ ) {
+                        board2[i][j] = board[i][j];
+                    }
+                }
+            }
+        }
+
     }
 //#endregion
 
@@ -521,7 +733,7 @@ public class BoardManager {
 
         for(int i=0; i<height; i++) {
             for(int j=0; j<width; j++) {
-                if(targetShape[i][j] == 'O' && board[targetRow+i][targetCol+j] != ' ')
+                if(targetShape[i][j] != ' ' && board[targetRow+i][targetCol+j] != ' ')
                     return false;
             }
         }
@@ -534,7 +746,7 @@ public class BoardManager {
 
         for(int i=0; i<curBlock.width(); i++) {
             for(int j=0; j<curBlock.height(); j++) {
-                if(curBlock.shape[j][i] == 'O')
+                if(curBlock.shape[j][i] != ' ')
                     indexOfBottom[i] = j;
             }
         }
@@ -612,7 +824,7 @@ public BlockController setNextBlockColor(BlockController nextBlock) {
         {
             for(int j=0; j<12; j++)
             {
-                char curText = BoardManager.getInstance().board[i][j];
+                char curText = board[i][j];
                 if(curText == 0)
                     System.out.print(" ");
                 else
@@ -621,6 +833,25 @@ public BlockController setNextBlockColor(BlockController nextBlock) {
             System.out.print("\n");
         }
     }
-//#endregion
+
+    public void useWeight(BlockController curBlock) {
+        int weightBlockWidth=4;
+
+        for (int i = 0; i < weightBlockWidth; i++) {
+            board[curBlock.posRow+1][curBlock.posCol+i]=' ';
+        }
+    }
+
+    public boolean checkWeightMovable(BlockController curBlock) {
+        int row = curBlock.posRow+1;
+        if(row<19){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+
+
 }
 
